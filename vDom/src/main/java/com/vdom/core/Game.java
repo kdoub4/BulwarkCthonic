@@ -1027,8 +1027,22 @@ public class Game {
     	boolean selectingCoins = playerShouldSelectCoinsToPlay(context, player.getHand());
         if (maxCards != -1) selectingCoins = true;// storyteller
         ArrayList<Card> treasures = null;
-        treasures = (selectingCoins) ? player.controlPlayer.treasureCardsToPlayInOrder(context, maxCards, responsible) : player.getTreasuresInHand();
+        //auto play, hold back Two if Three available
+        treasures = player.getTreasuresInHand();
+        if (!getPile(Cards.three).isEmpty()) {
+            treasures.remove(Cards.two);
+        }
+        while (treasures != null && !treasures.isEmpty() && maxCards != 0) {
+            while (!treasures.isEmpty() && maxCards != 0) {
+                Card card = treasures.remove(0);
+                if (player.hand.contains(card)) {// this is needed due to counterfeit which trashes cards during this loop
+                    card.play(context.game, context, true, true);
+                    maxCards--;
+                }
+            }
+        }
 
+        treasures = (selectingCoins) ? player.controlPlayer.treasureCardsToPlayInOrder(context, maxCards, responsible) : player.getTreasuresInHand();
         while (treasures != null && !treasures.isEmpty() && maxCards != 0) {
             while (!treasures.isEmpty() && maxCards != 0) {
                 Card card = treasures.remove(0);

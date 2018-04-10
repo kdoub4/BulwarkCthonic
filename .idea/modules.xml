@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Bulwark.iml" filepath="$PROJECT_DIR$/Bulwark.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bulwarkMain/app.iml" filepath="$PROJECT_DIR$/bulwarkMain/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bulwarkMain/bulwarkMain.iml" filepath="$PROJECT_DIR$/bulwarkMain/bulwarkMain.iml" />
       <module fileurl="file://$PROJECT_DIR$/vDom/vDom.iml" filepath="$PROJECT_DIR$/vDom/vDom.iml" />
     </modules>
   </component>
