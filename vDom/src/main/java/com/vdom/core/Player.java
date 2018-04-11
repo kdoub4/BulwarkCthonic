@@ -1468,7 +1468,7 @@ public abstract class Player {
             for(int i=context.game.enemyCount("spectre"); i > 0; i--) {
                 context.game.takeWounds(context.getPlayer(), 1, context, Cards.spectre, false);
             }
-            Card selectedCard = cardToPlay(context,Util.canReact(context,this, Type.OnTrash),card,true, "Discard for +3 Cards");
+            Card selectedCard = cardToPlay(context,Util.canReact(context,this, Type.OnTrash),card,true,"");
             if (selectedCard != null && selectedCard.getKind() == Cards.Kind.Belltower) {
                 discard(selectedCard,selectedCard,context);
                 context.game.drawToHand(context, card, 3, true );
