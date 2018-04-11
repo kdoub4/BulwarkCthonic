@@ -1181,7 +1181,7 @@ public class CardImpl implements Card, Comparable<Card>{
     }
 
     @Override
-    public void isDying(MoveContext context) {
+    public boolean isDying(MoveContext context) {
         this.isLeavingPlay();
         context.attackMade = true;
         if (!this.is(Type.Range)) {
@@ -1203,6 +1203,7 @@ public class CardImpl implements Card, Comparable<Card>{
                     context.game.addToPile(this,false);
                     GameEvent event = new GameEvent(GameEvent.EventType.CardOnTopOfDeck, context);
                     context.game.broadcastEvent(event);
+                    return false;
                 }
                 break;
             case KangaxxTheLich:
@@ -1261,6 +1262,7 @@ public class CardImpl implements Card, Comparable<Card>{
                 }
                 break;
         }
+        return true;
     }
     
     @Override
