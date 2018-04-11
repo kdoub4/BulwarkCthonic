@@ -651,7 +651,7 @@ public class Game {
         }
     }
 
-    private void OldWoundManoeuvre(MoveContext context, Player p, Card card) {
+    public void OldWoundManoeuvre(MoveContext context, Player p, Card card) {
         SelectCardOptions sco = new SelectCardOptions().isWound().fromHand()
                 .setActionType(SelectCardOptions.ActionType.DISCARD).setCardResponsible(card);
 
@@ -1597,20 +1597,21 @@ public class Game {
     }
 
     public void killFoe(MoveContext context, Card foe) {
-        foe.isDying(context); //should include on removal
+        boolean dead = foe.isDying(context); //should include on removal
 
         GameEvent event = new GameEvent(EventType.KillingFoe, context);
         event.card = foe;
         event.newCard = false;
         broadcastEvent(event);
 
-
         context.game.blackMarketPile.remove(Util.indexOfCardId(foe.getId(), context.game.blackMarketPile));
-        context.player.trash(foe,foe,context);
+        if (dead) {
+            context.player.trash(foe,foe,context);
         /* In isDying
         if (context.phase == TurnPhase.Attack)
             context.attackMade = true;
              */
+        }
 
     }
 

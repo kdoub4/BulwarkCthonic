@@ -53,6 +53,13 @@ public class CardImplBase extends CardImpl {
                 currentPlayer.discard(currentPlayer.hand.removeCard(this), this, context);
                 context.addMightModifier(+1);
                 actionPhaseAttack(context,currentPlayer,true,false,1);
+            case OldWound:
+                game.OldWoundManoeuvre(context, currentPlayer,this);
+                    break;
+            case GlancingWound:
+                context.actions -= 2;
+                currentPlayer.trash(currentPlayer.hand.removeCard(this), this, context);
+                break;
         }
     }
     @Override
