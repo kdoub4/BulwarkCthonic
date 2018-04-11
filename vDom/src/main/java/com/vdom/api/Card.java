@@ -105,7 +105,7 @@ public interface Card extends Serializable {
     public void isBuying(MoveContext context);
     public void isBought(MoveContext context);
 
-    public void isDying(MoveContext context);
+    public boolean isDying(MoveContext context);
     public void isBanished();
     public void isLeavingPlay();
 
