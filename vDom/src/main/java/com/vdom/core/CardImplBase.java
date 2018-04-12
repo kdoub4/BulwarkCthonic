@@ -65,6 +65,58 @@ public class CardImplBase extends CardImpl {
     @Override
     protected void additionalCardActions(Game game, MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
+            case RadiantPool:
+                Card card1 = game.draw(context,this,2);
+                Card card2 = game.draw(context, this, 1);
+                Card[] options=new Card[]{card1, card2, null};
+                int selection = ((RemotePlayer)currentPlayer).selectOption(context, this, options, null);
+                Card toTrash = null;
+                Card toReturn = null;
+                if (selection == 2) {
+                    currentPlayer.discard(card1, this, context);
+                    currentPlayer.discard(card2, this, context);
+                } else {
+                    if (selection == 0) {
+                        toTrash = card1;
+                        toReturn = card2;
+                    } else {
+                        toTrash = card2;
+                        toReturn = card1;
+                    }
+                    currentPlayer.trash(toTrash, this, context);
+                    currentPlayer.putOnTopOfDeck(toReturn, context, true);
+                }
+                break;
+            case GalleryOfLeaves:
+                banishOrDiscard(context, currentPlayer, Cards.virtualEnemy );
+                banishOrDiscard(context, currentPlayer, Cards.virtualWound );
+                spyAndScryingPool(game, context, currentPlayer);
+                break;
+            case TreetopSpire:
+                SelectCardOptions sco = new SelectCardOptions().isTreasure().fromHand()
+                        .setActionType(SelectCardOptions.ActionType.DISCARD).setCardResponsible(this)
+                        .setPassable();
+                Card toDiscard;
+                toDiscard = currentPlayer.getCardFromHand(context,sco) ;
+                if (toDiscard != null) {
+                    context.actions++;
+                    currentPlayer.discard(toDiscard, this, context);
+                }
+                break;
+            case SamuGarden:
+                hunt(game, context, currentPlayer, Type.Technique);
+                context.techniqueBuys++;
+                break;
+            case CelestialChorus:
+                if (context.countCardsInPlayByIdentifier("chorus")>1) {  // currentPlayer.playedCards.contains("bow")) {
+                    context.addMightModifier(1);
+                }
+//no break so we get +2
+            case ElvenChorus:
+                if (context.countCardsInPlayByIdentifier("chorus")>1) {  // currentPlayer.playedCards.contains("bow")) {
+                    context.addMightModifier(1);
+                }
+                break;
             case Watermill:
                 discardMultiple(context, currentPlayer, 2);
                 break;
@@ -76,7 +128,7 @@ public class CardImplBase extends CardImpl {
                 }
                 break;
             case Belltower:
-                SelectCardOptions sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
+                sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
                         .fromBlackMarket().setCount(1).setPassable().isSelect().setCardResponsible(this);
                 int[] toMoveToEnd = currentPlayer.doSelectFoe(context,sco,1, GameEvent.EventType.SelectFoe);
                 if (toMoveToEnd.length==1) {
@@ -105,9 +157,9 @@ public class CardImplBase extends CardImpl {
                 break;
             case Crypt:
                 selectAndTrashFromHand(context, currentPlayer, 1);
-                Card[] toDiscard = currentPlayer.controlPlayer.cardsToDiscard(context,this,1,true,false);
-                if (toDiscard.length>0) {
-                    currentPlayer.discard(currentPlayer.hand.removeCard(toDiscard[0]),this,context);
+                Card[] toDiscards = currentPlayer.controlPlayer.cardsToDiscard(context,this,1,true,false);
+                if (toDiscards.length>0) {
+                    currentPlayer.discard(currentPlayer.hand.removeCard(toDiscards[0]),this,context);
                 }
                 game.drawToHand(context,this,1,true);
                 break;
@@ -118,7 +170,7 @@ public class CardImplBase extends CardImpl {
                 spyAndScryingPool(game,context,currentPlayer);
                 break;
             case PatientHunter:
-                patientHunter(game,context,currentPlayer);
+                hunt(game,context,currentPlayer, "bow", "shot");
                 break;
             case EnchangtedBow: //intentional fall into PrestigeBow
                 cellar(game,context,currentPlayer);
@@ -182,6 +234,7 @@ public class CardImplBase extends CardImpl {
             case ContempuousShot:
             case StoneWalls:
             case VantagePoint:
+            case SilkenSnare:
                 putOnTavern(game, context, currentPlayer);
                 break;
             case HealingBalm:
@@ -232,7 +285,7 @@ public class CardImplBase extends CardImpl {
                 game.drawToHand(context,this,1,true);
                 break;
             case GuardTower:
-                guardtower(context, currentPlayer);
+                banishOrDiscard(context, currentPlayer, Cards.virtualEnemy);
                 break;
             case RockFallTrap:
                 actionPhaseAttack(context, currentPlayer, true, false, 2);
@@ -462,11 +515,12 @@ public class CardImplBase extends CardImpl {
 
     }
 
-    private void patientHunter(Game game, MoveContext context, Player currentPlayer) {
+    private void hunt(Game game, MoveContext context, Player currentPlayer, String... identifier) {
         ArrayList<Card> toDiscard = new ArrayList<Card>();
-        int bowCardsRevealed = 0;
+        int idCardsRevealed = 0;
         Card revealed = game.draw(context, this, 1);
-        if (revealed.is("bow","shot")) {
+
+        if (revealed.is(identifier)) {
             currentPlayer.hand.add(revealed);
         }
         else {
@@ -480,7 +534,26 @@ public class CardImplBase extends CardImpl {
 
     }
 
-	private void adventurer(Game game, MoveContext context, Player currentPlayer) {
+    private void hunt(Game game, MoveContext context, Player currentPlayer, Type... types) {
+        ArrayList<Card> toDiscard = new ArrayList<Card>();
+        int idCardsRevealed = 0;
+        Card revealed = game.draw(context, this, 1);
+
+        if (revealed.is(types)) {
+            currentPlayer.hand.add(revealed);
+        }
+        else {
+            if (currentPlayer.reveal_shouldDiscard(context, currentPlayer, revealed, this)) {
+                currentPlayer.discard(revealed,this,context);
+            }
+            else {
+                currentPlayer.putOnTopOfDeck(revealed, context, true);
+            }
+        }
+
+    }
+
+    private void adventurer(Game game, MoveContext context, Player currentPlayer) {
         ArrayList<Card> toDiscard = new ArrayList<Card>();
         int treasureCardsRevealed = 0;
 
@@ -760,12 +833,12 @@ public class CardImplBase extends CardImpl {
         }
     }
 
-    private void guardtower(MoveContext context, Player currentPlayer) {
-        Card topFoe = context.game.takeFromPile(Cards.virtualEnemy);
+    private void banishOrDiscard(MoveContext context, Player currentPlayer, Card cardTemplate) {
+        Card topCard = context.game.takeFromPile(cardTemplate);
 
-        if(topFoe != null) {
-            boolean discard = currentPlayer.duchess_shouldDiscardCard(context, topFoe);
-            context.game.addToPile(topFoe, discard);
+        if(topCard != null) {
+            boolean discard = currentPlayer.duchess_shouldDiscardCard(context, topCard);
+            context.game.addToPile(topCard, discard);
         }
     }
 
@@ -1228,6 +1301,23 @@ public class CardImplBase extends CardImpl {
 
     private void callAction(MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
+            case SilkenSnare:
+                if (context.countCardsInPlayByIdentifier("snare")>1 ||
+                        ((IndirectPlayer)currentPlayer).selectBoolean(context, this)) {
+                    context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
+                    SelectCardOptions sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
+                            .fromBlackMarket().setCount(1).setCardResponsible(this);
+                    int[] toBanish = currentPlayer.doSelectFoe(context, sco, 1, GameEvent.EventType.SelectFoe);
+                    if (toBanish.length == 1) {
+                        context.game.addToPile(context.game.blackMarketPile.remove(toBanish[0]), true);
+                    }
+                }
+                else {
+                    context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
+                    actionPhaseAttack(context, currentPlayer, false, true, 2);
+                }
+
+                break;
             case TownSquare:
                 callTownSquare(context, context.game, currentPlayer);
                 break;

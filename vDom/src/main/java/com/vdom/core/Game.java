@@ -547,6 +547,7 @@ public class Game {
             card = player.getCardFromHand(context, sco);
             if (card == null) break;
             switch (card.getKind()) {
+                //TODO treetopSire multi player
                 case RalliedMilitia:
                     ((CardImpl)card).manoeuvreCardActions(context.game,context,player);
                     break;
@@ -990,6 +991,12 @@ public class Game {
             if (enemyCard.is(Type.Activate)) {
                 if (!currentPlayer.preventActivation(context, enemyCard))
                     i=activateEnemy(enemyCard,currentPlayer,context,i);
+                else {
+                    if (enemyCard.getId() != context.game.blackMarketPile.get(i).getId()) {
+                        //must have been killed roll back i
+                        i--;
+                    }
+                }
             }
         }
     }
@@ -1619,7 +1626,7 @@ public class Game {
         Card buy = null;
         do {
         	if (disableAi && player.isAi()) continue;
-            if (context.buys <= 0) break; //Player can enter buy phase with 0 or less buys after buying but not playing Villa
+            if (context.buys <= 0 && context.techniqueBuys <= 0) break; //Player can enter buy phase with 0 or less buys after buying but not playing Villa
         	buy = null;
             try {
             	playerPayOffDebt(player, context);
@@ -1656,8 +1663,8 @@ public class Game {
                     buy = null;
                 }
             }
-        } while (context.buys > 0 && buy != null);
-
+        } while ((context.buys > 0 || context.techniqueBuys > 0) && buy != null );
+//TODO also check if technique is available to buy
         //Discard Wine Merchants from Tavern
         if(context.getCoinAvailableForBuy() >= 2) {
         	int wineMerchants = 0;
@@ -2634,7 +2641,12 @@ public class Game {
     Card playBuy(MoveContext context, Card buy) {
         Player player = context.getPlayer();
         if (!context.blackMarketBuyPhase) {
-            context.buys--;
+            if (context.techniqueBuys > 0 && buy.is(Type.Technique)) {
+                context.techniqueBuys--;
+            }
+            else {
+                context.buys--;
+            }
         }
         
         context.spendCoins(buy.getCost(context));
@@ -3594,6 +3606,12 @@ public class Game {
                     break;
                 case Holtvaros:
                     for (Card c : Cards.locationCardsHoltvaros) {
+                        addPile(c);
+                        added++;
+                    }
+                    break;
+                case Sylvan:
+                    for (Card c: Cards.locationCardsSylvanHeights) {
                         addPile(c);
                         added++;
                     }

@@ -287,6 +287,17 @@ class ArpadSwordPileCreator extends PileCreator {
         return new CardPile(template, cards, true, true);
     }
 }
+
+class ChorusPileCreator extends PileCreator {
+    public CardPile create(Card template, int count) {
+        List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
+
+        cards.add(new CardPile.CardMultiplicity(Cards.elvenChorus,    4));
+        cards.add(new CardPile.CardMultiplicity(Cards.celestialChorus, 4));
+        return new CardPile(template, cards, true, true);
+    }
+}
+
 class CastlesPileCreator extends PileCreator {
     public CardPile create(Card template, int count) {
         List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();

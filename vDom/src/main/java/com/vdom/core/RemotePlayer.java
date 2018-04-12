@@ -1024,9 +1024,13 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         Card preventCard = cardToPlay(context, Util.canReact(context,this,Type.OnActivation),
                 Enemy, true, OPTION_ACTIVATION);
         if (preventCard != null) {
+            tavern.a.remove(preventCard);
             switch (preventCard.getKind()) {
+                case SilkenSnare:
+                    preventCard.callWhenActionResolved(context, Enemy);
+//                    context.game.addToPile(preventCard, false);
+                    break;
                 case ContempuousShot:
-                    tavern.a.remove(preventCard);
                     trash(preventCard, preventCard, context);
                     break;
             }

@@ -761,7 +761,10 @@ public class Strings {
 		}
 
         String cardName = getCardName(card);
-        if (cardName.equals(getCardName(Cards.virtualPlayerAttack))) {
+        if (cardName.equals(getCardName(Cards.radiantPool))) {
+            return "Select card to trash or pass to Discard both";
+        }
+        else if (cardName.equals(getCardName(Cards.virtualPlayerAttack))) {
             return "Boost might " + numbers[0].toString() + " attack with";
         } else if (cardName.equals(getCardName(Cards.advisor))) {
             return getActionString(ActionType.OPPONENTDISCARD, card, (String) extras[0]);
@@ -1258,7 +1261,9 @@ public class Strings {
             strings[2] = getString(R.string.replace);
         } else if (cardName.equals(getCardName(Cards.spy)) ||
                 cardName.equals(getCardName(Cards.stalk)) ||
-                cardName.equals(getCardName(Cards.patientHunter))) {
+                cardName.equals(getCardName(Cards.patientHunter)) ||
+                cardName.equals(getCardName(Cards.samuGarden)) ||
+                cardName.equals(getCardName(Cards.galleryOfLeaves))) {
             strings[0] = getPlayerRevealedCardHeader(extras);
             strings[1] = getString(R.string.discard);
             strings[2] = getString(R.string.replace);
@@ -1557,7 +1562,12 @@ public class Strings {
         if (simpleActionStrings != null) return;
         simpleActionStrings = new HashSet<String>(Arrays.asList(
 
-                getCardName(Cards.belltower),
+            getCardName(Cards.samuGarden),
+            getCardName(Cards.silkenSnare),
+            getCardName(Cards.treetopSpire),
+            getCardName(Cards.radiantPool),
+            getCardName(Cards.galleryOfLeaves),
+            getCardName(Cards.belltower),
             getCardName(Cards.townSquare),
             getCardName(Cards.ralliedMilitia),
             getCardName(Cards.terrifiedMilitia),

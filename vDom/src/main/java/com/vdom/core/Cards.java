@@ -32,6 +32,8 @@ public class Cards {
     public static ArrayList<Card> locationCardsCitadelXajorkithGate = new ArrayList<>();
     public static ArrayList<Card> locationCardsHoltvaros = new ArrayList<>();
     public static ArrayList<Card> locationCardsHoltvarosMilitia = new ArrayList<>();
+    public static ArrayList<Card> locationCardsSylvanHeights = new ArrayList<>();
+    public static ArrayList<Card> locationCardsSylvanChorus = new ArrayList<>();
 
     public static ArrayList<Card> cardsElf = new ArrayList<Card>();
     public static ArrayList<Card> cardsWinter = new ArrayList<>();
@@ -357,7 +359,6 @@ public class Cards {
     public static final Card well;
     public static final Card crypt;
 
-    /*
     public static final Card samuGarden;
     public static final Card silkenSnare;
     public static final Card elvenChorus;
@@ -366,7 +367,6 @@ public class Cards {
     public static final Card treetopSpire;
     public static final Card radiantPool;
     public static final Card galleryOfLeaves;
-    */
 
     public static final Card platinum;
     public static final Card gold;
@@ -980,6 +980,17 @@ public class Cards {
         locationCardsHoltvaros.add(belltower = new CardImpl.Builder(Kind.Belltower, 2, Type.Location, Type.Action, Type.InHandReaction, Type.OnTrash).setPileSize(4).addCards(1).description("You may move a Foe to the end of the Foe line. You may Discard 1.  Reaction: When you Trash another card, Discard this for +3 Cards.").expansion(Expansion.Base).build());
         locationCardsHoltvaros.add(well = new CardImpl.Builder(Kind.Well, 3, Type.Location, Type.Action).setPileSize(4).description("Reveal the bottom card of any player deck, put it on top or Discard it.  +2 Cards.").expansion(Expansion.Base).build());
 
+        locationCardsSylvanHeights.add(samuGarden = new CardImpl.Builder(Kind.SamuGarden,2, Type.Location, Type.Action).setPileSize(4).addActions(2).description("+1 Buy for Techniques only. All players Hunt for a Technique.").expansion(Expansion.Base).build());
+        locationCardsSylvanHeights.add(virtualChorus = new CardImpl.Builder(Kind.VirtualChorus,3, Type.Location, Type.Action, Type.Technique).pileCreator(new ChorusPileCreator()).expansion(Expansion.Base).build());
+        locationCardsSylvanChorus.add(elvenChorus = new CardImpl.Builder(Kind.ElvenChorus,3, Type.Location, Type.Action, Type.Technique).addActions(1).description("+1 Might if you have already played a chorus this turn.").expansion(Expansion.Base).build());
+        locationCardsSylvanChorus.add(celestialChorus = new CardImpl.Builder(Kind.CelestialChorus,5, Type.Location, Type.Action, Type.Technique).addActions(1).description("+2 Might if you have already played a chorus this turn.").expansion(Expansion.Base).build());
+        //TODO maybe onDrawn as well
+        locationCardsSylvanHeights.add(silkenSnare = new CardImpl.Builder(Kind.SilkenSnare,3, Type.Location, Type.Action, Type.Fortification, Type.Remains, Type.RemainsManoeuvre, Type.OnActivation).callWhenActionResolved().setPileSize(8).description("While Remaining: Manoeuvre - Banish this to Banish a Foe. Manoeuvre - If you have another snare in play, Banish this to attack with Might 2 Range.").expansion(Expansion.Base).build());
+        //TODO treetopspire , Type.InHandManoeuvre
+        locationCardsSylvanHeights.add(treetopSpire = new CardImpl.Builder(Kind.TreetopSpire,3, Type.Location, Type.Action).setPileSize(4).addCards(2).description("You may discard a Heroism card for +1 Action. While in Hand: Manoeuvre - Discard this, another player may Discard a Heroism card for +2 Cards.").expansion(Expansion.Base).build());
+        locationCardsSylvanHeights.add(radiantPool = new CardImpl.Builder(Kind.RadiantPool,4, Type.Location, Type.Action).setPileSize(4).description("Reveal the top 2 cards of your deck - either Trash 1 of them and put the other back on your deck, or Discard both.").expansion(Expansion.Base).build());
+        locationCardsSylvanHeights.add(galleryOfLeaves = new CardImpl.Builder(Kind.GalleryOfLeaves,5, Type.Location, Type.Action).addActions(2).addCards(1).setPileSize(4).description("Look at the top card of every deck. Banish or replace the top card of the Foe and Wound decks, Discard or replace the top card of each player deck.").expansion(Expansion.Base).build());
+
         actionCardsBaseGame.add(bureaucrat = new CardImpl.Builder(Cards.Kind.Bureaucrat, 4, Type.Action, Type.Attack).description("Gain a Silver onto your deck. Each other player reveals a Victory card from their hand and puts it onto their deck (or reveals a hand with no Victory cards).").expansion(Expansion.Base).build());
         actionCardsBaseGame.add(cellar = new CardImpl.Builder(Cards.Kind.Cellar, 2, Type.Action).addActions(1).description("Discard any number of cards, then draw that many.").expansion(Expansion.Base).build());
         actionCardsBaseGame.add(chapel = new CardImpl.Builder(Cards.Kind.Chapel, 2, Type.Action).description("Trash up to 4 cards from your hand.").expansion(Expansion.Base).build());
@@ -1494,6 +1505,8 @@ public class Cards {
         for (Card card : locationCardsCitadelXajorkithGate) {locationCards.add(card); }
         for (Card card : locationCardsHoltvaros) {locationCards.add(card);}
         for (Card card : locationCardsHoltvarosMilitia) {locationCards.add(card);}
+        for (Card card : locationCardsSylvanHeights) {locationCards.add(card);}
+        for (Card card : locationCardsSylvanChorus) {locationCards.add(card);}
 
         for (Card card : actionCards)       { cardNameToCard.put(card.getName(), card); }
         for (Card card : prizeCards)        { cardNameToCard.put(card.getName(), card); }

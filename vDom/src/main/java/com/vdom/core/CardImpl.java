@@ -1656,7 +1656,7 @@ public class CardImpl implements Card, Comparable<Card>{
 
                     boolean discard = false;
 
-                    if(equals(Cards.spy)  || equals(Cards.stalk)) {
+                    if(equals(Cards.spy)  || equals(Cards.stalk) || equals(Cards.galleryOfLeaves)) {
                         discard = currentPlayer.controlPlayer.reveal_shouldDiscard(context, player, card, this);
                     } else if (equals(Cards.scryingPool)) {
                         discard = currentPlayer.controlPlayer.scryingPool_shouldDiscard(context, player, card);
