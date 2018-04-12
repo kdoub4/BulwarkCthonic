@@ -22,7 +22,7 @@ public class CardImplBase extends CardImpl {
     @Override
     public boolean isInvincible(ArrayList<Card> enemyLine, MoveContext context) {
         if (this.getKind() == Cards.Kind.KangaxxTheLich) {
-            if (context.game.enemyCount(Type.Necromancer)>0) {
+            if (context.game.enemyCount(CardType.Necromancer)>0) {
                 return true;
             }
         }
@@ -104,7 +104,7 @@ public class CardImplBase extends CardImpl {
                 }
                 break;
             case SamuGarden:
-                hunt(game, context, currentPlayer, Type.Technique);
+                hunt(game, context, currentPlayer, CardType.Technique);
                 context.techniqueBuys++;
                 break;
             case CelestialChorus:
@@ -241,7 +241,7 @@ public class CardImplBase extends CardImpl {
                 //TODO Bulwark multiplayer
                 for (int i = 5; i > 0; i--) {
                     Card c = game.draw(context, this, i);
-                    if (c.is(Type.Wound))
+                    if (c.is(CardType.Wound))
                         currentPlayer.trash(c, this, context);
                     else
                         currentPlayer.discard(c, this, context);
@@ -534,7 +534,7 @@ public class CardImplBase extends CardImpl {
 
     }
 
-    private void hunt(Game game, MoveContext context, Player currentPlayer, Type... types) {
+    private void hunt(Game game, MoveContext context, Player currentPlayer, CardType... types) {
         ArrayList<Card> toDiscard = new ArrayList<Card>();
         int idCardsRevealed = 0;
         Card revealed = game.draw(context, this, 1);
@@ -564,7 +564,7 @@ public class CardImplBase extends CardImpl {
             }
             currentPlayer.reveal(draw, this.getControlCard(), context);
 
-            if (draw.is(Type.Treasure, currentPlayer)) {
+            if (draw.is(CardType.Treasure, currentPlayer)) {
                 treasureCardsRevealed++;
                 currentPlayer.hand.add(draw);
             } else {
@@ -639,7 +639,7 @@ public class CardImplBase extends CardImpl {
                 Card card = game.draw(targetContext, Cards.bandit, 2 - i);
                 if (card != null) {
                     targetPlayer.reveal(card, this.getControlCard(), targetContext);
-                    if (card.is(Type.Treasure, targetPlayer) && !Cards.copper.equals(card)) {
+                    if (card.is(CardType.Treasure, targetPlayer) && !Cards.copper.equals(card)) {
                         treasures.add(card);
                     } else {
                         cardsToDiscard.add(card);
@@ -681,7 +681,7 @@ public class CardImplBase extends CardImpl {
                 ArrayList<Card> victoryCards = new ArrayList<Card>();
 
                 for (Card card : player.hand) {
-                    if (card.is(Type.Victory, player)) {
+                    if (card.is(CardType.Victory, player)) {
                         victoryCards.add(card);
                     }
                 }
@@ -702,7 +702,7 @@ public class CardImplBase extends CardImpl {
                     } else {
                         toTopOfDeck = (player).controlPlayer.bureaucrat_cardToReplace(playerContext);
 
-                        if (toTopOfDeck == null || !toTopOfDeck.is(Type.Victory, player)) {
+                        if (toTopOfDeck == null || !toTopOfDeck.is(CardType.Victory, player)) {
                             Util.playerError(player, "No Victory Card selected for Bureaucrat, using first Victory Card in hand");
                             toTopOfDeck = victoryCards.get(0);
                         }
@@ -961,7 +961,7 @@ public class CardImplBase extends CardImpl {
             }
             
             boolean shouldKeep = true;
-            if (draw.is(Type.Action, currentPlayer)) {
+            if (draw.is(CardType.Action, currentPlayer)) {
                 shouldKeep = currentPlayer.controlPlayer.library_shouldKeepAction(context, draw);
             }
 
@@ -999,7 +999,7 @@ public class CardImplBase extends CardImpl {
     
     private void mine(MoveContext context, Player currentPlayer) {
         Card cardToUpgrade = currentPlayer.controlPlayer.mine_treasureFromHandToUpgrade(context);
-        if ((Game.errataMineForced && cardToUpgrade == null) || !cardToUpgrade.is(Type.Treasure, currentPlayer)) {
+        if ((Game.errataMineForced && cardToUpgrade == null) || !cardToUpgrade.is(CardType.Treasure, currentPlayer)) {
             Card[] cards = currentPlayer.getTreasuresInHand().toArray(new Card[] {});
             if (cards.length != 0) {
                 Util.playerError(currentPlayer, "Mine card to upgrade was invalid, picking treasure from hand.");
@@ -1017,13 +1017,13 @@ public class CardImplBase extends CardImpl {
                     currentPlayer.trash(thisCard, this.getControlCard(), context);
 
                     Card newCard = currentPlayer.controlPlayer.mine_treasureToObtain(context, card.getCost(context) + 3, card.getDebtCost(context), card.costPotion());
-                    if (!(newCard != null && newCard.is(Type.Treasure, null) && Cards.isSupplyCard(newCard) &&
+                    if (!(newCard != null && newCard.is(CardType.Treasure, null) && Cards.isSupplyCard(newCard) &&
                     		newCard.getCost(context) <= card.getCost(context) + 3 && 
                     		newCard.getDebtCost(context) <= card.getDebtCost(context) && 
                     		(!newCard.costPotion() || card.costPotion()) 
                     		&& context.isCardOnTop(newCard))) {
                         Util.playerError(currentPlayer, "Mine treasure to obtain was invalid, picking random treasure from table.");
-                        for (Card treasureCard : context.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, Type.Treasure)) {
+                        for (Card treasureCard : context.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, CardType.Treasure)) {
                             if (Cards.isSupplyCard(treasureCard) && context.isCardOnTop(treasureCard) &&
                             		treasureCard.getCost(context) <= card.getCost(context) + 3 &&
                             		treasureCard.getDebtCost(context) <= card.getCost(context) &&
@@ -1214,7 +1214,7 @@ public class CardImplBase extends CardImpl {
                     if (card != null) {
                         targetPlayer.reveal(card, this.getControlCard(), targetContext);
 
-                        if (card.is(Type.Treasure, targetPlayer)) {
+                        if (card.is(CardType.Treasure, targetPlayer)) {
                             treasures.add(card);
                         } else {
                             cardsToDiscard.add(card);
@@ -1269,7 +1269,7 @@ public class CardImplBase extends CardImpl {
         if (draw != null) {
         	player.discard(draw, this.getControlCard(), context);
         	int discardIndex = player.discard.size() - 1;
-        	if (draw.is(Type.Action, player) && player.controlPlayer.vassal_shouldPlayCard(context, draw)) {
+        	if (draw.is(CardType.Action, player) && player.controlPlayer.vassal_shouldPlayCard(context, draw)) {
         		//TODO: doesn't apply with current cards, 
         		//      but future card could trigger lose track rule and prevent moving to play area
         		//      but not prevent from playing

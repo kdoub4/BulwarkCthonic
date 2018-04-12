@@ -255,11 +255,11 @@ public class Util {
         return -1;
     }
 
-    static List<Card> canReact(MoveContext context, Player player, Type actionType) {
+    static List<Card> canReact(MoveContext context, Player player, CardType actionType) {
         //TODO return all possible cards
         ArrayList<Card> toReturn = new ArrayList<Card>();
         for (Card c : player.hand) {
-            if ((c.is(Type.InHandManoeuvre) || c.is(Type.InHandReaction)) &&
+            if ((c.is(CardType.InHandManoeuvre) || c.is(CardType.InHandReaction)) &&
                     (c.getKind()!=Kind.SanctusCharm || (context.woundsTaken >= 1 && !context.sanctusCharm ))
                     && c.is(actionType))
                 if (!toReturn.contains(c))
@@ -272,7 +272,7 @@ public class Util {
             for (Card c :((CardImplBase) t).cardsUnder){
                 underCards.add(c);
             }
-            if ((t.is(Type.RemainsReaction) || t.is(Type.RemainsManoeuvre)) && t.is(actionType) &&
+            if ((t.is(CardType.RemainsReaction) || t.is(CardType.RemainsManoeuvre)) && t.is(actionType) &&
                     !underCards.contains(t) && !t.isPlayedThisTurn()) {
                 if (!toReturn.contains(t))
                     toReturn.add(t);
@@ -693,7 +693,7 @@ public class Util {
 	static public class CardValueComparator implements Comparator<Card> {
 		@Override
 		public int compare(Card card0, Card card1) {
-			if ( !(card0.is(Type.Treasure, null)) || !(card1.is(Type.Treasure, null)) )
+			if ( !(card0.is(CardType.Treasure, null)) || !(card1.is(CardType.Treasure, null)) )
 				return 0;
 			if (card0.getAddGold() < card1.getAddGold()) {
 				return -1;
@@ -733,29 +733,29 @@ public class Util {
 	static public class CardTypeComparator implements Comparator<Card> {
 		@Override
 		public int compare(Card card0, Card card1) {
-			if(card0.is(Type.Action, null)) {
-				if(card1.is(Type.Action, null)) {
+			if(card0.is(CardType.Action, null)) {
+				if(card1.is(CardType.Action, null)) {
 					return 0;
 				} else {
 					return -1;
 				}
-			} else if(card1.is(Type.Action, null)) {
+			} else if(card1.is(CardType.Action, null)) {
 				return 1;
-			} else if(card0.is(Type.Treasure, null) || card0.getKind() == Kind.Potion) {
-				if(card1.is(Type.Treasure, null) || card1.getKind() == Kind.Potion) {
+			} else if(card0.is(CardType.Treasure, null) || card0.getKind() == Kind.Potion) {
+				if(card1.is(CardType.Treasure, null) || card1.getKind() == Kind.Potion) {
 					return 0;
 				} else {
 					return -1;
 				}
-			} else if(card1.is(Type.Treasure, null) || card1.getKind() == Kind.Potion) {
+			} else if(card1.is(CardType.Treasure, null) || card1.getKind() == Kind.Potion) {
 				return 1;
-			} else if(card0.is(Type.Curse, null)) {
-				if(card1.is(Type.Curse, null)) {
+			} else if(card0.is(CardType.Curse, null)) {
+				if(card1.is(CardType.Curse, null)) {
 					return 0;
 				} else {
 					return -1;
 				}
-			} else if(card1.is(Type.Curse, null)) {
+			} else if(card1.is(CardType.Curse, null)) {
 				return 1;
 			} else {
 				return 0;
@@ -770,8 +770,8 @@ public class Util {
 	static public class CardTravellerComparator implements Comparator<Card> {
 		@Override
 		public int compare(Card card0, Card card1) {
-			if(card0.is(Type.Crown, null)) {
-				if(card1.is(Type.Crown, null)) {
+			if(card0.is(CardType.Crown, null)) {
+				if(card1.is(CardType.Crown, null)) {
 					if(card0.getCost(null) > card1.getCost(null)) {
 						return -1;
 					} else if(card0.getCost(null) < card1.getCost(null)) {
@@ -782,7 +782,7 @@ public class Util {
 				} else {
 					return -1;
 				}
-			} else if(card1.is(Type.Crown, null)) {
+			} else if(card1.is(CardType.Crown, null)) {
 				return 1;
 			} else {
 				return 0;
@@ -809,7 +809,7 @@ public class Util {
 		if (c.equals(Cards.distantLands)) {
 			return 3;
 		}
-		if (c.is(Type.Remains, null)) {
+		if (c.is(CardType.Remains, null)) {
 			return 1;
 		}
 		if (c.equals(Cards.copper)) {

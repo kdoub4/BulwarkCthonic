@@ -213,13 +213,13 @@ public class CardImplIntrigue extends CardImpl {
         if (card != null && card.getCost(context) <= 4 && card.getDebtCost(context) == 0 && !card.costPotion()) {
             if (currentPlayer.gainNewCard(card, this.getControlCard(), context).equals(card)) {
                 //note these could be wrong if Watchtower is used to trash a gained inherited Estate
-                if (card.is(Type.Action, currentPlayer)) {
+                if (card.is(CardType.Action, currentPlayer)) {
                     context.actions++;
                 }
-                if (card.is(Type.Treasure, currentPlayer)) {
+                if (card.is(CardType.Treasure, currentPlayer)) {
                     context.addCoins(1);
                 }
-                if (card.is(Type.Victory, currentPlayer)) {
+                if (card.is(CardType.Victory, currentPlayer)) {
                     game.drawToHand(context, this, 1);
                 }
             }
@@ -240,7 +240,7 @@ public class CardImplIntrigue extends CardImpl {
                 boolean bad = false;
                 if (cardToTrash != null) {
                     pile = game.getPile(cardToTrash);
-                    if (pile == null || !cardToTrash.equals(pile.topCard()) || !pile.isSupply() || !cardToTrash.is(Type.Action)) {
+                    if (pile == null || !cardToTrash.equals(pile.topCard()) || !pile.isSupply() || !cardToTrash.is(CardType.Action)) {
                         Util.playerError(currentPlayer, "Lurker trash error, trashing nothing.");
                         return;
                     }
@@ -249,7 +249,7 @@ public class CardImplIntrigue extends CardImpl {
                 break;
             case GainFromTrash:
                 Card cardToGain = currentPlayer.controlPlayer.lurker_cardToGainFromTrash(context);
-                if (cardToGain == null || !game.trashPile.contains(cardToGain) || !cardToGain.is(Type.Action)) {
+                if (cardToGain == null || !game.trashPile.contains(cardToGain) || !cardToGain.is(CardType.Action)) {
                     Util.playerError(currentPlayer, "Lurker gain card choice error, gaining nothing");
                     return;
                 }
@@ -495,7 +495,7 @@ public class CardImplIntrigue extends CardImpl {
         if (cardOk) {
             Card gained = currentPlayer.gainNewCard(card, this.getControlCard(), context);
             if (gained != null && gained.equals(card)) {
-                if (gained.is(Type.Victory)) { //Topdecking if it's an Action or Treasure is already handled in the gameEvent handler
+                if (gained.is(CardType.Victory)) { //Topdecking if it's an Action or Treasure is already handled in the gameEvent handler
                     for (Player player : playersToAttack) {
                         MoveContext playerContext = new MoveContext(game, player);
                         playerContext.attackedPlayer = player;
@@ -565,7 +565,7 @@ public class CardImplIntrigue extends CardImpl {
             if (card == null) {
                 break;
             }
-            if (card.is(Type.Victory, currentPlayer) || cursesToHand && card.is(Type.Curse, currentPlayer)) {
+            if (card.is(CardType.Victory, currentPlayer) || cursesToHand && card.is(CardType.Curse, currentPlayer)) {
                 currentPlayer.hand.add(card);
             } else {
                 cards.add(card);
@@ -655,7 +655,7 @@ public class CardImplIntrigue extends CardImpl {
         for (Card card : currentPlayer.hand) {
             currentPlayer.reveal(card, this.getControlCard(), context);
 
-            if (card.is(Type.Action, currentPlayer)) {
+            if (card.is(CardType.Action, currentPlayer)) {
                 actions = true;
             }
         }
@@ -897,13 +897,13 @@ public class CardImplIntrigue extends CardImpl {
 
         for (Card card : revealedCards) {
             if (card != null && !card.equals(Cards.curse)) {
-                if (card.is(Type.Action, nextPlayer)) {
+                if (card.is(CardType.Action, nextPlayer)) {
                     context.actions += 2;
                 }
-                if (card.is(Type.Treasure, nextPlayer)) {
+                if (card.is(CardType.Treasure, nextPlayer)) {
                     context.addCoins(2);
                 }
-                if (card.is(Type.Victory, nextPlayer)) {
+                if (card.is(CardType.Victory, nextPlayer)) {
                     game.drawToHand(context, this, 2);
                     game.drawToHand(context, this, 1);
                 }

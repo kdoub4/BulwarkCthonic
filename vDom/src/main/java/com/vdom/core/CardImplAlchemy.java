@@ -104,7 +104,7 @@ public class CardImplAlchemy extends CardImpl {
 
             currentPlayer.reveal(draw, this.getControlCard(), context);
 
-            if (draw.is(Type.Action, currentPlayer) && !draw.equals(Cards.golem)) {
+            if (draw.is(CardType.Action, currentPlayer) && !draw.equals(Cards.golem)) {
                 toOrder.add(draw);
                 // currentPlayer.hand.add(draw);
             } else {
@@ -174,14 +174,14 @@ public class CardImplAlchemy extends CardImpl {
         } else {
             currentPlayer.hand.remove(cardToTrash);
             currentPlayer.trash(cardToTrash, this.getControlCard(), context);
-            if (cardToTrash.is(Type.Action, cardToTrash.behaveAsCard().getKind() == Kind.Fortress ? currentPlayer : null )) {
+            if (cardToTrash.is(CardType.Action, cardToTrash.behaveAsCard().getKind() == Kind.Fortress ? currentPlayer : null )) {
             	//Condition is wrong for when player is being possessed and Fortress is set aside
                 currentPlayer.gainNewCard(Cards.duchy, this.getControlCard(), context);
             }
-            if (cardToTrash.is(Type.Treasure)) {
+            if (cardToTrash.is(CardType.Treasure)) {
                 currentPlayer.gainNewCard(Cards.transmute, this.getControlCard(), context);
             }
-            if (cardToTrash.is(Type.Victory)) {
+            if (cardToTrash.is(CardType.Victory)) {
                 currentPlayer.gainNewCard(Cards.gold, this.getControlCard(), context);
             }
         }
@@ -189,7 +189,7 @@ public class CardImplAlchemy extends CardImpl {
     
     private void university(MoveContext context, Player currentPlayer) {
         Card cardToObtain = currentPlayer.controlPlayer.university_actionCardToObtain(context);
-        if (cardToObtain != null && cardToObtain.is(Type.Action, null) && cardToObtain.getCost(context) <= 5 && !cardToObtain.costPotion()) {
+        if (cardToObtain != null && cardToObtain.is(CardType.Action, null) && cardToObtain.getCost(context) <= 5 && !cardToObtain.costPotion()) {
             currentPlayer.gainNewCard(cardToObtain, this.getControlCard(), context);
         }
     }

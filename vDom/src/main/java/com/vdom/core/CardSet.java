@@ -4,7 +4,6 @@ import com.vdom.api.Card;
 import com.vdom.api.GameType;
 
 import java.util.*;
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * This class contains a set of cards (for a given GameType) that can be used.
@@ -173,7 +172,7 @@ public class CardSet {
 		int numLandmarks = countLandmarks(possibleCards);
 		count = Math.min(possibleCards.size() - numEvents - numLandmarks, count);
 		for (Card c : possibleCards) {
-			if (c.is(Type.Event, null)) { 
+			if (c.is(CardType.Event, null)) {
 				if(drawEvents) {
 					if (linkMaxEventsAndLandmarks) {
 						if (eventList.size() + landmarkList.size() < maxEvents)
@@ -182,7 +181,7 @@ public class CardSet {
 						eventList.add(c);
 					}
 				}
-			} else if (c.is(Type.Landmark, null)) { 
+			} else if (c.is(CardType.Landmark, null)) {
 				if (drawLandmarks) {
 					if (linkMaxEventsAndLandmarks) {
 						if (eventList.size() + landmarkList.size() < maxEvents)
@@ -204,9 +203,9 @@ public class CardSet {
 			List<Card> events = new ArrayList<Card>();
 			List<Card> landmarks = new ArrayList<Card>();
 			for (Card c : possibleCards) {
-				if (c.is(Type.Event, null))
+				if (c.is(CardType.Event, null))
 					events.add(c);
-				else if (c.is(Type.Landmark, null))
+				else if (c.is(CardType.Landmark, null))
 					landmarks.add(c);
 			}
 			eventCount = Math.min(eventCount, events.size());
@@ -342,7 +341,7 @@ public class CardSet {
 		
 		swapFrom.remove(bane);
 		for (Card c : replaceFrom) {
-			if (!c.equals(bane) && !swapFrom.contains(c) && !c.is(Type.Event) && !c.is(Type.Landmark)) {
+			if (!c.equals(bane) && !swapFrom.contains(c) && !c.is(CardType.Event) && !c.is(CardType.Landmark)) {
 				swapFrom.add(c);
 				break;
 			}
@@ -352,7 +351,7 @@ public class CardSet {
 	
 	private static boolean isValidBane(Card c) {
 		int cost = c.getCost(null);
-		return !c.costPotion() && (cost == 2 || cost == 3) && !c.is(Type.Event, null) && !c.is(Type.Landmark, null);
+		return !c.costPotion() && (cost == 2 || cost == 3) && !c.is(CardType.Event, null) && !c.is(CardType.Landmark, null);
 	}
 
 	private static void pick(List<Card> source, List<Card> target, int count) {
@@ -367,7 +366,7 @@ public class CardSet {
 	private static int countEvents(List<Card> allCards) {
 		int numEvents = 0;
 		for (Card c : allCards) {
-			if (c.is(Type.Event, null))
+			if (c.is(CardType.Event, null))
 				numEvents++;
 		}
 		return numEvents;
@@ -376,7 +375,7 @@ public class CardSet {
 	private static int countLandmarks(List<Card> allCards) {
 		int numLandmarks = 0;
 		for (Card c : allCards) {
-			if (c.is(Type.Landmark, null))
+			if (c.is(CardType.Landmark, null))
 				numLandmarks++;
 		}
 		return numLandmarks;

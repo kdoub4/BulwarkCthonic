@@ -1,15 +1,14 @@
 package com.vdom.comms;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import com.vdom.api.Card;
+import com.vdom.core.CardType;
 import com.vdom.core.Cards;
 import com.vdom.core.MoveContext;
 import com.vdom.core.Player;
 import com.vdom.core.PlayerSupplyToken;
-import com.vdom.core.Type;
 import com.vdom.core.Util;
 
 /**
@@ -223,7 +222,7 @@ public class SelectCardOptions implements Serializable {
 
     public boolean checkValid(Card c, int cost, boolean cardIsVictory, MoveContext context) {
     	
-    	if (c.is(Type.Landmark, null)) return false;
+    	if (c.is(CardType.Landmark, null)) return false;
     	
     	Player p = context != null ? context.player : null;
     	p = fromTable ? null : p;
@@ -239,44 +238,44 @@ public class SelectCardOptions implements Serializable {
         if ((minPotionCost >= 0) && (potionCost < minPotionCost)) return false;
         if ((minDebtCost >= 0) && (debtCost < minDebtCost)) return false;
         if (lessThanMax && cost >= maxCost && debtCost >= maxDebtCost && potionCost >= maxPotionCost) return false;
-        if (isReaction && !(c.is(Type.InHandReaction, p))) return false;
-        if (isTreasure && !(c.is(Type.Treasure, p))) return false;
-        if (isNonTreasure && (c.is(Type.Treasure, p))) return false;
+        if (isReaction && !(c.is(CardType.InHandReaction, p))) return false;
+        if (isTreasure && !(c.is(CardType.Treasure, p))) return false;
+        if (isNonTreasure && (c.is(CardType.Treasure, p))) return false;
         if (isVictory && !cardIsVictory) return false;
         if (isNonVictory && cardIsVictory) return false;
-        if (fromPrizes && !c.is(Type.Prize, null)) return false;
-        if (fromTable && !fromPrizes && c.is(Type.Prize, null)) return false;
+        if (fromPrizes && !c.is(CardType.Prize, null)) return false;
+        if (fromTable && !fromPrizes && c.is(CardType.Prize, null)) return false;
         if (isNonRats && c.equals(Cards.rats)) return false;
         if (c.equals(Cards.grandMarket) && copperCountInPlay > 0) return false;
-        if (isNonShelter && c.is(Type.Shelter, p)) return false;
-        if (isAttack && !c.is(Type.Attack, p)) return false;
-        if (isAction && !c.is(Type.Action, p)) return false;
-        if (!isBuyPhase && c.is(Type.Event, null)) return false;
-        if (isCastle && !c.is(Type.Castle, null)) return false;
+        if (isNonShelter && c.is(CardType.Shelter, p)) return false;
+        if (isAttack && !c.is(CardType.Attack, p)) return false;
+        if (isAction && !c.is(CardType.Action, p)) return false;
+        if (!isBuyPhase && c.is(CardType.Event, null)) return false;
+        if (isCastle && !c.is(CardType.Castle, null)) return false;
         if (applyOptionsToPile && !c.isPlaceholderCard()) return false;
         if (!applyOptionsToPile && c.isPlaceholderCard()) return false;
         
-        if (isBuyPhase && !Cards.isSupplyCard(c) && !c.is(Type.Event, null)) return false;
+        if (isBuyPhase && !Cards.isSupplyCard(c) && !c.is(CardType.Event, null)) return false;
         if (isSupplyCard && !Cards.isSupplyCard(c)) return false;
 
-        if (isWound && !(c.is(Type.Wound, p))) return false;
-        if (isWound && c.is(Type.Wound, p)) return true;
-        if (isNonCrown && c.is(Type.Crown,p)) return false;
+        if (isWound && !(c.is(CardType.Wound, p))) return false;
+        if (isWound && c.is(CardType.Wound, p)) return true;
+        if (isNonCrown && c.is(CardType.Crown,p)) return false;
         if (isNonRabble && c.is("rabble")) return false;
-        if (isNonLocation && c.is(Type.Location,p)) return false;
-        if (isNonHero && c.is(Type.Hero,p)) return false;
-        if (isNonBlast && c.is(Type.Blast, p)) return false;
+        if (isNonLocation && c.is(CardType.Location,p)) return false;
+        if (isNonHero && c.is(CardType.Hero,p)) return false;
+        if (isNonBlast && c.is(CardType.Blast, p)) return false;
         if (isCorpse && !c.is("corpse")) return false;
-        if (isManoeuvre && !c.is(Type.InHandManoeuvre)) return false;
+        if (isManoeuvre && !c.is(CardType.InHandManoeuvre)) return false;
         if (p != null && (isManoeuvre || isAction)) {
-            if (c.getKind() == Cards.Kind.OldWound && p.getCardCount(Type.Wound, p.getHand().toArrayList()) <= 1)
+            if (c.getKind() == Cards.Kind.OldWound && p.getCardCount(CardType.Wound, p.getHand().toArrayList()) <= 1)
                 return false;
             if (c.getKind() == Cards.Kind.GlancingWound && context.actions<2)
                 return false;
         }
         if (context != null && (context.phase == MoveContext.TurnPhase.Attack ||
                    context.phase == MoveContext.TurnPhase.Action)
-                && c.is(Type.Enemy) &&
+                && c.is(CardType.Enemy) &&
                 (!properAttackType(context, c) && !isSelect)) return false;
 
         return true;
@@ -291,16 +290,16 @@ public class SelectCardOptions implements Serializable {
     private boolean properAttackType(MoveContext context, Card c) {
         ArrayList<Card> enemyLine = context.game.blackMarketPile;
 
-        if (c.is(Type.Range)) {
+        if (c.is(CardType.Range)) {
             if (context.isRange()) return true;
             try {
-                if (!enemyLine.get(Util.indexOfCardId(c.getId(), enemyLine) - 1).is(Type.Range))
+                if (!enemyLine.get(Util.indexOfCardId(c.getId(), enemyLine) - 1).is(CardType.Range))
                     return false;
             }
             catch (IndexOutOfBoundsException e){
             }
             try {
-                if (!enemyLine.get(Util.indexOfCardId(c.getId(), enemyLine) + 1).is(Type.Range))
+                if (!enemyLine.get(Util.indexOfCardId(c.getId(), enemyLine) + 1).is(CardType.Range))
                     return false;
             }
             catch (IndexOutOfBoundsException e){

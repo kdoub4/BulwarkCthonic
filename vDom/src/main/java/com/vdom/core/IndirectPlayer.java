@@ -135,7 +135,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         ArrayList<Card> handList = new ArrayList<Card>();
 
         for (Card card : localHand) {
-            if (sco.checkValid(card, card.getCost(context), card.is(Type.Victory), context)) {
+            if (sco.checkValid(card, card.getCost(context), card.is(CardType.Victory), context)) {
                     //||                    (card.getKind() == Cards.Kind.GlancingWound && context.actions >= 2)) {
                 handList.add(card);
                 sco.addValidCard(cardToInt(card));
@@ -214,9 +214,9 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         for (Card card : cards) {
         	boolean hasTokens = context.game.getPlayerSupplyTokens(card, context.getPlayer()).size() > 0;
             if ((sco.allowEmpty || !context.game.isPileEmpty(card))) {
-                if (   sco.checkValid(card, card.getCost(context), card.is(Type.Victory), null)
+                if (   sco.checkValid(card, card.getCost(context), card.is(CardType.Victory), null)
                 	&& (!(sco.noTokens && hasTokens))
-                    && (   (!context.cantBuy.contains(card) && (context.getPlayer().getDebtTokenCount() == 0 &&(context.canBuyCards || card.is(Type.Event, null))))
+                    && (   (!context.cantBuy.contains(card) && (context.getPlayer().getDebtTokenCount() == 0 &&(context.canBuyCards || card.is(CardType.Event, null))))
                         || !sco.pickType.equals(PickType.BUY))
                     && !(   !Cards.isSupplyCard(card)
                          && sco.actionType != null
@@ -305,7 +305,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         int actionCount = 0;
         Card actionCard = null;
         for (Card card : context.player.getHand()) {
-            if (card.is(Type.Action, context.player)) {
+            if (card.is(CardType.Action, context.player)) {
                 actionCount++;
                 actionCard = card;
             }
@@ -407,7 +407,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         int treasureCount = 0;
         Player player = context.player;
         for (Card card : player.getHand()) {
-            if (card.is(Type.Treasure, player)) {
+            if (card.is(CardType.Treasure, player)) {
                 treasureCount++;
             }
         }
@@ -428,7 +428,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         	if (maxCards != -1) { // storyteller
                 ArrayList<Card> treasures = new ArrayList<Card>();
                 for (Card c : context.getPlayer().getHand()) {
-                    if(c.is(Type.Treasure, context.getPlayer())) {
+                    if(c.is(CardType.Treasure, context.getPlayer())) {
                     	treasures.add(c);
                     }
                 }
@@ -930,7 +930,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         ArrayList<Card> options = new ArrayList<Card>();
         Set<Card> inTrashPile = new HashSet<Card>();
         for (Card c : game.trashPile) {
-            if (c.is(Type.Enemy) && (c.is("elf",Type.Undead)))
+            if (c.is(CardType.Enemy) && (c.is("elf", CardType.Undead)))
                 inTrashPile.add(c);
         }
         options.addAll(inTrashPile);
@@ -950,7 +950,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         ArrayList<Card> options = new ArrayList<Card>();
         Set<Card> inTrashPile = new HashSet<Card>();
         for (Card c : game.trashPile) {
-            if (c.is(Type.Action))
+            if (c.is(CardType.Action))
                 inTrashPile.add(c);
         }
         options.addAll(inTrashPile);
@@ -1224,7 +1224,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         ArrayList<Card> options = new ArrayList<Card>();
         Card[] cards = context.getCardsObtainedByLastPlayer().toArray(new Card[0]);
         for (Card c : cards)
-            if (!c.costPotion() && c.getCost(context) <= 6 && !(c.getDebtCost(context) > 0) && !c.is(Type.Prize, null) && context.isCardOnTop(c))
+            if (!c.costPotion() && c.getCost(context) <= 6 && !(c.getDebtCost(context) > 0) && !c.is(CardType.Prize, null) && context.isCardOnTop(c))
                 options.add(c);
 
         if (options.size() > 0) {
@@ -1920,7 +1920,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         Object[] extras = new Object[3];
         extras[0] = Cards.duchess;
         extras[1] = card;
-        extras[2] = card.is(Type.Crown);
+        extras[2] = card.is(CardType.Crown);
         return !selectBoolean(context, Cards.duchess, extras);
     }
 
@@ -3960,7 +3960,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         int nonCrownIndex = 0;
         for (int i=0; i< context.game.blackMarketPile.size(); i++) {
             Card c = context.game.blackMarketPile.get(i);
-            if(!(c.is(Type.Crown))){
+            if(!(c.is(CardType.Crown))){
                 if (!c.is(restriction)) {
                     inEnemyStack.put(nonCrownIndex, i);
                     options.add(c);

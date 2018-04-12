@@ -450,7 +450,7 @@ public class CardImplSeaside extends CardImpl {
                     if (card != null) {
                         targetPlayer.reveal(card, this.getControlCard(), targetContext);
 
-                        if (card.is(Type.Treasure, targetPlayer)) {
+                        if (card.is(CardType.Treasure, targetPlayer)) {
                             treasures.add(card);
                         } else {
                             cardToDiscard.add(card);

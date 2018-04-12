@@ -272,7 +272,7 @@ public class CardImplPromo extends CardImpl {
                 card = null;
             }
             
-            if (card != null && card.is(Type.Action, currentPlayer) && card.getCost(context) <= 4 && !card.costPotion()) {
+            if (card != null && card.is(CardType.Action, currentPlayer) && card.getCost(context) <= 4 && !card.costPotion()) {
                 currentPlayer.prince.add(currentPlayer.playedCards.remove(currentPlayer.playedCards.lastIndexOf((Card) this.getControlCard())));
                 this.getControlCard().stopImpersonatingCard();
                 
@@ -305,7 +305,7 @@ public class CardImplPromo extends CardImpl {
 	
 	private void summon(MoveContext context) {
     	Card card = context.player.controlPlayer.summon_cardToObtain(context);
-        if (card != null && card.is(Type.Action, null)) {
+        if (card != null && card.is(CardType.Action, null)) {
             if (card.getCost(context) <= 4 && card.getDebtCost(context) == 0 && !card.costPotion() && !context.game.isPileEmpty(card)) {
             	context.player.gainNewCard(card, this.getControlCard(), context);
             }

@@ -10,7 +10,7 @@ import com.vdom.core.Cards.Kind;
 import com.vdom.core.MoveContext;
 import com.vdom.core.PileCreator;
 import com.vdom.core.Player;
-import com.vdom.core.Type;
+import com.vdom.core.CardType;
 
 
 public interface Card extends Serializable {
@@ -22,13 +22,13 @@ public interface Card extends Serializable {
     
     public Expansion getExpansion();
 
-    public boolean is(Type t, Player player);
-    public boolean is(Type... types);
+    public boolean is(CardType t, Player player);
+    public boolean is(CardType... types);
     public int getNumberOfTypes(Player player);
 
     public boolean is(String ... identifier);
 
-    public boolean is(String s, Type t);
+    public boolean is(String s, CardType t);
 
     public String getStats();
 

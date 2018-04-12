@@ -356,8 +356,8 @@ public class Game {
                     if (pileSize(Cards.virtualEnemy) == 0) {
                         for (int i=0; i < this.trashPile.size(); i++) {
                             Card c = this.trashPile.get(i);
-                            if (c.is(Type.Enemy)) {
-                                if (c.is(Type.Crown)) {
+                            if (c.is(CardType.Enemy)) {
+                                if (c.is(CardType.Crown)) {
                                     this.possessedBoughtPile.add(c);
                                 }
                                 else {
@@ -425,7 +425,7 @@ public class Game {
                     context.phase = TurnPhase.Attack;
                     playerAttackFoe(player, context);
                     if (!context.attackMade) {
-                        Card c = player.cardToPlay(context, Util.canReact(context, player, Type.AttackStepEnd), Cards.weakeningWound, true, ""); //TODO
+                        Card c = player.cardToPlay(context, Util.canReact(context, player, CardType.AttackStepEnd), Cards.weakeningWound, true, ""); //TODO
                         if (c != null) {
                             //ask if play? yes break;
                             //if (player.controlPlayer.vassal_shouldPlayCard(context, c)) {
@@ -573,7 +573,7 @@ public class Game {
     protected void drawFoe(Player player, MoveContext context) {
         Card cardDrawn = takeFromPile(Cards.virtualEnemy);
         context.game.blackMarketPile.add(context.game.blackMarketPile.size(), cardDrawn);
-        if (cardDrawn.is(Type.WhenDrawn)) {
+        if (cardDrawn.is(CardType.WhenDrawn)) {
             enemyWhenDrawn(player, context, cardDrawn);
         }
     }
@@ -588,7 +588,7 @@ public class Game {
                 }
                 if (!defended || !context.invincible) {
                     Card defendCard = currentPlayer.cardToPlay(context,
-                            Util.canReact(context, p, Type.Defend), attacker,
+                            Util.canReact(context, p, CardType.Defend), attacker,
                             true, IndirectPlayer.OPTION_DEFEND);
                     if (defendCard != null) {
                         switch (defendCard.getKind()) {
@@ -672,7 +672,7 @@ public class Game {
         context.sanctusCharm = true;
     }
 
-    public int enemyCount(String identifier, Type type) {
+    public int enemyCount(String identifier, CardType type) {
         return enemyCount(identifier) + enemyCount(type);
     }
 
@@ -689,7 +689,7 @@ public class Game {
         return count;
     }
 
-    public int enemyCount(Type type) {
+    public int enemyCount(CardType type) {
         int count=0;
 
         for (Card c : this.blackMarketPile) {
@@ -772,14 +772,14 @@ public class Game {
             case ElfDruid:
                 for (int j=2; j>0; j--) {
                     Card revealed = draw(context, enemyCard, j);
-                    if (revealed.is(Type.Location))
+                    if (revealed.is(CardType.Location))
                         takeWounds(currentPlayer, 1, context, enemyCard, false);
                     currentPlayer.discard(revealed,enemyCard,context);
                 }
                 break;
             case FlameBallista:
                 for (Card c : currentPlayer.tavern) {
-                    if (c.is(Type.Remains))
+                    if (c.is(CardType.Remains))
                         wounds++;
                 }
                 takeWounds(currentPlayer,wounds,context,enemyCard, true);
@@ -845,7 +845,7 @@ public class Game {
                     for (Card c : ((CardImplBase) aCard).cardsUnder) {
                         under.add(c);
                     }
-                    if (!aCard.is(Type.Enemy) && !under.contains(aCard))
+                    if (!aCard.is(CardType.Enemy) && !under.contains(aCard))
                         remaining.add(aCard);
                     under.remove(aCard);
                 }
@@ -885,7 +885,7 @@ public class Game {
                     if (topCard != null) {
                         (aPlayer).discard(topCard, enemyCard, context);
                     }
-                    if (topCard.is(Type.Wound)) {
+                    if (topCard.is(CardType.Wound)) {
                         takeWounds(currentPlayer,1, context, enemyCard, false);
                     }
                 }
@@ -940,7 +940,7 @@ public class Game {
                     if (topCard != null) {
                         aPlayer.discard(topCard, enemyCard, context);
                     }
-                    if (topCard.is(Type.Location)) {
+                    if (topCard.is(CardType.Location)) {
                         takeWounds(currentPlayer,1, targetContext, enemyCard, false);
                     }
                 }
@@ -954,19 +954,19 @@ public class Game {
                 boolean takeWound = false;
                 if (i>0) {
                     prevCard = context.game.blackMarketPile.get(i - 1);
-                    if (prevCard.is("Alchemist", Type.Blast))
+                    if (prevCard.is("Alchemist", CardType.Blast))
                         takeWound=true;
                 }
                 if (i< context.game.blackMarketPile.size()-1) {
                     nextCard = context.game.blackMarketPile.get(i + 1);
-                    if (nextCard.is("Alchemist", Type.Blast))
+                    if (nextCard.is("Alchemist", CardType.Blast))
                         takeWound = true;
                 }
                 if (takeWound)
                     takeWounds(currentPlayer,2, context,enemyCard, false);
                 break;
         }
-        if (enemyCard.is(Type.Blast))
+        if (enemyCard.is(CardType.Blast))
             context.blastActivations++;
         return i;
     }
@@ -988,7 +988,7 @@ public class Game {
         archers = 0;
         for (int i = 0; i < context.game.blackMarketPile.size(); i++) {//  Card enemyCard : currentPlayer.tavern.a){
             Card enemyCard = context.game.blackMarketPile.get(i);
-            if (enemyCard.is(Type.Activate)) {
+            if (enemyCard.is(CardType.Activate)) {
                 if (!currentPlayer.preventActivation(context, enemyCard))
                     i=activateEnemy(enemyCard,currentPlayer,context,i);
                 else {
@@ -1408,7 +1408,7 @@ public class Game {
 
 
     protected void enemyWhenDrawn(Player player, MoveContext context, Card cardPlayed) {
-        List<Card> availableCards = Util.canReact(context,player,Type.WhenDrawn);
+        List<Card> availableCards = Util.canReact(context,player, CardType.WhenDrawn);
         Card selectedCard = null;
         if (availableCards.size() > 0)
           selectedCard = player.cardToPlay(context, availableCards, cardPlayed, true, IndirectPlayer.OPTION_DRAWN);
@@ -1418,7 +1418,7 @@ public class Game {
                     player.discard(player.tavern.removeCard(selectedCard,true),cardPlayed,context);
                     return;
                 case TheDrop:
-                    if (!cardPlayed.is(Type.Crown)) {
+                    if (!cardPlayed.is(CardType.Crown)) {
                         addToPile(context.game.blackMarketPile.remove(context.game.blackMarketPile.size()-1), true);
                         player.discard(player.tavern.removeCard(selectedCard,true),cardPlayed,context);
                     }
@@ -1430,16 +1430,16 @@ public class Game {
                 drawFoe(player,context);
                 break;
             case TheLeftHandGoblin:
-                revealKillPlay(player,context, "goblin" , Type.Undead);
+                revealKillPlay(player,context, "goblin" , CardType.Undead);
                 break;
             case TheRightHandHuman:
-                revealKillPlay(player,context, "human" , Type.Undead);
+                revealKillPlay(player,context, "human" , CardType.Undead);
                 break;
             case TheCatacombite:
                 takeWounds(player,1, context, cardPlayed, false);
                 break;
             case KangaxxTheLich:
-                revealKillPlay(player, context,"" , Type.Undead);
+                revealKillPlay(player, context,"" , CardType.Undead);
                 break;
             case ElfRabble:
                 SelectCardOptions sco = new SelectCardOptions().isNonCrown().isNonRabble()
@@ -1483,13 +1483,13 @@ public class Game {
 
     }
 
-    private void revealKillPlay(Player player, MoveContext context, String ident, Type... type) {
+    private void revealKillPlay(Player player, MoveContext context, String ident, CardType... type) {
         boolean draw = false;
         Card topCard = getGamePile(Cards.virtualEnemy).topCard();
         if (topCard.is(ident)) {
             draw = true;
         }
-        if (!draw) for (Type t : type) {
+        if (!draw) for (CardType t : type) {
             if (topCard.is(t)) {
                 draw = true;
                 break;
@@ -1642,7 +1642,7 @@ public class Game {
 
             if (buy != null) {
                 if (isValidBuy(context, buy)) {
-                	if(buy.is(Type.Event, null)) {
+                	if(buy.is(CardType.Event, null)) {
                         context.totalEventsBoughtThisTurn++;
                 	}
                 	else
@@ -1757,7 +1757,7 @@ public class Game {
         int archiveNum = 0;
         for (Card card : player.nextTurnCards) {
             Card thisCard = card.behaveAsCard();
-            if (thisCard.is(Type.Duration, player)) {
+            if (thisCard.is(CardType.Duration, player)) {
                 /* Wiki:
                  * Effects that resolve at the start of your turn can be resolved in any order;
                  * this includes multiple plays of the same Duration card by a Throne Room variant.
@@ -1909,7 +1909,7 @@ public class Game {
             durationEffectsAreCards.remove(selection);
             
             if(card.equals(Cards.prince)) {
-                if (!(card2.is(Type.Duration, player))) {
+                if (!(card2.is(CardType.Duration, player))) {
                     player.playedByPrince.add(card2);
                 }
                 player.prince.remove(card2);
@@ -1936,7 +1936,7 @@ public class Game {
                 Card horseTrader = player.horseTraders.remove(0);
                 player.hand.add(horseTrader);
                 drawToHand(context, horseTrader, 1);
-            } else if(card.behaveAsCard().is(Type.Duration, player)) {
+            } else if(card.behaveAsCard().is(CardType.Duration, player)) {
                 if(card.behaveAsCard().equals(Cards.haven)) {
                     player.hand.add(card2);
                 }
@@ -2086,14 +2086,14 @@ public class Game {
     private void arena(Player player, MoveContext context) {
     	boolean hasAction = false;
 		for (Card c : player.getHand()) {
-			if (c.is(Type.Action, player)) {
+			if (c.is(CardType.Action, player)) {
 				hasAction = true;
 				break;
 			}
 		}
 		if (!hasAction) return;
 		Card toDiscard = player.controlPlayer.arena_cardToDiscard(context);
-		if (toDiscard != null && (!player.getHand().contains(toDiscard) || toDiscard.is(Type.Action, player))) {
+		if (toDiscard != null && (!player.getHand().contains(toDiscard) || toDiscard.is(CardType.Action, player))) {
 			Util.playerError(player, "Arena - invalid card specified, ignoring.");
 		}
 		if (toDiscard == null) return;
@@ -2558,7 +2558,7 @@ public class Game {
             return false;
         }
 
-        if (!(action.is(Type.Action, context.player))) {
+        if (!(action.is(CardType.Action, context.player))) {
             return false;
         }
 
@@ -2593,7 +2593,7 @@ public class Game {
         if (context.getPlayer().getDebtTokenCount() > 0) {
         	return false;
         }
-        if (!context.canBuyCards && !card.is(Type.Event, null)) {
+        if (!context.canBuyCards && !card.is(CardType.Event, null)) {
         	return false;
         }
         if (context.blackMarketBuyPhase) {
@@ -2604,10 +2604,10 @@ public class Game {
                 return false;
             }
         }
-        else if (card.is(Type.Event, null) && context.phase != TurnPhase.Buy) {
+        else if (card.is(CardType.Event, null) && context.phase != TurnPhase.Buy) {
         	return false;
         }
-        else if (!card.is(Type.Event, null)) {
+        else if (!card.is(CardType.Event, null)) {
             if (thePile.isSupply() == false) {
                 return false;
             }
@@ -2641,7 +2641,7 @@ public class Game {
     Card playBuy(MoveContext context, Card buy) {
         Player player = context.getPlayer();
         if (!context.blackMarketBuyPhase) {
-            if (context.techniqueBuys > 0 && buy.is(Type.Technique)) {
+            if (context.techniqueBuys > 0 && buy.is(CardType.Technique)) {
                 context.techniqueBuys--;
             }
             else {
@@ -2680,13 +2680,13 @@ public class Game {
             context.game.broadcastEvent(event);
         }
 
-        /* GameEvent.Type.BuyingCard must be after overpaying! */
+        /* GameEvent.CardType.BuyingCard must be after overpaying! */
         
         // cost adjusted based on any cards played or card being bought
         int cost = buy.getCost(context);
         
         Card card = buy;
-        if(!buy.is(Type.Event, null)) {
+        if(!buy.is(CardType.Event, null)) {
             card = takeFromPileCheckTrader(buy, context);
         }
 
@@ -2725,7 +2725,7 @@ public class Game {
                 
         buy.isBuying(context);
         
-        if(!buy.is(Type.Event, null)) {
+        if(!buy.is(CardType.Event, null)) {
         	if (player.getHand().size() > 0 && isPlayerSupplyTokenOnPile(buy, player, PlayerSupplyToken.Trashing)) {
                 Card cardToTrash = player.controlPlayer.trashingToken_cardToTrash((MoveContext) context);
                 if (cardToTrash != null) {
@@ -2766,7 +2766,7 @@ public class Game {
             broadcastEvent(event);
         }
 
-        if (!buy.costPotion() && buy.getDebtCost(context) == 0 && !(buy.is(Type.Victory)) && cost < 5 && !buy.is(Type.Event)) {
+        if (!buy.costPotion() && buy.getDebtCost(context) == 0 && !(buy.is(CardType.Victory)) && cost < 5 && !buy.is(CardType.Event)) {
             for (int i = 1; i <= context.countCardsInPlay(Cards.talisman); i++) {
                 if (card.equals(getPile(card).topCard())) {
                     context.getPlayer().gainNewCard(buy, Cards.talisman, context);
@@ -2774,18 +2774,18 @@ public class Game {
             }
         }
 
-        if(!buy.is(Type.Event)) {
+        if(!buy.is(CardType.Event)) {
             player.addVictoryTokens(context, context.countGoonsInPlay(), Cards.goons);
         }
 
-        if (!buy.is(Type.Event) && context.countMerchantGuildsInPlayThisTurn() > 0)
+        if (!buy.is(CardType.Event) && context.countMerchantGuildsInPlayThisTurn() > 0)
         {
             player.gainGuildsCoinTokens(context.countMerchantGuildsInPlayThisTurn());
             GameEvent event   = new GameEvent(GameEvent.EventType.GuildsTokenObtained, context);
             broadcastEvent(event);
         }
 
-        if (buy.is(Type.Victory)) {
+        if (buy.is(CardType.Victory)) {
             context.victoryCardsBoughtThisTurn++;
             for (int i = 1; i <= context.countCardsInPlay(Cards.hoard); i++) {
                 player.gainNewCard(Cards.gold, Cards.hoard, context);
@@ -2793,7 +2793,7 @@ public class Game {
         }
 
         buy.isBought(context);
-        if(!buy.is(Type.Event)) {
+        if(!buy.is(CardType.Event)) {
         	haggler(context, buy);
         	charmWhenBuy(context, buy);
         	basilicaWhenBuy(context);
@@ -2818,7 +2818,7 @@ public class Game {
         for (int i = 0; i < hagglers; i++) {
             validCards.clear();
             for (Card card : getCardsInGame(GetCardsInGameOptions.TopOfPiles, true)) {
-                if (!(card.is(Type.Victory)) && Cards.isSupplyCard(card) && isCardOnTop(card)) {
+                if (!(card.is(CardType.Victory)) && Cards.isSupplyCard(card) && isCardOnTop(card)) {
                     int gainCardCost = card.getCost(context);
                     int gainCardPotionCost = card.costPotion() ? 1 : 0;
                     int gainCardDebt = card.getDebtCost(context);
@@ -2897,7 +2897,7 @@ public class Game {
     }
     
     private void colonnadeWhenBuy(MoveContext context, Card buy) {
-    	 if(buy.is(Type.Action, context.getPlayer())) {
+    	 if(buy.is(CardType.Action, context.getPlayer())) {
 	    	if (cardInGame(Cards.colonnade)) {
 	    		Player player = context.getPlayer();
 	    		if (player.playedCards.contains(buy) || player.nextTurnCards.contains(buy)) {
@@ -3346,7 +3346,7 @@ public class Game {
         tradeRouteValue = 0;
         if (cardInGame(Cards.tradeRoute)) {
             for (CardPile pile : piles.values()) {
-                if ((pile.placeholderCard().is(Type.Victory)) && pile.isSupply()) {
+                if ((pile.placeholderCard().is(CardType.Victory)) && pile.isSupply()) {
                     pile.setTradeRouteToken();
                 }
             }
@@ -3620,16 +3620,16 @@ public class Game {
 
             switch (mEnemy) {
                 case Goblin:
-                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), Type.Enemy).pileCreator(new GoblinPileCreator()).expansion(Expansion.Base).build());
+                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new GoblinPileCreator()).expansion(Expansion.Base).build());
                     break;
                 case Lizard:
-                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), Type.Enemy).pileCreator(new LizardPileCreator()).expansion(Expansion.Base).build());
+                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new LizardPileCreator()).expansion(Expansion.Base).build());
                     break;
                 case Elf:
-                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), Type.Enemy).pileCreator(new elfPileCreator()).expansion(Expansion.Base).build());
+                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new elfPileCreator()).expansion(Expansion.Base).build());
                     break;
                 case Winter:
-                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), Type.Enemy).pileCreator(new winterPileCreator()).expansion(Expansion.Base).build());
+                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new winterPileCreator()).expansion(Expansion.Base).build());
             }
             Cards.cardNameToCard.put(Cards.virtualEnemy.getName(),Cards.virtualEnemy);
 
@@ -3843,7 +3843,7 @@ public class Game {
         boolean looter = false;
         for (CardPile pile : piles.values()) {
             for (Card cardInPile : pile.getTemplateCards()) {
-                if (cardInPile.is(Type.Blast, null)) {
+                if (cardInPile.is(CardType.Blast, null)) {
                     looter = true;
                 }
             }
@@ -3923,7 +3923,7 @@ public class Game {
         if (piles.containsKey(Cards.defiledShrine.getName())) {
             for (CardPile pile : placeholderPiles.values()) {
                 Card c = pile.placeholderCard();
-        		if (pile.isSupply() && c.is(Type.Action) && !c.is(Type.Gathering)) {
+        		if (pile.isSupply() && c.is(CardType.Action) && !c.is(CardType.Gathering)) {
         			addPileVpTokens(c, 2, null);
         		}
         	}
@@ -3936,7 +3936,7 @@ public class Game {
             	for (String p : placeholderPiles.keySet()) {
                     CardPile pile = placeholderPiles.get(p);
                     Card placeholder = pile.placeholderCard();
-            		if (pile.isSupply() && placeholder.is(Type.Action)  && !validObeliskCards.contains(placeholder)) {
+            		if (pile.isSupply() && placeholder.is(CardType.Action)  && !validObeliskCards.contains(placeholder)) {
             			validObeliskCards.add(placeholder);
             		}
             	}
@@ -4038,7 +4038,7 @@ public class Game {
         // context = new MoveContext(this, null);
         // context.message = "" + ((int) chance * 100) + "% - " +
         // (platInPlay?"Yes":"No");
-        // broadcastEvent(new GameEvent(GameEvent.Type.PlatAndColonyChance,
+        // broadcastEvent(new GameEvent(GameEvent.CardType.PlatAndColonyChance,
         // context));
     }
 
@@ -4055,7 +4055,7 @@ public class Game {
                 }
 
                 if ((event.getType() == GameEvent.EventType.CardObtained || event.getType() == GameEvent.EventType.BuyingCard) &&
-                		!event.card.is(Type.Event, null)) {
+                		!event.card.is(CardType.Event, null)) {
                 	
                     MoveContext context = event.getContext();
                     Player player = context.getPlayer();
@@ -4072,7 +4072,7 @@ public class Game {
                         ((CardImpl)event.card).startInheritingCardAbilities(player.getInheritance().getTemplateCard().instantiate());
                     }
 
-                    if (context != null && event.card.is(Type.Victory)) {
+                    if (context != null && event.card.is(CardType.Victory)) {
                         context.vpsGainedThisTurn += event.card.getVictoryPoints();
                     }
 
@@ -4180,7 +4180,7 @@ public class Game {
                     }
 
                     if(!handled) {
-                        if (context.travellingFairBought && event.card.is(Type.Equipment)) {
+                        if (context.travellingFairBought && event.card.is(CardType.Equipment)) {
                             player.putOnTopOfDeck(event.card, context, true);
                         } else
                     	if (context.isRoyalSealInPlay() && context.player.controlPlayer.royalSealTravellingFair_shouldPutCardOnDeck((MoveContext) context, Cards.royalSeal, event.card)) {
@@ -4227,7 +4227,7 @@ public class Game {
                                 || r.equals(Cards.taxman)
                                 || r.equals(Cards.tournament)
                                 || r.equals(Cards.treasureMap)
-                                || r.equals(Cards.replace) && context.attackedPlayer != player && (gainedCardAbility.is(Type.Action) || gainedCardAbility.is(Type.Treasure))) {
+                                || r.equals(Cards.replace) && context.attackedPlayer != player && (gainedCardAbility.is(CardType.Action) || gainedCardAbility.is(CardType.Treasure))) {
                                 player.putOnTopOfDeck(event.card, context, true);
                             } else if (r.equals(Cards.beggar)) {
                                 if (event.card.equals(Cards.copper)) {
@@ -4285,7 +4285,7 @@ public class Game {
                     	firstProvinceGainedBy = playersTurn;
                     }
                     
-                    if(event.card.is(Type.Treasure, player)) {
+                    if(event.card.is(CardType.Treasure, player)) {
                     	if (cardInGame(Cards.aqueduct)) {
                     		//TODO?: you can technically choose the order of resolution for moving the VP
                     		//       tokens from the treasure after taking the tokens, but why would you ever do this?
@@ -4296,7 +4296,7 @@ public class Game {
                     		}
                     	}
                     }
-                    if(event.card.is(Type.Victory, player)) {
+                    if(event.card.is(CardType.Victory, player)) {
                     	if (cardInGame(Cards.battlefield)) {
                     		int tokensLeft = getPileVpTokens(Cards.battlefield);
                     		if (tokensLeft > 0) {
@@ -4369,7 +4369,7 @@ public class Game {
                         int actionCardsFound = 0;
                         for(int i=player.discard.size() - 1; i >= 0; i--) {
                             Card c = player.discard.get(i);
-                            if(c.is(Type.Action, player)) {
+                            if(c.is(CardType.Action, player)) {
                                 actionCardsFound++;
                                 if(player.controlPlayer.inn_shuffleCardBackIntoDeck(event.getContext(), c)) {
                                     cards.add(c);
@@ -4412,12 +4412,12 @@ public class Game {
                         ArrayList<Card> treasureCardsInPlay = new ArrayList<Card>();
 
                         for(Card c : playedCards) {
-                            if(c.is(Type.Treasure, player)) {
+                            if(c.is(CardType.Treasure, player)) {
                                 treasureCardsInPlay.add(c);
                             }
                         }
                         for(Card c : nextTurnCards) {
-                            if(c.is(Type.Treasure, player)) {
+                            if(c.is(CardType.Treasure, player)) {
                                 treasureCardsInPlay.add(c);
                             }
                         }
@@ -4521,7 +4521,7 @@ public class Game {
                     	int victoryCards = 0;
                         for(Card c : player.getHand()) {
                             player.reveal(c, event.card, context);
-                            if(c.is(Type.Victory, player)) {
+                            if(c.is(CardType.Victory, player)) {
                                 victoryCards++;
                             }
                         }
@@ -4529,7 +4529,7 @@ public class Game {
                         for (Player opponent : context.game.getPlayersInTurnOrder()) {
                             if (opponent != player) {
                                 for (Card c : opponent.nextTurnCards) {
-                                    if (c.is(Type.Victory, opponent)) {
+                                    if (c.is(CardType.Victory, opponent)) {
                                         victoryCards++;
                                     }
                                 }
@@ -4541,7 +4541,7 @@ public class Game {
                         player.addVictoryTokens(context, victoryCards, Cards.grandCastle);
                     }
                     
-                    if(event.card.is(Type.Action, player)) {
+                    if(event.card.is(CardType.Action, player)) {
                     	if (cardInGame(Cards.defiledShrine)) {
                     		//TODO?: you can technically choose the order of resolution for moving the VP
                     		//       tokens from the action to before taking the ones from Temple when it, 
@@ -4889,7 +4889,7 @@ public class Game {
         return getCardsInGame(opt, supplyOnly, null);
     }
 
-    public Card[] getCardsInGame(GetCardsInGameOptions opt, boolean supplyOnly, Type type) {
+    public Card[] getCardsInGame(GetCardsInGameOptions opt, boolean supplyOnly, CardType type) {
         ArrayList<Card> cards = new ArrayList<Card>();
         for (CardPile pile : piles.values()) {
 
@@ -4917,7 +4917,7 @@ public class Game {
             }
             if (opt == GetCardsInGameOptions.Buyables) {
                 if (pile.topCard() != null && (type == null || pile.topCard().is(type))
-                        && !cards.contains(pile.topCard()) && (pile.isSupply() || pile.topCard().is(Type.Event))) {
+                        && !cards.contains(pile.topCard()) && (pile.isSupply() || pile.topCard().is(CardType.Event))) {
                     cards.add(pile.topCard());
                 }
             }
@@ -4985,10 +4985,10 @@ public class Game {
     protected CardPile addPile(Card card) {
     	boolean isSupply = true;
         int count = kingdomCardPileSize;
-        if(card.is(Type.Victory)) count = victoryCardPileSize;
+        if(card.is(CardType.Victory)) count = victoryCardPileSize;
         if(card.equals(Cards.rats)) count = 20;
         if(card.equals(Cards.port)) count = 12;
-        if(card.is(Type.Event) || card.is(Type.Landmark)) {
+        if(card.is(CardType.Event) || card.is(CardType.Landmark)) {
         	count = 1;
         	isSupply = false;
         }

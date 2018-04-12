@@ -130,7 +130,7 @@ public abstract class Player {
     public int getCurrencyTotal(MoveContext context) {
         int coin = 0;
         for (Card card : getAllCards()) {
-            if (card.is(Type.Treasure, context.getPlayer())) {
+            if (card.is(CardType.Treasure, context.getPlayer())) {
                 coin += card.getAddGold();
                 if (card.getKind() == Cards.Kind.Bank) {
                    coin += 1;
@@ -161,7 +161,7 @@ public abstract class Player {
     public ArrayList<Card> getActionCards(Card[] cards, Player player) {
         ArrayList<Card> actionCards = new ArrayList<Card>();
         for (Card card : cards) {
-            if (card.is(Type.Action, player)) {
+            if (card.is(CardType.Action, player)) {
                 actionCards.add(card);
             }
         }
@@ -176,7 +176,7 @@ public abstract class Player {
     public int getMyAddActionCardCount() {
         int addActionsCards = 0;
         for (Card card : getAllCards()) {
-            if (card.is(Type.Action, this)) {
+            if (card.is(CardType.Action, this)) {
                 if (card.getAddActions() > 0) {
                     addActionsCards++;
                 }
@@ -189,7 +189,7 @@ public abstract class Player {
     public int getMyAddCardCardCount() {
         int addCards = 0;
         for (Card card : getAllCards()) {
-            if (card.is(Type.Action, this)) {
+            if (card.is(CardType.Action, this)) {
                 if (card.getAddCards() > 0) {
                     addCards++;
                 }
@@ -202,7 +202,7 @@ public abstract class Player {
     public int getMyAddActions() {
         int addActions = 0;
         for (Card card : getAllCards()) {
-            if (card.is(Type.Action, this)) {
+            if (card.is(CardType.Action, this)) {
                 addActions += card.getAddActions();
             }
         }
@@ -213,7 +213,7 @@ public abstract class Player {
     public int getMyAddCards() {
         int addCards = 0;
         for (Card card : getAllCards()) {
-            if (card.is(Type.Action, this)) {
+            if (card.is(CardType.Action, this)) {
                 addCards += card.getAddCards();
             }
         }
@@ -224,7 +224,7 @@ public abstract class Player {
     public int getMyAddBuys() {
         int addBuys = 0;
         for (Card card : getAllCards()) {
-            if (card.is(Type.Action, this)) {
+            if (card.is(CardType.Action, this)) {
                 addBuys += card.getAddBuys();
             }
         }
@@ -450,20 +450,20 @@ public abstract class Player {
                     //TODO: selecting card from right place - now there's a difference between treasures in play
                     //      vs treasures that are in nextTurnCards (and a difference from next turn and permanent ones)
                     for(Card card : playedCards) {
-                        if(card.is(Type.Treasure, this)) {
+                        if(card.is(CardType.Treasure, this)) {
                             treasureCards.add(card);
                         }
                     }
                     //TODO: make sure this works right with fake cards here and all
                     for(Card card : nextTurnCards) {
-                        if(card.is(Type.Treasure, this)) {
+                        if(card.is(CardType.Treasure, this)) {
                             treasureCards.add(card);
                         }
                     }
 
                     if(treasureCards.size() > 0) {
                         Card treasureCard = controlPlayer.herbalist_backOnDeck(context, treasureCards.toArray(new Card[0]));
-                        if(treasureCard != null && treasureCard.is(Type.Treasure, this)) {
+                        if(treasureCard != null && treasureCard.is(CardType.Treasure, this)) {
                         	if (nextTurnCards.contains(treasureCard)) {
                         		nextTurnCards.remove(treasureCard);
                         		putBackCards.add(treasureCard);
@@ -477,7 +477,7 @@ public abstract class Player {
                     context.schemesPlayed --;
                     ArrayList<Card> actions = new ArrayList<Card>();
                     for(Card c : playedCards) {
-                        if(c.is(Type.Action, context.player)) {
+                        if(c.is(CardType.Action, context.player)) {
                             actions.add(c);
                         }
                     }
@@ -788,7 +788,7 @@ public abstract class Player {
         // seed counts with all victory cards in play
         for (CardPile pile : this.game.piles.values()) {
         	for(Card card : pile.getTemplateCards()) {
-        		if(card.is(Type.Victory, this) || card.is(Type.Curse, this)) {
+        		if(card.is(CardType.Victory, this) || card.is(CardType.Curse, this)) {
                     cardCounts.put(card, 0);
                 }
         	}
@@ -796,7 +796,7 @@ public abstract class Player {
 
         for(Card card : this.getAllCards()) {
             distinctCards.add(card.getName());
-            if (card.is(Type.Victory, this) || card.is(Type.Curse, this)) {
+            if (card.is(CardType.Victory, this) || card.is(CardType.Curse, this)) {
                 if(cardCounts.containsKey(card)) {
                     cardCounts.put(card, cardCounts.get(card) + 1);
                 } else {
@@ -823,7 +823,7 @@ public abstract class Player {
         for (Object o : allCardCounts.keySet()) {
         	if (!(o instanceof Card)) continue;
         	Card c = (Card)o;
-        	if (c.is(Type.Action, this)) {
+        	if (c.is(CardType.Action, this)) {
         		int actionCount = allCardCounts.get(c); 
         		if (actionCount >= 3) {
         			threePlusCopyActionCards++;
@@ -835,7 +835,7 @@ public abstract class Player {
 				secondHighestActionCardCount = actionCount;
 			}
         	}
-        	if ((!c.is(Type.Victory, this)) && Cards.isSupplyCard(c) && this.game.isPileEmpty(c)) {
+        	if ((!c.is(CardType.Victory, this)) && Cards.isSupplyCard(c) && this.game.isPileEmpty(c)) {
         		nonVictoryEmptySupplyPileCards += allCardCounts.get(c);
         	}
         }
@@ -870,14 +870,14 @@ public abstract class Player {
     	final Map<Card, Integer> cardCounts = new HashMap<Card, Integer>();
     	for (CardPile pile : this.game.placeholderPiles.values()) {
             for (Card card : pile.getTemplateCards()) {
-                if (card.is(Type.Treasure, this)) {
+                if (card.is(CardType.Treasure, this)) {
                     cardCounts.put(card, 0);
                 }
             }
         }
 
         for(Card card : this.getAllCards()) {
-            if (card.is(Type.Treasure, this)) {
+            if (card.is(CardType.Treasure, this)) {
                 if(cardCounts.containsKey(card)) {
                     cardCounts.put(card, cardCounts.get(card) + 1);
                 } else {
@@ -888,11 +888,11 @@ public abstract class Player {
         return cardCounts;
     }
 
-    public int getCardCount(final Type cardType) {
+    public int getCardCount(final CardType cardType) {
         return this.getCardCount(cardType, getAllCards());
     }
 
-    public int getCardCount(final Type cardType, ArrayList<Card> cards) {
+    public int getCardCount(final CardType cardType, ArrayList<Card> cards) {
         int cardCount = 0;
 
         for (Card card : cards) {
@@ -911,7 +911,7 @@ public abstract class Player {
     public int getActionCardCount(ArrayList<Card> cards, Player player) {
     	int cardCount = 0;
         for (Card c : cards) {
-            if (c.is(Type.Action, player)) {
+            if (c.is(CardType.Action, player)) {
                 cardCount++;
             }
         }
@@ -919,7 +919,7 @@ public abstract class Player {
     }
 
     public int getVictoryCardCount() {
-        return this.getCardCount(Type.Victory);
+        return this.getCardCount(CardType.Victory);
     }
 
     public int getDistinctCardCount() {
@@ -945,7 +945,7 @@ public abstract class Player {
     public int getCastleCardCount(ArrayList<Card> cards, Player player) {
     	int cardCount = 0;
         for (Card c : cards) {
-            if (c.is(Type.Castle, player)) {
+            if (c.is(CardType.Castle, player)) {
                 cardCount++;
             }
         }
@@ -980,10 +980,10 @@ public abstract class Player {
         Map<Card, Integer> totals = new TreeMap<Card, Integer>();
 
         for(Map.Entry<Object, Integer> entry : counts.entrySet()) {
-            if(entry.getKey() instanceof Card && ((Card)entry.getKey()).is(Type.Victory, this)) {
+            if(entry.getKey() instanceof Card && ((Card)entry.getKey()).is(CardType.Victory, this)) {
                 Card victoryCard = (Card) entry.getKey();
                 totals.put(victoryCard, victoryCard.getVictoryPoints() * entry.getValue());
-            } else if((entry.getKey() instanceof Card) && ((Card)entry.getKey()).is(Type.Curse, null)) {
+            } else if((entry.getKey() instanceof Card) && ((Card)entry.getKey()).is(CardType.Curse, null)) {
                 Card curseCard = (Card) entry.getKey();
                 totals.put(curseCard, curseCard.getVictoryPoints() * entry.getValue());
             }
@@ -1323,7 +1323,7 @@ public abstract class Player {
                     context.game.broadcastEvent(event);
                 }
             }
-            else if(!commandedDiscard && cleanup && card.is(Type.Crown, this)) {
+            else if(!commandedDiscard && cleanup && card.is(CardType.Crown, this)) {
                 exchange = traveller_exchange(context, card);
                 if (exchange != null) {
     				// Return to the pile
@@ -1452,7 +1452,7 @@ public abstract class Player {
         // Add to trash pile
         if (isPossessed()) {
             context.game.possessedTrashPile.add(card);
-        } else if (card.is(Type.Wound) || card.getKind() == Cards.Kind.One)
+        } else if (card.is(CardType.Wound) || card.getKind() == Cards.Kind.One)
         {
             context.game.addToPile(card,true);
             if (card.getKind() == Cards.Kind.StaggeringWound) {
@@ -1464,11 +1464,11 @@ public abstract class Player {
             context.game.trashPile.add(card);
         }
 
-        if (context.phase != MoveContext.TurnPhase.Buy && !card.is(Type.Enemy)) {
+        if (context.phase != MoveContext.TurnPhase.Buy && !card.is(CardType.Enemy)) {
             for(int i=context.game.enemyCount("spectre"); i > 0; i--) {
                 context.game.takeWounds(context.getPlayer(), 1, context, Cards.spectre, false);
             }
-            Card selectedCard = cardToPlay(context,Util.canReact(context,this, Type.OnTrash),card,true,"");
+            Card selectedCard = cardToPlay(context,Util.canReact(context,this, CardType.OnTrash),card,true,"");
             if (selectedCard != null && selectedCard.getKind() == Cards.Kind.Belltower) {
                 discard(selectedCard,selectedCard,context);
                 context.game.drawToHand(context, card, 3, true );
@@ -1729,7 +1729,7 @@ public abstract class Player {
         ArrayList<Card> treasures = new ArrayList<Card>();
 
         for (Card c : getHand())
-            if (c.is(Type.Treasure, this))
+            if (c.is(CardType.Treasure, this))
                 treasures.add(c);
 
         return treasures;
@@ -1739,7 +1739,7 @@ public abstract class Player {
         ArrayList<Card> victory = new ArrayList<Card>();
 
         for (Card c : getHand())
-            if (c.is(Type.Victory, this))
+            if (c.is(CardType.Victory, this))
                 victory.add(c);
 
         return victory;
@@ -1749,7 +1749,7 @@ public abstract class Player {
         ArrayList<Card> actions = new ArrayList<Card>();
 
         for (Card c : getHand())
-            if (c.is(Type.Action, player))
+            if (c.is(CardType.Action, player))
                 actions.add(c);
 
         return actions;

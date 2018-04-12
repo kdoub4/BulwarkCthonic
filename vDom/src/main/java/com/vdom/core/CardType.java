@@ -1,6 +1,6 @@
 package com.vdom.core;
 
-public enum Type {
+public enum CardType {
 	Action, Treasure, Victory, Curse,
 	Attack, InHandReaction, Technique, Defend, OnAttack, InHandManoeuvre, AttackStepEnd, OnActivation,
 	OnTrash,

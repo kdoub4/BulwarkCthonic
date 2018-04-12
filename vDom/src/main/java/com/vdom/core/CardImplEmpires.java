@@ -273,7 +273,7 @@ public class CardImplEmpires extends CardImpl {
         
         currentPlayer.hand.remove(cardToTrash);
         currentPlayer.trash(cardToTrash, this.getControlCard(), context);
-        boolean isTreasure = cardToTrash.is(Type.Treasure, null);
+        boolean isTreasure = cardToTrash.is(CardType.Treasure, null);
         int coinCost = cardToTrash.getCost(context);
     	
         if (coinCost >= 3) {
@@ -346,7 +346,7 @@ public class CardImplEmpires extends CardImpl {
         for (int i = 0; i < currentPlayer.hand.size(); i++) {
             Card card = currentPlayer.hand.get(i);
             currentPlayer.reveal(card, this.getControlCard(), context);
-            if (card.is(Type.Action, currentPlayer)) {
+            if (card.is(CardType.Action, currentPlayer)) {
             	actionCards++;
             }
         }
@@ -502,7 +502,7 @@ public class CardImplEmpires extends CardImpl {
     private void opulentCastle(Game game, MoveContext context, Player currentPlayer) {
         Card[] cards = currentPlayer.controlPlayer.opulentCastle_cardsToDiscard(context);
         for(Card card : cards) {
-        	if (!card.is(Type.Victory, currentPlayer)) {
+        	if (!card.is(CardType.Victory, currentPlayer)) {
         		Util.playerError(currentPlayer, "Opulent Castle choice error, trying to discard non-victory cards, ignoring.");
         		cards = null;
         	}
@@ -536,7 +536,7 @@ public class CardImplEmpires extends CardImpl {
             if (cardToImpersonate != null 
                 && !game.isPileEmpty(cardToImpersonate)
                 && Cards.isSupplyCard(cardToImpersonate)
-                && cardToImpersonate.is(Type.Action, null)
+                && cardToImpersonate.is(CardType.Action, null)
                 && cardToImpersonate.getCost(context) <= 5
                 && cardToImpersonate.getDebtCost(context) == 0
             	&& !cardToImpersonate.costPotion()
@@ -547,7 +547,7 @@ public class CardImplEmpires extends CardImpl {
                 game.broadcastEvent(event);
                 this.startImpersonatingCard(cardToImpersonate.getTemplateCard().instantiate());
             } else {
-                Card[] cards = game.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, Type.Action);
+                Card[] cards = game.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, CardType.Action);
                 if (cards.length != 0 && cardToImpersonate != null) {
                     Util.playerError(currentPlayer, "Overlord returned invalid card (" + cardToImpersonate.getName() + "), ignoring.");
                 }
@@ -566,7 +566,7 @@ public class CardImplEmpires extends CardImpl {
             int idx = currentPlayer.playedCards.lastIndexOf(this.getControlCard());
             if (idx >= 0) currentPlayer.playedCards.remove(idx);
             currentPlayer.trash(this.getControlCard(), null, context);
-        } else if (cardToPlay.is(Type.Duration, currentPlayer) && !cardToPlay.equals(Cards.outpost)) {
+        } else if (cardToPlay.is(CardType.Duration, currentPlayer) && !cardToPlay.equals(Cards.outpost)) {
             if (!this.getControlCard().movedToNextTurnPile) {
 				this.getControlCard().movedToNextTurnPile = true;
                 int idx = currentPlayer.playedCards.lastIndexOf(this.getControlCard());
@@ -621,9 +621,9 @@ public class CardImplEmpires extends CardImpl {
         
         currentPlayer.hand.remove(cardToTrash);
         currentPlayer.trash(cardToTrash, this.getControlCard(), context);
-        boolean isAction = cardToTrash.is(Type.Action, cardToTrash.behaveAsCard().getKind() == Kind.Fortress ? currentPlayer : null);
-        boolean isTreasure = cardToTrash.is(Type.Treasure);
-        boolean isVictory = cardToTrash.is(Type.Victory);
+        boolean isAction = cardToTrash.is(CardType.Action, cardToTrash.behaveAsCard().getKind() == Kind.Fortress ? currentPlayer : null);
+        boolean isTreasure = cardToTrash.is(CardType.Treasure);
+        boolean isVictory = cardToTrash.is(CardType.Victory);
         
         if (isAction) {
         	game.drawToHand(context, this, 2);
@@ -677,7 +677,7 @@ public class CardImplEmpires extends CardImpl {
         	int numCastles = 0;
         	Card handCastle = null;
         	for (Card c : currentPlayer.getHand()) {
-        		if (c.is(Type.Castle, currentPlayer)) {
+        		if (c.is(CardType.Castle, currentPlayer)) {
         			numCastles++;
         			handCastle = c;
         		}
@@ -688,7 +688,7 @@ public class CardImplEmpires extends CardImpl {
         		didTrash = true;
         	} else if (numCastles > 1) {
         		Card cardToTrash = currentPlayer.controlPlayer.smallCastle_castleToTrash(context);
-            	if (cardToTrash == null || !currentPlayer.getHand().contains(cardToTrash) || !cardToTrash.is(Type.Castle, currentPlayer)) {
+            	if (cardToTrash == null || !currentPlayer.getHand().contains(cardToTrash) || !cardToTrash.is(CardType.Castle, currentPlayer)) {
                     Util.playerError(currentPlayer, "Small Castle trash error, trashing last castle.");
                     cardToTrash = handCastle;
                 }
@@ -759,7 +759,7 @@ public class CardImplEmpires extends CardImpl {
     	Player player = context.getPlayer();
     	boolean hasAction = false;
     	for(Card c : player.getHand()) {
-    		if (c.is(Type.Action, player)) {
+    		if (c.is(CardType.Action, player)) {
     			hasAction = true;
     			break;
     		}
@@ -768,7 +768,7 @@ public class CardImplEmpires extends CardImpl {
     	
     	Card cardToTrash = player.controlPlayer.advance_actionToTrash(context);
     	if(cardToTrash != null) {
-            if(!player.getHand().contains(cardToTrash) || !cardToTrash.is(Type.Action, player)) {
+            if(!player.getHand().contains(cardToTrash) || !cardToTrash.is(CardType.Action, player)) {
                 Util.playerError(player, "Advance returned invalid card to trash from hand, ignoring.");
             } else {
                 player.hand.remove(cardToTrash);
@@ -776,7 +776,7 @@ public class CardImplEmpires extends CardImpl {
                 //TODO: check if there is an action card to gain
                 Card cardToGain = player.controlPlayer.advance_cardToObtain(context);
                 if (cardToGain == null || 
-                		!cardToGain.is(Type.Action) || 
+                		!cardToGain.is(CardType.Action) ||
                 		cardToGain.getCost(context) > 6 || 
                 		cardToGain.getDebtCost(context) > 0 || 
                 		cardToGain.costPotion()) {
@@ -823,7 +823,7 @@ public class CardImplEmpires extends CardImpl {
     	context.player.gainNewCard(Cards.copper, this.getControlCard(), context);
     	Card toGain = context.player.controlPlayer.banquet_cardToObtain(context);
     	if (toGain != null && (toGain.getCost(context) > 5 || toGain.getDebtCost(context) > 0 || 
-    			toGain.costPotion() || toGain.is(Type.Victory) ||
+    			toGain.costPotion() || toGain.is(CardType.Victory) ||
     			!context.game.isCardOnTop(toGain) || context.game.isPileEmpty(toGain) || !Cards.isSupplyCard(toGain))) {
     		Util.playerError(context.player, "Banquet - selected invalid card");
     		return;
@@ -875,7 +875,7 @@ public class CardImplEmpires extends CardImpl {
     }
     
     private void saltTheEarth(MoveContext context) {
-		Card[] availableVictories = context.game.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, Type.Victory);
+		Card[] availableVictories = context.game.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, CardType.Victory);
 		if (availableVictories.length == 0) {
 			return;
 		}
@@ -885,7 +885,7 @@ public class CardImplEmpires extends CardImpl {
 		if (toTrash.isPlaceholderCard()) {
 			toTrash = pile.topCard();
 		}
-    	if (toTrash == null || !toTrash.is(Type.Victory) || pile.isEmpty() || !pile.topCard().equals(toTrash)) {
+    	if (toTrash == null || !toTrash.is(CardType.Victory) || pile.isEmpty() || !pile.topCard().equals(toTrash)) {
     		Util.playerError(context.getPlayer(), "Salt the Earth picked invalid card, picking random Victory card.");
     		toTrash = Util.randomCard(availableVictories);
     	}

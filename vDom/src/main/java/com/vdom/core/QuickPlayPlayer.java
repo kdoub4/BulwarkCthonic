@@ -62,7 +62,7 @@ public abstract class QuickPlayPlayer extends BasePlayer {
         int total = 0;
         for (Card card : getHand()) {
             total++;
-            if (card.is(Type.Victory, context.getPlayer())) {
+            if (card.is(CardType.Victory, context.getPlayer())) {
                 canDiscard++;
             }
             else {
@@ -475,7 +475,7 @@ public abstract class QuickPlayPlayer extends BasePlayer {
         int treasureCount = 0;
 
         for(Card c : getHand()) {
-            if(c.is(Type.Treasure, this) && Cards.isSupplyCard(c)) {
+            if(c.is(CardType.Treasure, this) && Cards.isSupplyCard(c)) {
                 treasureCount++;
             }
         }
@@ -485,7 +485,7 @@ public abstract class QuickPlayPlayer extends BasePlayer {
         }
         
         for(Card c : getHand()) {
-            if(c.is(Type.Treasure, this) && Cards.isSupplyCard(c) && !(c.equals(Cards.copper) || c.equals(Cards.silver) || c.equals(Cards.gold) || c.equals(Cards.platinum))) {
+            if(c.is(CardType.Treasure, this) && Cards.isSupplyCard(c) && !(c.equals(Cards.copper) || c.equals(Cards.silver) || c.equals(Cards.gold) || c.equals(Cards.platinum))) {
                 return false;
             }
         }
@@ -561,7 +561,7 @@ public abstract class QuickPlayPlayer extends BasePlayer {
         int actionCards = 0;
         int trashCards = 0;
         for(Card c : getHand()) {
-            if(c.is(Type.Action, context.player)) {
+            if(c.is(CardType.Action, context.player)) {
                 actionCards++;
             }
             for(Card trash : getTrashCards()) {
@@ -643,7 +643,7 @@ public abstract class QuickPlayPlayer extends BasePlayer {
 
     
     public boolean shouldAutoPlay_mine_treasureToObtain(MoveContext context, int maxCost, int maxDebtCost, boolean potion) {
-        Card[] cards = context.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, Type.Treasure);
+        Card[] cards = context.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, CardType.Treasure);
         List<Card> obtainableCards = new ArrayList<Card>();
         for (Card c : cards) {
         	if ((!c.costPotion() || potion) && (maxCost >= c.getCost(context)) && maxDebtCost >= c.getDebtCost(context)) {
@@ -777,7 +777,7 @@ public abstract class QuickPlayPlayer extends BasePlayer {
     public boolean shouldAutoPlay_spiceMerchant_treasureToTrash(MoveContext context) {
         for(Card card : getHand()) {
             for(Card trash : getTrashCards()) {
-                if(trash.equals(card) && (card.is(Type.Treasure, this))) {
+                if(trash.equals(card) && (card.is(CardType.Treasure, this))) {
                     return true;
                 }
             }
@@ -1097,7 +1097,7 @@ public abstract class QuickPlayPlayer extends BasePlayer {
     
     public boolean shouldAutoPlay_arena_cardToDiscard(MoveContext context) {
     	for (Card c : context.getPlayer().getHand()) {
-    		if (c.is(Type.Action, context.getPlayer()) && !c.is(Type.Treasure, context.getPlayer())) {
+    		if (c.is(CardType.Action, context.getPlayer()) && !c.is(CardType.Treasure, context.getPlayer())) {
     			return true;
     		}
     	}
@@ -1155,7 +1155,7 @@ public abstract class QuickPlayPlayer extends BasePlayer {
     public boolean shouldAutoPlay_opulentCastle_cardsToDiscard(MoveContext context) {
     	Player p = context.getPlayer();
     	for(Card c: p.getHand()) {
-    		if (c.is(Type.Victory, p) && c.is(Type.Action, p)) {
+    		if (c.is(CardType.Victory, p) && c.is(CardType.Action, p)) {
     			return false;
     		}
     	}

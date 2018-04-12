@@ -82,14 +82,14 @@ public class CardImplProsperity extends CardImpl {
             case Mint:
                 for (Iterator<Card> it = context.player.playedCards.iterator(); it.hasNext();) {
                     Card playedCard = it.next();
-                    if (playedCard.is(Type.Treasure, context.player)) {
+                    if (playedCard.is(CardType.Treasure, context.player)) {
                         context.player.trash(playedCard, this.getControlCard(), context);
                         it.remove();
                     }
                 }
                 for (Iterator<Card> it = context.player.nextTurnCards.iterator(); it.hasNext();) {
                     Card playedCard = it.next();
-                    if (playedCard.is(Type.Treasure, context.player)) {
+                    if (playedCard.is(CardType.Treasure, context.player)) {
                         context.player.trash(playedCard, this.getControlCard(), context);
                         it.remove();
                     }
@@ -270,7 +270,7 @@ public class CardImplProsperity extends CardImpl {
             event.card = draw;
             game.broadcastEvent(event);
 
-            if (draw.is(Type.Treasure, player)) {
+            if (draw.is(CardType.Treasure, player)) {
                 treasureCardFound = draw;
             } else {
                 toDiscard.add(draw);
@@ -299,7 +299,7 @@ public class CardImplProsperity extends CardImpl {
         Card cardToMint = currentPlayer.controlPlayer.mint_treasureToMint(context);
 
         if (cardToMint != null && (!currentPlayer.hand.contains(cardToMint) || 
-        		!Cards.isSupplyCard(cardToMint) || !cardToMint.is(Type.Treasure, currentPlayer)) ) {
+        		!Cards.isSupplyCard(cardToMint) || !cardToMint.is(CardType.Treasure, currentPlayer)) ) {
             Util.playerError(currentPlayer, "Mint treasure selection error, not minting anything.");
         }
         else if (cardToMint != null) {
@@ -348,7 +348,7 @@ public class CardImplProsperity extends CardImpl {
                     if (card != null) {
                         player.reveal(card, this.getControlCard(), playerContext);
 
-                        if (card.is(Type.Treasure, player) || card.is(Type.Action, player)) {
+                        if (card.is(CardType.Treasure, player) || card.is(CardType.Action, player)) {
                             cardToDiscard.add(card);
                         } else {
                             topOfTheDeck.add(card);

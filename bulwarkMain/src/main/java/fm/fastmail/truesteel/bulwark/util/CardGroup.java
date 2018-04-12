@@ -14,7 +14,7 @@ import fm.fastmail.truesteel.bulwark.ui.CardView.CardState;
 import fm.fastmail.truesteel.bulwark.ui.Strings;
 import com.vdom.comms.GameStatus;
 import com.vdom.comms.MyCard;
-import com.vdom.core.Type;
+import com.vdom.core.CardType;
 
 /**
  * Collection of cards (e.g. hand, row of piles) that is displayed in a row / table
@@ -163,12 +163,12 @@ public class CardGroup extends BaseAdapter {
                 if (uci.count >= 0) supplySizes[cs.c.id] = uci.count;
                 cs.c.gold = uci.card.getAddGold();
                 cs.c.vp = uci.card.getAddVictoryTokens();
-                cs.c.isVictory = uci.card.is(Type.Victory);
-                cs.c.isTreasure = uci.card.is(Type.Treasure);
-                cs.c.isAction = uci.card.is(Type.Action);
-                cs.c.isAttack = uci.card.is(Type.Attack);
-                cs.c.isCastle = uci.card.is(Type.Castle);
-                cs.c.isKnight = uci.card.is(Type.Knight);
+                cs.c.isVictory = uci.card.is(CardType.Victory);
+                cs.c.isTreasure = uci.card.is(CardType.Treasure);
+                cs.c.isAction = uci.card.is(CardType.Action);
+                cs.c.isAttack = uci.card.is(CardType.Attack);
+                cs.c.isCastle = uci.card.is(CardType.Castle);
+                cs.c.isKnight = uci.card.is(CardType.Knight);
                 if (uci.card.getExpansion() != null) {
                     cs.c.expansion = uci.card.getExpansion().name();
                 }

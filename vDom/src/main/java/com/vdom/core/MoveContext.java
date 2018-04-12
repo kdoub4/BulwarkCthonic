@@ -278,26 +278,26 @@ public class MoveContext {
     public enum CardsInPlay {ACTION,ATTACK,TRAVELLER,VICTORY,TREASURE};
     
     public int countActionCardsInPlay() {
-    	return countTypedCardsInPlay(Type.Action);
+    	return countTypedCardsInPlay(CardType.Action);
     }
     
     public int countAttackCardsInPlay() {
-    	return countTypedCardsInPlay(Type.Attack);
+    	return countTypedCardsInPlay(CardType.Attack);
     }
     
     public int countTreasureCardsInPlay() {
-    	return countTypedCardsInPlay(Type.Treasure);
+    	return countTypedCardsInPlay(CardType.Treasure);
     }
     
     public int countTravellerCardsInPlay() {
-    	return countTypedCardsInPlay(Type.Crown);
+    	return countTypedCardsInPlay(CardType.Crown);
     }
     
     public int countVictoryCardsInPlay() {
-    	return countTypedCardsInPlay(Type.Victory);
+    	return countTypedCardsInPlay(CardType.Victory);
     }
     
-    public int countTypedCardsInPlay(Type type) {
+    public int countTypedCardsInPlay(CardType type) {
         int numInPlay = 0;
         for (Card c : getPlayedCards()) {
         	if (c.is(type, player)) {
@@ -381,7 +381,7 @@ public class MoveContext {
 
     public int getEmbargosIfCursesLeft(Card card) {
     	int embargos = game.getEmbargos(card);
-    	if (!card.is(Type.Event, null))
+    	if (!card.is(CardType.Event, null))
     		embargos += game.swampHagAttacks(player);
         return Math.min(embargos, game.pileSize(Cards.curse));
     }
@@ -448,7 +448,7 @@ public class MoveContext {
     }
 
     public boolean canPlay(Card card) {
-        if (card.is(Type.Action, player)) {
+        if (card.is(CardType.Action, player)) {
             return game.isValidAction(this, card);
         } else {
             return false;
@@ -516,7 +516,7 @@ public class MoveContext {
            for (Card card : player.getHand()) {
            if (card instanceof TreasureCard) {
            coin += ((TreasureCard) card).getValue();
-           if (card.getType() == Cards.Type.FoolsGold) {
+           if (card.getType() == Cards.CardType.FoolsGold) {
            foolsgoldcount++;
            if (foolsgoldcount > 1) {
            coin += 3;
@@ -561,7 +561,7 @@ public class MoveContext {
     public Card[] getCardsInGame(GetCardsInGameOptions opt, boolean supplyOnly) {
         return getCardsInGame(opt, supplyOnly, null);
     }
-    public Card[] getCardsInGame(GetCardsInGameOptions opt, boolean supplyOnly, Type type) {
+    public Card[] getCardsInGame(GetCardsInGameOptions opt, boolean supplyOnly, CardType type) {
         return game.getCardsInGame(opt, supplyOnly, type);
     }
 

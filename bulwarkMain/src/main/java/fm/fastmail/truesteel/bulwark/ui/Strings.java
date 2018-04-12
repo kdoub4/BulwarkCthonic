@@ -23,6 +23,7 @@ import com.vdom.comms.SelectCardOptions.ActionType;
 import com.vdom.comms.SelectCardOptions.PickType;
 import com.vdom.core.CardSet;
 import com.vdom.core.CardSet.UseOptionalCards;
+import com.vdom.core.CardType;
 import com.vdom.core.Cards;
 import com.vdom.core.Expansion;
 import com.vdom.core.IndirectPlayer;
@@ -57,7 +58,6 @@ import com.vdom.core.PlayerSupplyToken;
 import com.vdom.core.Player.CourtierOption;
 import com.vdom.core.Player.LurkerOption;
 import com.vdom.core.Player.FoolsGoldOption;
-import com.vdom.core.Type;
 
 public class Strings {
 
@@ -469,7 +469,7 @@ public class Strings {
         if (c.equals(Cards.curse)) {
             ret = Strings.format(R.string.vp_single, "" + c.getVictoryPoints()) + "\n" + ret;
         }
-        if (c.is(Type.Victory)) {
+        if (c.is(CardType.Victory)) {
             if (c.getVictoryPoints() > 1)
                 ret = Strings.format(R.string.vp_multiple, "" + c.getVictoryPoints()) + "\n" + ret;
             else if (c.getVictoryPoints() > 0)
@@ -479,7 +479,7 @@ public class Strings {
             else if (c.getVictoryPoints() < 0)
                 ret = Strings.format(R.string.vp_single, "" + c.getVictoryPoints()) + "\n" + ret;
         }
-        if (c.is(Type.Treasure)) {
+        if (c.is(CardType.Treasure)) {
         	if (c.getAddBuys() > 1) ret = Strings.format(R.string.card_buys_multiple, "" + c.getAddBuys()) + "\n" + ret;
             else if (c.getAddBuys() > 0) ret = Strings.format(R.string.card_buy_single, "" + c.getAddBuys()) + "\n" + ret;
         	int value = c.getAddGold();
@@ -490,8 +490,8 @@ public class Strings {
         	if (c.getAddVictoryTokens() > 1) ret = Strings.format(R.string.card_victory_tokens_multiple, "" + c.getAddVictoryTokens()) + "\n" + ret;
             else if (c.getAddVictoryTokens() > 0) ret = Strings.format(R.string.card_victory_token_single, "" + c.getAddVictoryTokens()) + "\n" + ret;
         }
-        if (c.is(Type.Action)) {
-            if (c.is(Type.Duration)) {
+        if (c.is(CardType.Action)) {
+            if (c.is(CardType.Duration)) {
                 if (c.getAddGoldNextTurn() > 1) ret = Strings.format(R.string.coin_next_turn_multiple, "" + c.getAddGoldNextTurn()) + "\n" + ret;
                 else if (c.getAddGoldNextTurn() > 0) ret = Strings.format(R.string.coin_next_turn_single, "" + c.getAddGoldNextTurn()) + "\n" + ret;
                 if (c.getAddBuysNextTurn() > 1) ret = Strings.format(R.string.buys_next_turn_multiple, "" + c.getAddBuysNextTurn()) + "\n" + ret;
@@ -515,7 +515,7 @@ public class Strings {
             else if (c.getAddVictoryTokens() > 0) ret = Strings.format(R.string.card_victory_token_single, "" + c.getAddVictoryTokens()) + "\n" + ret;
         }
 
-        if (c.is(Type.Event)) {
+        if (c.is(CardType.Event)) {
             if (c.getAddBuys() > 1) ret = Strings.format(R.string.card_buys_multiple, "" + c.getAddBuys()) + "\n" + ret;
             else if (c.getAddBuys() > 0) ret = Strings.format(R.string.card_buy_single, "" + c.getAddBuys()) + "\n" + ret;
             if (c.getAddVictoryTokens() > 1) ret = Strings.format(R.string.card_victory_tokens_multiple, "" + c.getAddVictoryTokens()) + "\n" + ret;
@@ -1139,7 +1139,7 @@ public class Strings {
 
         String[] strings = new String[3];
         strings[0] = cardName;  // common enough to set this as a default; override if necessary.
-        if (cardResponsible.is(Type.InHandManoeuvre)) {
+        if (cardResponsible.is(CardType.InHandManoeuvre)) {
             strings[1] = "Play";
             strings[2] = "Manoeuvre";
         } else if (cardName.equals(getCardName(Cards.alchemist))) {
@@ -1951,7 +1951,7 @@ public class Strings {
         boolean hasCastle = false;
         for(Card card : totals.keySet()) {
             if(Cards.isKingdomCard(card)) {
-                if (!card.is(Type.Castle)) {
+                if (!card.is(CardType.Castle)) {
                     sb.append("  " + Strings.getCardText(counts, totals, card));
                 } else {
                     hasCastle = true;
@@ -1988,7 +1988,7 @@ public class Strings {
 
         
         for(Card card : totals.keySet()) {
-            if(card.is(Type.Landmark)) {
+            if(card.is(CardType.Landmark)) {
             	sb.append('\t')
                 .append(getCardName(card))
                 .append(": ")
@@ -2007,7 +2007,7 @@ public class Strings {
             boolean landmarks = false;
             for (int i = 0; i < 2; i++) {
                 for (Map.Entry<Card, Integer> entry : victoryTokensTotals.entrySet()) {
-                    if (entry.getKey().is(Type.Landmark) == landmarks) {
+                    if (entry.getKey().is(CardType.Landmark) == landmarks) {
                         sb.append("\t\t")
                                 .append(getCardName(entry.getKey()))
                                 .append(": ")
@@ -2042,9 +2042,9 @@ public class Strings {
 		boolean hasDarkAges = false;
 		boolean hasProsperity = false;
 		for (Card c : cardSet.getCards()) {
-			if (c.is(Type.Event)) {
+			if (c.is(CardType.Event)) {
 				events.add(getCardName(c));
-			} else if (c.is(Type.Landmark)) {
+			} else if (c.is(CardType.Landmark)) {
 				landmarks.add(getCardName(c));
 			} else {
 				kingdomCards.add(getCardName(c));
