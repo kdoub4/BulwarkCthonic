@@ -108,21 +108,21 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         card.costPotion = c.costPotion();
         card.isBane = isBane;
         card.isObeliskCard = isObeliskCard;
-        card.isShelter = c.is(Type.Shelter, null);
-        card.isLooter = c.is(Type.Blast, null);
+        card.isShelter = c.is(CardType.Shelter, null);
+        card.isLooter = c.is(CardType.Blast, null);
         card.isOverpay = c.isOverpay(null);
-        card.isEvent = c.is(Type.Event, null);
-        card.isReserve = c.is(Type.Remains, null);
-        card.isTraveller = c.is(Type.Crown, null);
-        card.isKnight = c.is(Type.Knight, null);
-        card.isCastle = c.is(Type.Castle, null);
-        card.isGathering = c.is(Type.Gathering, null);
-        card.isLandmark = c.is(Type.Landmark, null);
-        card.isAttack = c.is(Type.Attack, null) || c.equals(Cards.virtualKnight);
+        card.isEvent = c.is(CardType.Event, null);
+        card.isReserve = c.is(CardType.Remains, null);
+        card.isTraveller = c.is(CardType.Crown, null);
+        card.isKnight = c.is(CardType.Knight, null);
+        card.isCastle = c.is(CardType.Castle, null);
+        card.isGathering = c.is(CardType.Gathering, null);
+        card.isLandmark = c.is(CardType.Landmark, null);
+        card.isAttack = c.is(CardType.Attack, null) || c.equals(Cards.virtualKnight);
         if (c.equals(Cards.virtualRuins))
             card.isRuins = true;
         else
-            card.isRuins = c.is(com.vdom.core.Type.Range, null);
+            card.isRuins = c.is(CardType.Range, null);
 
 
         if (uniqueCardPile) {
@@ -131,7 +131,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
             card.pile = MyCard.VARIABLE_CARDS_PILE;
         }
 
-        if (c.is(Type.Prize, null)) {
+        if (c.is(CardType.Prize, null)) {
             card.pile = MyCard.PRIZEPILE;
             card.isPrize = true;
         }
@@ -177,31 +177,31 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
             card.isCurse = true;
             card.vp =  c.getVictoryPoints();
         }
-        if (c.is(Type.Victory)) {
+        if (c.is(CardType.Victory)) {
             card.isVictory = true;
             card.vp =  c.getVictoryPoints();
         }
-        if (c.is(Type.Treasure, null)) {
+        if (c.is(CardType.Treasure, null)) {
             card.isTreasure = true;
             card.gold = c.getAddGold();
         }
-        if (c.is(Type.Action, null)) {
+        if (c.is(CardType.Action, null)) {
             card.isAction = true;
-            if (c.is(Type.Duration, null)) {
+            if (c.is(CardType.Duration, null)) {
                 card.isDuration = true;
             }
         }
-        if (c.is(Type.InHandReaction, null))
+        if (c.is(CardType.InHandReaction, null))
             card.isReaction = true;
         if (isBlackMarket) {
             card.isBlackMarket = true;
             card.pile = MyCard.BLACKMARKET_PILE;
         }
-        if (c.is(Type.Event, null)) {
+        if (c.is(CardType.Event, null)) {
             card.isEvent = true;
             card.pile = MyCard.EVENTPILE;
         }
-        if (c.is(Type.Landmark, null)) {
+        if (c.is(CardType.Landmark, null)) {
             card.isLandmark = true;
             card.pile = MyCard.EVENTPILE;
         }
@@ -1021,7 +1021,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
 
     @Override
     public boolean preventActivation(MoveContext context, Card Enemy) {
-        Card preventCard = cardToPlay(context, Util.canReact(context,this,Type.OnActivation),
+        Card preventCard = cardToPlay(context, Util.canReact(context,this, CardType.OnActivation),
                 Enemy, true, OPTION_ACTIVATION);
         if (preventCard != null) {
             switch (preventCard.getKind()) {
@@ -1038,7 +1038,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
     public boolean bolsterAttack(MoveContext context) {
         if (context.phase != MoveContext.TurnPhase.Action) {
             ArrayList<Card>  options = new ArrayList<Card>();
-            for (Card c :Util.canReact(context, this, Type.OnAttack)) {
+            for (Card c :Util.canReact(context, this, CardType.OnAttack)) {
                 options.add(c);
             }
             options.add(null);

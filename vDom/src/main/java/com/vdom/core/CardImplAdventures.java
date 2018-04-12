@@ -31,7 +31,7 @@ public class CardImplAdventures extends CardImpl {
         	bridgeTroll(game, context, currentPlayer);
             break;
         case CoinOfTheRealm:
-        	putOnTavern(game, context, currentPlayer);
+        	putOnTavernAdventures(game, context, currentPlayer);
         	break;
         case Disciple:
         	disciple(game, context, currentPlayer);
@@ -44,7 +44,7 @@ public class CardImplAdventures extends CardImpl {
         case Teacher:
         case Transmogrify:
         case WineMerchant:
-        	putOnTavern(game, context, currentPlayer);
+        	putOnTavernAdventures(game, context, currentPlayer);
             break;
         case Dungeon:
             discardMultiple(context, currentPlayer, 2);
@@ -209,7 +209,7 @@ public class CardImplAdventures extends CardImpl {
         return true;
 	}
     
-    private void finishCall(MoveContext context) {
+    private void finishCallAdventures(MoveContext context) {
     	GameEvent event = new GameEvent(GameEvent.EventType.CalledCard, (MoveContext) context);
         event.card = this.getControlCard();
         context.game.broadcastEvent(event);
@@ -227,7 +227,7 @@ public class CardImplAdventures extends CardImpl {
     	default:
     		break;
     	}
-    	finishCall(context);
+    	finishCallAdventures(context);
     }
     
 	public void callWhenActionResolved(MoveContext context, Card resolvedAction) {
@@ -244,7 +244,7 @@ public class CardImplAdventures extends CardImpl {
     	default:
     		break;
     	}
-    	finishCall(context);
+    	finishCallAdventures(context);
     }
 	    
 	public void callAtStartOfTurn(MoveContext context) {
@@ -268,7 +268,7 @@ public class CardImplAdventures extends CardImpl {
     	default:
     		break;
     	}
-    	finishCall(context);
+    	finishCallAdventures(context);
     }
 	
 	
@@ -447,7 +447,7 @@ public class CardImplAdventures extends CardImpl {
     private void hero(Game game, MoveContext context, Player currentPlayer)
     {
     	int numTreasuresAvailable = 0;
-    	for (Card treasureCard : context.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, Type.Treasure)) {
+    	for (Card treasureCard : context.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, CardType.Treasure)) {
     		if (Cards.isSupplyCard(treasureCard) && context.isCardOnTop(treasureCard)) {
     			numTreasuresAvailable++;
     		}
@@ -457,9 +457,9 @@ public class CardImplAdventures extends CardImpl {
     	
     	Card newCard = currentPlayer.controlPlayer.hero_treasureToObtain(context);
     	
-        if (!(newCard != null && newCard.is(Type.Treasure, null) && Cards.isSupplyCard(newCard) && context.isCardOnTop(newCard))) {
+        if (!(newCard != null && newCard.is(CardType.Treasure, null) && Cards.isSupplyCard(newCard) && context.isCardOnTop(newCard))) {
             Util.playerError(currentPlayer, "Hero treasure to obtain was invalid, picking random treasure from table.");
-            for (Card treasureCard : context.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, Type.Treasure)) {
+            for (Card treasureCard : context.getCardsInGame(GetCardsInGameOptions.TopOfPiles, true, CardType.Treasure)) {
                 if (Cards.isSupplyCard(treasureCard) && context.getCardsLeftInPile(treasureCard) > 0) {
                     newCard = treasureCard;
                     break;
@@ -475,12 +475,12 @@ public class CardImplAdventures extends CardImpl {
         Card c = game.draw(context, Cards.magpie, 1);
         if (c != null) {
             currentPlayer.reveal(c, this.getControlCard(), context);
-            if (c.is(Type.Treasure, currentPlayer)) {
+            if (c.is(CardType.Treasure, currentPlayer)) {
                 currentPlayer.hand.add(c);
             } else {
                 currentPlayer.putOnTopOfDeck(c, context, true);
             }
-            if ((c.is(Type.Victory, currentPlayer)) || (c.is(Type.Action, currentPlayer))) {
+            if ((c.is(CardType.Victory, currentPlayer)) || (c.is(CardType.Action, currentPlayer))) {
                 currentPlayer.gainNewCard(Cards.magpie, this.getControlCard(), context);
             }
         }
@@ -620,11 +620,11 @@ public class CardImplAdventures extends CardImpl {
         	cardToPlay.numberTimesAlreadyPlayed = 0; //TODO: not sure if this is always right
         context.freeActionInEffect--;
         // If the cardToPlay was a knight, and was trashed, reset clonecount
-        if (cardToPlay.is(Type.Knight, currentPlayer) && !currentPlayer.playedCards.contains(cardToPlay) && game.trashPile.contains(cardToPlay)) {
+        if (cardToPlay.is(CardType.Knight, currentPlayer) && !currentPlayer.playedCards.contains(cardToPlay) && game.trashPile.contains(cardToPlay)) {
             cardToPlay.getControlCard().cloneCount = 1;
         }
 
-        if (cardToPlay.is(Type.Duration, currentPlayer) && !cardToPlay.equals(Cards.tactician)) {
+        if (cardToPlay.is(CardType.Duration, currentPlayer) && !cardToPlay.equals(Cards.tactician)) {
             // Need to move royal carriage card to NextTurnCards first
             // (but does not play)
             if (!this.getControlCard().movedToNextTurnPile) {
@@ -677,7 +677,7 @@ public class CardImplAdventures extends CardImpl {
 		//look to see if we have a free pile
 		int numFreePiles = 0;
 		Card lastFreePile = null;
-		for (Card c : game.getCardsInGame(GetCardsInGameOptions.TopOfPiles.Placeholders, true, Type.Action)) {
+		for (Card c : game.getCardsInGame(GetCardsInGameOptions.TopOfPiles.Placeholders, true, CardType.Action)) {
 			if (game.getPlayerSupplyTokens(c, currentPlayer).size() == 0) {
 				numFreePiles++;
 				lastFreePile = c;
@@ -778,7 +778,7 @@ public class CardImplAdventures extends CardImpl {
     	}
     }
     
-    private void putOnTavern(Game game, MoveContext context, Player currentPlayer) {
+    private void putOnTavernAdventures(Game game, MoveContext context, Player currentPlayer) {
         // throneroom has here no effect since card is already put on tavern
         // Move to tavern mat
         if (this.getControlCard().numberTimesAlreadyPlayed == 0) {
@@ -802,13 +802,13 @@ public class CardImplAdventures extends CardImpl {
     public void alms(MoveContext context) {
     	boolean noTreasureCard = true;
         for(Card card : context.player.playedCards) {
-            if (card.is(Type.Treasure, context.getPlayer())) {
+            if (card.is(CardType.Treasure, context.getPlayer())) {
             	noTreasureCard = false;
             	break;
             }
         }
         for(Card card : context.player.nextTurnCards) {
-            if (card.is(Type.Treasure, context.getPlayer())) {
+            if (card.is(CardType.Treasure, context.getPlayer())) {
             	noTreasureCard = false;
             	break;
             }
@@ -856,7 +856,7 @@ public class CardImplAdventures extends CardImpl {
                     for (int i = 0; i < context.player.nextTurnCards.size(); i++) {
                         Card nextTurnCard = context.player.nextTurnCards.get(i);
                         if (nextTurnCard.equals(card)) {
-                        	if (nextTurnCard.is(Type.Duration, context.player)) {
+                        	if (nextTurnCard.is(CardType.Duration, context.player)) {
                         		((CardImpl)nextTurnCard).trashAfterPlay = true;
                                 context.player.trash(nextTurnCard, this.getControlCard(), context);
                         	} else {
@@ -880,15 +880,15 @@ public class CardImplAdventures extends CardImpl {
     
     private void ferry(MoveContext context) {
     	Card card = context.getPlayer().controlPlayer.ferry_actionCardPileToHaveToken(context);
-    	if (card.is(Type.Action, null))
+    	if (card.is(CardType.Action, null))
     		placeToken(context, card, PlayerSupplyToken.MinusTwoCost);
     }
     
     private void inheritance(MoveContext context) {
     	Card card = context.getPlayer().controlPlayer.inheritance_actionCardTosetAside(context);
-    	if (card != null && card.is(Type.Action, null)) {
+    	if (card != null && card.is(CardType.Action, null)) {
             if (card.getCost(context) <= 4 && card.getDebtCost(context) == 0 && !card.costPotion() && 
-            		!context.game.isPileEmpty(card) && !card.is(Type.Victory, null)) {
+            		!context.game.isPileEmpty(card) && !card.is(CardType.Victory, null)) {
             	context.player.inheritance = context.game.takeFromPile(card, context);
             	GameEvent event = new GameEvent(GameEvent.EventType.CardSetAsideInheritance, context);
                 event.card = card;
@@ -907,7 +907,7 @@ public class CardImplAdventures extends CardImpl {
     
     private void lostArts(MoveContext context) {
     	Card card = context.getPlayer().controlPlayer.lostArts_actionCardPileToHaveToken(context);
-    	if (card.is(Type.Action, null))
+    	if (card.is(CardType.Action, null))
     		placeToken(context, card, PlayerSupplyToken.PlusOneAction);
     }
     
@@ -918,7 +918,7 @@ public class CardImplAdventures extends CardImpl {
     
     private void pathfinding(MoveContext context) {
     	Card card = context.getPlayer().controlPlayer.pathfinding_actionCardPileToHaveToken(context);
-    	if (card.is(Type.Action, null))
+    	if (card.is(CardType.Action, null))
     		placeToken(context, card, PlayerSupplyToken.PlusOneCard);
     }
     
@@ -949,7 +949,7 @@ public class CardImplAdventures extends CardImpl {
     
     private void plan(MoveContext context) {
     	Card card = context.getPlayer().controlPlayer.plan_actionCardPileToHaveToken(context);
-    	if (card.is(Type.Action, null))
+    	if (card.is(CardType.Action, null))
     		placeToken(context, card, PlayerSupplyToken.Trashing);
     }
     
@@ -965,7 +965,7 @@ public class CardImplAdventures extends CardImpl {
     	if (option == QuestOption.DiscardAttack) {
     		Set<Card> attackSet = new HashSet<Card>();
     		for (Card card : hand) {
-    			if (card.behaveAsCard().is(Type.Attack, player)) {
+    			if (card.behaveAsCard().is(CardType.Attack, player)) {
     				attackSet.add(card);
     			}
     		}
@@ -1131,7 +1131,7 @@ public class CardImplAdventures extends CardImpl {
     
     private void seaway(MoveContext context) {
     	Card card = context.player.controlPlayer.seaway_cardToObtain(context);
-        if (card != null && card.is(Type.Action, null)) {
+        if (card != null && card.is(CardType.Action, null)) {
             if (card.getCost(context) <= 4 && card.getDebtCost(context) == 0 && !card.costPotion() && !context.game.isPileEmpty(card)) {
             	Card gainedCard = context.player.gainNewCard(card, this.getControlCard(), context);
                 if (context.game.getPile(card).equals(context.game.getPile(gainedCard))) //check that the placeholdercard is from the same pile as the gained card.
@@ -1143,7 +1143,7 @@ public class CardImplAdventures extends CardImpl {
     
     private void training(MoveContext context) {
     	Card card = context.getPlayer().controlPlayer.training_actionCardPileToHaveToken(context);
-    	if (card.is(Type.Action, null))
+    	if (card.is(CardType.Action, null))
     		placeToken(context, card, PlayerSupplyToken.PlusOneCoin);
     }
     

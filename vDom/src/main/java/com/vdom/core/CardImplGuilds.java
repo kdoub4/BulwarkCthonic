@@ -242,7 +242,7 @@ public class CardImplGuilds extends CardImpl {
         if (draw != null) {
             currentPlayer.reveal(draw, this.getControlCard(), context);
 
-            if (draw.is(Type.Action, currentPlayer)) {
+            if (draw.is(CardType.Action, currentPlayer)) {
                 context.freeActionInEffect++;
                 draw.play(game, context, false);
                 context.freeActionInEffect--;
@@ -320,7 +320,7 @@ public class CardImplGuilds extends CardImpl {
         boolean valid = false;
 
         for (Card c : currentPlayer.hand) {
-            if (c.is(Type.Treasure, currentPlayer)) {
+            if (c.is(CardType.Treasure, currentPlayer)) {
                 valid = true;
             }
         }
@@ -328,7 +328,7 @@ public class CardImplGuilds extends CardImpl {
         if (valid) {
             Card toDiscard = currentPlayer.controlPlayer.plaza_treasureToDiscard(context);
 
-            if (toDiscard != null && currentPlayer.hand.contains(toDiscard) && toDiscard.is(Type.Treasure, currentPlayer)) {
+            if (toDiscard != null && currentPlayer.hand.contains(toDiscard) && toDiscard.is(CardType.Treasure, currentPlayer)) {
                 currentPlayer.hand.remove(toDiscard);
                 currentPlayer.reveal(toDiscard, this.getControlCard(), context);
                 currentPlayer.discard(toDiscard, this.getControlCard(), context);
@@ -407,7 +407,7 @@ public class CardImplGuilds extends CardImpl {
         if (currentPlayer.getHand().size() > 0) {
             Card card = currentPlayer.controlPlayer.taxman_treasureToTrash(context);
 
-            if (card != null && card.is(Type.Treasure, currentPlayer)) {
+            if (card != null && card.is(CardType.Treasure, currentPlayer)) {
                 currentPlayer.hand.remove(card);
                 currentPlayer.trash(card, this.getControlCard(), context);
 
@@ -433,7 +433,7 @@ public class CardImplGuilds extends CardImpl {
 
                 Card newCard = currentPlayer.controlPlayer.taxman_treasureToObtain(context, card.getCost(context) + 3, card.getDebtCost(context), card.costPotion());
 
-                if (newCard != null && Cards.isSupplyCard(newCard) && newCard.is(Type.Treasure, null)
+                if (newCard != null && Cards.isSupplyCard(newCard) && newCard.is(CardType.Treasure, null)
                 		&& newCard.getCost(context) <= card.getCost(context) + 3
                 		&& newCard.getDebtCost(context) <= card.getDebtCost(context)
                 		&& (!newCard.costPotion() || card.costPotion())

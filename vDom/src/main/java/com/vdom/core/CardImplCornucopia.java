@@ -82,7 +82,7 @@ public class CardImplCornucopia extends CardImpl {
 
         ArrayList<Card> toDiscard = new ArrayList<Card>();
 
-        while ((draw = game.draw(context, Cards.farmingVillage, -1)) != null && !(draw.is(Type.Action, currentPlayer)) && !(draw.is(Type.Treasure, currentPlayer))) {
+        while ((draw = game.draw(context, Cards.farmingVillage, -1)) != null && !(draw.is(CardType.Action, currentPlayer)) && !(draw.is(CardType.Treasure, currentPlayer))) {
             toDiscard.add(draw);
         }
 
@@ -126,7 +126,7 @@ public class CardImplCornucopia extends CardImpl {
                 ArrayList<Card> cardsToDiscard = new ArrayList<Card>();
 
                 Card draw = null;
-                while ((draw = game.draw(playerContext, Cards.fortuneTeller, -1)) != null && !(draw.is(Type.Victory, player)) && !(draw.is(Type.Curse, player))) {
+                while ((draw = game.draw(playerContext, Cards.fortuneTeller, -1)) != null && !(draw.is(CardType.Victory, player)) && !(draw.is(CardType.Curse, player))) {
                     player.reveal(draw, this.getControlCard(), playerContext);
                     cardsToDiscard.add(draw);
                 }
@@ -194,7 +194,7 @@ public class CardImplCornucopia extends CardImpl {
                     event.responsible = this;
                     game.broadcastEvent(event);
                     
-                    if (toObtain.is(Type.Victory, player)) {
+                    if (toObtain.is(CardType.Victory, player)) {
                     	player.playedCards.remove(this);
                         player.trash(this, toObtain, context);
                         event = new GameEvent(GameEvent.EventType.CardTrashed, context);
@@ -250,7 +250,7 @@ public class CardImplCornucopia extends CardImpl {
                 targetPlayer.reveal(draw, this.getControlCard(), targetContext);
                 targetPlayer.discard(draw, this.getControlCard(), targetContext);
 
-                if (draw.is(Type.Victory, targetPlayer)) {
+                if (draw.is(CardType.Victory, targetPlayer)) {
                     targetPlayer.gainNewCard(Cards.curse, this.getControlCard(), targetContext);
                 }
                 else if (Cards.isSupplyCard(draw))
@@ -358,7 +358,7 @@ public class CardImplCornucopia extends CardImpl {
 
             if (option == TournamentOption.GainPrize) {
                 Card prize = currentPlayer.controlPlayer.tournament_choosePrize(playerContext);
-                if (prize != null && prize.is(Type.Prize, null)) {
+                if (prize != null && prize.is(CardType.Prize, null)) {
                     currentPlayer.gainNewCard(prize, this, playerContext);
                 } else {
                     Util.playerError(currentPlayer, "Tournament error, invalid prize");
