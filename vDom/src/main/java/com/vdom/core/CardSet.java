@@ -533,67 +533,6 @@ public class CardSet {
 		CardSetMap.put(GameType.LastLaughs2, new CardSet(new Card[]{Cards.minion, Cards.nobles, Cards.pawn, Cards.steward, Cards.swindler, Cards.farmingVillage, Cards.harvest, Cards.horseTraders, Cards.huntingParty, Cards.jester}));
 		CardSetMap.put(GameType.TheSpiceOfLife2, new CardSet(new Card[]{Cards.courtier, Cards.courtyard, Cards.diplomat, Cards.miningVillage, Cards.replace, Cards.fairgrounds, Cards.hornOfPlenty, Cards.remake, Cards.tournament, Cards.youngWitch }, Cards.wishingWell));
 		CardSetMap.put(GameType.SmallVictories2, new CardSet(new Card[]{Cards.conspirator, Cards.duke, Cards.harem, Cards.pawn, Cards.secretPassage, Cards.fortuneTeller, Cards.hamlet, Cards.huntingParty, Cards.remake, Cards.tournament}));
-		// Hinterlands
-		CardSetMap.put(GameType.HinterlandsIntro, new CardSet(new Card[]{Cards.cache, Cards.crossroads, Cards.develop, Cards.haggler, Cards.jackOfAllTrades, Cards.margrave, Cards.nomadCamp, Cards.oasis, Cards.spiceMerchant, Cards.stables}));
-		CardSetMap.put(GameType.FairTrades, new CardSet(new Card[]{Cards.borderVillage, Cards.cartographer, Cards.develop, Cards.duchess, Cards.farmland, Cards.illGottenGains, Cards.nobleBrigand, Cards.silkRoad, Cards.stables, Cards.trader}));
-		CardSetMap.put(GameType.Bargains, new CardSet(new Card[]{Cards.borderVillage, Cards.cache, Cards.duchess, Cards.foolsGold, Cards.haggler, Cards.highway, Cards.nomadCamp, Cards.scheme, Cards.spiceMerchant, Cards.trader}));
-		CardSetMap.put(GameType.Gambits, new CardSet(new Card[]{Cards.cartographer, Cards.crossroads, Cards.embassy, Cards.inn, Cards.jackOfAllTrades, Cards.mandarin, Cards.nomadCamp, Cards.oasis, Cards.oracle, Cards.tunnel}));
-		// Hinterlands and Base
-		CardSetMap.put(GameType.HighwayRobbery, new CardSet(new Card[]{Cards.cellar, Cards.library, Cards.moneyLender, Cards.throneRoom, Cards.workshop, Cards.highway, Cards.inn, Cards.margrave, Cards.nobleBrigand, Cards.oasis}));
-		CardSetMap.put(GameType.AdventuresAbroad, new CardSet(new Card[]{Cards.adventurer, Cards.chancellor, Cards.festival, Cards.laboratory, Cards.remodel, Cards.crossroads, Cards.farmland, Cards.foolsGold, Cards.oracle, Cards.spiceMerchant}));
-		// Hinterlands and Base 2E
-		CardSetMap.put(GameType.HighwayRobbery2, new CardSet(new Card[]{Cards.cellar, Cards.library, Cards.moneyLender, Cards.throneRoom, Cards.workshop, Cards.highway, Cards.inn, Cards.margrave, Cards.nobleBrigand, Cards.oasis}));
-		CardSetMap.put(GameType.AdventuresAbroad2, new CardSet(new Card[]{Cards.festival, Cards.laboratory, Cards.moneyLender, Cards.throneRoom, Cards.workshop, Cards.crossroads, Cards.farmland, Cards.foolsGold, Cards.oracle, Cards.spiceMerchant}));
-		// Hinterlands and Intrigue
-		CardSetMap.put(GameType.MoneyForNothing, new CardSet(new Card[]{Cards.coppersmith, Cards.greatHall, Cards.pawn, Cards.shantyTown, Cards.torturer, Cards.cache, Cards.cartographer, Cards.jackOfAllTrades, Cards.silkRoad, Cards.tunnel}));
-		CardSetMap.put(GameType.TheDukesBall, new CardSet(new Card[]{Cards.conspirator, Cards.duke, Cards.harem, Cards.masquerade, Cards.upgrade, Cards.duchess, Cards.haggler, Cards.inn, Cards.nobleBrigand, Cards.scheme}));
-		// Hinterlands and Intrigue 2E
-		CardSetMap.put(GameType.MoneyForNothing2, new CardSet(new Card[]{Cards.patrol, Cards.pawn, Cards.replace, Cards.shantyTown, Cards.torturer, Cards.cache, Cards.cartographer, Cards.jackOfAllTrades, Cards.silkRoad, Cards.tunnel}));
-		CardSetMap.put(GameType.TheDukesBall2, new CardSet(new Card[]{Cards.conspirator, Cards.duke, Cards.harem, Cards.masquerade, Cards.upgrade, Cards.duchess, Cards.haggler, Cards.inn, Cards.nobleBrigand, Cards.scheme}));
-		// Hinterlands and Seaside
-		CardSetMap.put(GameType.Travelers, new CardSet(new Card[]{Cards.cutpurse, Cards.island, Cards.lookout, Cards.merchantShip, Cards.warehouse, Cards.cartographer, Cards.crossroads, Cards.farmland, Cards.silkRoad, Cards.stables}));
-		CardSetMap.put(GameType.Diplomacy, new CardSet(new Card[]{Cards.ambassador, Cards.bazaar, Cards.caravan, Cards.embargo, Cards.smugglers, Cards.embassy, Cards.farmland, Cards.illGottenGains, Cards.nobleBrigand, Cards.trader}));
-		// Hinterlands and Alchemy
-		CardSetMap.put(GameType.SchemesAndDreams, new CardSet(new Card[]{Cards.apothecary, Cards.apprentice, Cards.herbalist, Cards.philosophersStone, Cards.transmute, Cards.duchess, Cards.foolsGold, Cards.illGottenGains, Cards.jackOfAllTrades, Cards.scheme}));
-		CardSetMap.put(GameType.WineCountry, new CardSet(new Card[]{Cards.apprentice, Cards.familiar, Cards.golem, Cards.university, Cards.vineyard, Cards.crossroads, Cards.farmland, Cards.haggler, Cards.highway, Cards.nomadCamp}));
-		// Hinterlands and Prosperity
-		CardSetMap.put(GameType.InstantGratification, new CardSet(new Card[]{Cards.bishop, Cards.expand, Cards.hoard, Cards.mint, Cards.watchTower, Cards.farmland, Cards.haggler, Cards.illGottenGains, Cards.nobleBrigand, Cards.trader}));
-		CardSetMap.put(GameType.TreasureTrove, new CardSet(new Card[]{Cards.bank, Cards.monument, Cards.royalSeal, Cards.tradeRoute, Cards.venture, Cards.cache, Cards.develop, Cards.foolsGold, Cards.illGottenGains, Cards.mandarin}));
-		// Hinterlands and Cornucopia
-		CardSetMap.put(GameType.BlueHarvest, new CardSet(new Card[]{Cards.hamlet, Cards.hornOfPlenty, Cards.horseTraders, Cards.jester, Cards.tournament, Cards.foolsGold, Cards.mandarin, Cards.nobleBrigand, Cards.trader, Cards.tunnel}));
-		CardSetMap.put(GameType.TravelingCircus, new CardSet(new Card[]{Cards.fairgrounds, Cards.farmingVillage, Cards.huntingParty, Cards.jester, Cards.menagerie, Cards.borderVillage, Cards.embassy, Cards.foolsGold, Cards.nomadCamp, Cards.oasis}));
-
-		// Dark Ages
-		CardSetMap.put(GameType.PlayingChessWithDeath, new CardSet(new Card[]{Cards.banditCamp, Cards.graverobber, Cards.junkDealer, Cards.mystic, Cards.pillage, Cards.rats, Cards.sage, Cards.scavenger, Cards.storeroom, Cards.vagrant}));
-		CardSetMap.put(GameType.GrimParade, new CardSet(new Card[]{Cards.armory, Cards.bandOfMisfits, Cards.catacombs, Cards.cultist, Cards.forager, Cards.fortress, Cards.virtualKnight, Cards.marketSquare, Cards.procession, Cards.huntingGrounds}));
-		// Dark Ages and Base
-		CardSetMap.put(GameType.HighAndLow, new CardSet(new Card[]{Cards.hermit, Cards.huntingGrounds, Cards.mystic, Cards.poorHouse, Cards.wanderingMinstrel, Cards.cellar, Cards.moneyLender, Cards.throneRoom, Cards.witch, Cards.workshop}));
-		CardSetMap.put(GameType.ChivalryAndRevelry, new CardSet(new Card[]{Cards.altar, Cards.virtualKnight, Cards.rats, Cards.scavenger, Cards.squire, Cards.festival, Cards.gardens, Cards.laboratory, Cards.library, Cards.remodel}));
-		// Dark Ages and Base 2E
-		CardSetMap.put(GameType.HighAndLow2, new CardSet(new Card[]{Cards.cellar, Cards.moneyLender, Cards.throneRoom, Cards.witch, Cards.workshop, Cards.hermit, Cards.huntingGrounds, Cards.mystic, Cards.poorHouse, Cards.wanderingMinstrel}));
-		CardSetMap.put(GameType.ChivalryAndRevelry2	, new CardSet(new Card[]{Cards.festival, Cards.gardens, Cards.laboratory, Cards.library, Cards.remodel, Cards.altar, Cards.virtualKnight, Cards.rats, Cards.scavenger, Cards.squire}));
-		// Dark Ages and Intrigue
-		CardSetMap.put(GameType.Prophecy, new CardSet(new Card[]{Cards.armory, Cards.ironmonger, Cards.mystic, Cards.rebuild, Cards.vagrant, Cards.baron, Cards.conspirator, Cards.greatHall, Cards.nobles, Cards.wishingWell}));
-		CardSetMap.put(GameType.Invasion, new CardSet(new Card[]{Cards.beggar, Cards.marauder, Cards.rogue, Cards.squire, Cards.urchin, Cards.harem, Cards.miningVillage, Cards.swindler, Cards.torturer, Cards.upgrade}));
-		// Dark Ages and Intrigue 2E
-		CardSetMap.put(GameType.Prophecy2, new CardSet(new Card[]{Cards.baron, Cards.conspirator, Cards.nobles, Cards.secretPassage, Cards.wishingWell, Cards.armory, Cards.ironmonger, Cards.mystic, Cards.rebuild, Cards.vagrant}));
-		CardSetMap.put(GameType.Invasion2, new CardSet(new Card[]{Cards.diplomat, Cards.harem, Cards.swindler, Cards.torturer, Cards.upgrade, Cards.beggar, Cards.marauder, Cards.rogue, Cards.squire, Cards.urchin}));
-		// Dark Ages and Seaside
-		CardSetMap.put(GameType.WateryGraves, new CardSet(new Card[]{Cards.count, Cards.graverobber, Cards.hermit, Cards.scavenger, Cards.urchin, Cards.nativeVillage, Cards.pirateShip, Cards.salvager, Cards.treasureMap, Cards.treasury}));
-		CardSetMap.put(GameType.Peasants, new CardSet(new Card[]{Cards.deathCart, Cards.feodum, Cards.poorHouse, Cards.urchin, Cards.vagrant, Cards.fishingVillage, Cards.haven, Cards.island, Cards.lookout, Cards.warehouse}));
-		// Dark Ages and Alchemy
-		CardSetMap.put(GameType.Infestations, new CardSet(new Card[]{Cards.armory, Cards.cultist, Cards.feodum, Cards.marketSquare, Cards.rats, Cards.wanderingMinstrel, Cards.apprentice, Cards.scryingPool, Cards.transmute, Cards.vineyard}));
-		CardSetMap.put(GameType.Lamentations, new CardSet(new Card[]{Cards.beggar, Cards.catacombs, Cards.counterfeit, Cards.forager, Cards.ironmonger, Cards.pillage, Cards.apothecary, Cards.golem, Cards.herbalist, Cards.university}));
-		// Dark Ages and Prosperity
-		CardSetMap.put(GameType.OneMansTrash, new CardSet(new Card[]{Cards.counterfeit, Cards.forager, Cards.graverobber, Cards.marketSquare, Cards.rogue, Cards.city, Cards.grandMarket, Cards.monument, Cards.talisman, Cards.venture}));
-		CardSetMap.put(GameType.HonorAmongThieves, new CardSet(new Card[]{Cards.banditCamp, Cards.procession, Cards.rebuild, Cards.rogue, Cards.squire, Cards.forge, Cards.hoard, Cards.peddler, Cards.quarry, Cards.watchTower}));
-		// Dark Ages and Cornucopia
-		CardSetMap.put(GameType.DarkCarnival, new CardSet(new Card[]{Cards.bandOfMisfits, Cards.cultist, Cards.fortress, Cards.hermit, Cards.junkDealer, Cards.virtualKnight, Cards.fairgrounds, Cards.hamlet, Cards.hornOfPlenty, Cards.menagerie}));
-		CardSetMap.put(GameType.ToTheVictor, new CardSet(new Card[]{Cards.banditCamp, Cards.counterfeit, Cards.deathCart, Cards.marauder, Cards.pillage, Cards.sage, Cards.harvest, Cards.huntingParty, Cards.remake, Cards.tournament}));
-		// Dark Ages and Hinterlands
-		CardSetMap.put(GameType.FarFromHome, new CardSet(new Card[]{Cards.beggar, Cards.count, Cards.feodum, Cards.marauder, Cards.wanderingMinstrel, Cards.cartographer, Cards.develop, Cards.embassy, Cards.foolsGold, Cards.haggler}));
-		CardSetMap.put(GameType.Expeditions, new CardSet(new Card[]{Cards.altar, Cards.catacombs, Cards.ironmonger, Cards.poorHouse, Cards.storeroom, Cards.crossroads, Cards.farmland, Cards.highway, Cards.spiceMerchant, Cards.tunnel}));
-
 		// Guilds and Base
 		CardSetMap.put(GameType.ArtsAndCrafts, new CardSet(new Card[]{Cards.stonemason, Cards.advisor, Cards.baker, Cards.journeyman, Cards.merchantGuild, Cards.laboratory, Cards.cellar, Cards.workshop, Cards.festival, Cards.moneyLender}));
 		CardSetMap.put(GameType.CleanLiving, new CardSet(new Card[]{Cards.butcher, Cards.baker, Cards.candlestickMaker, Cards.doctor, Cards.soothsayer, Cards.militia, Cards.thief, Cards.moneyLender, Cards.gardens, Cards.village}));
@@ -638,12 +577,6 @@ public class CardSet {
 		// Adventures and Cornucopia
 		CardSetMap.put(GameType.TheHerosReturn, new CardSet(new Card[] { Cards.artificer, Cards.miser, Cards.page, Cards.ranger, Cards.relic, Cards.fairgrounds, Cards.farmingVillage, Cards.horseTraders, Cards.jester, Cards.menagerie}));
 		CardSetMap.put(GameType.SeacraftAndWitchcraft, new CardSet(new Card[] { Cards.peasant, Cards.storyteller, Cards.swampHag, Cards.transmogrify, Cards.wineMerchant, Cards.fortuneTeller, Cards.hamlet, Cards.hornOfPlenty, Cards.tournament, Cards.youngWitch, Cards.ferry, Cards.seaway}, Cards.guide));
-		// Adventures and Hinterlands
-		CardSetMap.put(GameType.TradersAndRaiders, new CardSet(new Card[] { Cards.hauntedWoods, Cards.lostCity, Cards.page, Cards.port, Cards.wineMerchant, Cards.develop, Cards.farmland, Cards.haggler, Cards.spiceMerchant, Cards.trader, Cards.raid}));
-		CardSetMap.put(GameType.Journeys, new CardSet(new Card[] { Cards.bridgeTroll, Cards.distantLands, Cards.giant, Cards.guide, Cards.ranger, Cards.cartographer, Cards.crossroads, Cards.highway, Cards.inn, Cards.silkRoad, Cards.expedition, Cards.inheritance}));
-		// Adventures and Dark Ages
-		CardSetMap.put(GameType.CemeteryPolka, new CardSet(new Card[] { Cards.amulet, Cards.caravanGuard, Cards.hireling, Cards.peasant, Cards.relic, Cards.graverobber, Cards.marauder, Cards.procession, Cards.rogue, Cards.wanderingMinstrel, Cards.alms}));
-		CardSetMap.put(GameType.GroovyDecay, new CardSet(new Card[] { Cards.dungeon, Cards.hauntedWoods, Cards.ratcatcher, Cards.raze, Cards.transmogrify, Cards.cultist, Cards.deathCart, Cards.fortress, Cards.rats, Cards.lostArts, Cards.pathfinding}));
 		// Adventures and Guilds
 		CardSetMap.put(GameType.Spendthrift, new CardSet(new Card[] { Cards.artificer, Cards.gear, Cards.magpie, Cards.miser, Cards.storyteller, Cards.doctor, Cards.masterpiece, Cards.merchantGuild, Cards.soothsayer, Cards.stonemason, Cards.lostArts}));
 		CardSetMap.put(GameType.QueenOfTan, new CardSet(new Card[] { Cards.coinOfTheRealm, Cards.duplicate, Cards.guide, Cards.ratcatcher, Cards.royalCarriage, Cards.advisor, Cards.butcher, Cards.candlestickMaker, Cards.herald, Cards.journeyman, Cards.pathfinding, Cards.save}));
@@ -674,17 +607,9 @@ public class CardSet {
 		// Empires and Cornucopia
 		CardSetMap.put(GameType.Zookeepers, new CardSet(new Card[] { Cards.overlord, Cards.sacrifice, Cards.virtualSettlersBustlingVillage, Cards.villa, Cards.wildHunt, Cards.fairgrounds, Cards.horseTraders, Cards.menagerie, Cards.jester, Cards.tournament, Cards.annex, Cards.colonnade}));
 		CardSetMap.put(GameType.CashFlow, new CardSet(new Card[] { Cards.virtualCastle, Cards.cityQuarter, Cards.engineer, Cards.virtualGladiatorFortune, Cards.royalBlacksmith, Cards.baker, Cards.butcher, Cards.doctor, Cards.herald, Cards.soothsayer, Cards.baths, Cards.mountainPass}));
-		// Empires and Hinterlands
-		CardSetMap.put(GameType.SimplePlans, new CardSet(new Card[] { Cards.virtualCatapultRocks, Cards.forum, Cards.virtualPatricianEmporium, Cards.temple, Cards.villa, Cards.borderVillage, Cards.develop, Cards.haggler, Cards.illGottenGains, Cards.stables, Cards.donate, Cards.labyrinth}));
-		CardSetMap.put(GameType.HinterExpansion, new CardSet(new Card[] { Cards.virtualCastle, Cards.charm, Cards.virtualEncampmentPlunder, Cards.engineer, Cards.legionary, Cards.cache, Cards.farmland, Cards.highway, Cards.spiceMerchant, Cards.tunnel, Cards.battlefield, Cards.fountain}));
-		// Empires and Dark Ages
-		CardSetMap.put(GameType.TombOfTheRatKing, new CardSet(new Card[] { Cards.virtualCastle, Cards.chariotRace, Cards.cityQuarter, Cards.legionary, Cards.sacrifice, Cards.deathCart, Cards.fortress, Cards.pillage, Cards.rats, Cards.storeroom, Cards.advance, Cards.tomb}, null, UseOptionalCards.DontUse, UseOptionalCards.Use));
-		CardSetMap.put(GameType.TriumphOfTheBanditKing, new CardSet(new Card[] { Cards.capital, Cards.charm, Cards.engineer, Cards.groundskeeper, Cards.legionary, Cards.banditCamp, Cards.catacombs, Cards.huntingGrounds, Cards.marketSquare, Cards.procession, Cards.defiledShrine, Cards.triumph}, null, UseOptionalCards.DontUse, UseOptionalCards.Use));
-		CardSetMap.put(GameType.TheSquiresRitual, new CardSet(new Card[] { Cards.archive, Cards.virtualCatapultRocks, Cards.crown, Cards.virtualPatricianEmporium, Cards.virtualSettlersBustlingVillage, Cards.feodum, Cards.hermit, Cards.ironmonger, Cards.rogue, Cards.squire, Cards.museum, Cards.ritual}, null, UseOptionalCards.DontUse, UseOptionalCards.Use));
 		// Empires and Adventures
 		CardSetMap.put(GameType.AreaControl, new CardSet(new Card[] { Cards.capital, Cards.virtualCatapultRocks, Cards.charm, Cards.crown, Cards.farmersMarket, Cards.coinOfTheRealm, Cards.page, Cards.relic, Cards.treasureTrove, Cards.wineMerchant, Cards.banquet, Cards.keep}));
 		CardSetMap.put(GameType.NoMoneyNoProblems, new CardSet(new Card[] { Cards.archive, Cards.virtualEncampmentPlunder, Cards.royalBlacksmith, Cards.temple, Cards.villa, Cards.dungeon, Cards.duplicate, Cards.hireling, Cards.peasant, Cards.transmogrify, Cards.banditFort, Cards.mission}));
 
-		CardSetMap.put(GameType.Test, new CardSet(new Card[] { Cards.throneRoom, Cards.squire, Cards.gear, Cards.bandOfMisfits, Cards.overlord, Cards.ferry, Cards.inheritance, Cards.donate, Cards.bonfire, Cards.militia, Cards.margrave, Cards.page, Cards.peasant, Cards.virtualCastle, Cards.urchin, Cards.raze, Cards.miningVillage, Cards.amulet, Cards.wharf, Cards.highway}));
 	}
 }

@@ -88,8 +88,8 @@ public class CardImplBase extends CardImpl {
                 }
                 break;
             case GalleryOfLeaves:
-                banishOrDiscard(context, currentPlayer, Cards.virtualEnemy );
-                banishOrDiscard(context, currentPlayer, Cards.virtualWound );
+                banishOrReplace(context, currentPlayer, Cards.virtualEnemy );
+                banishOrReplace(context, currentPlayer, Cards.virtualWound );
                 spyAndScryingPool(game, context, currentPlayer);
                 break;
             case TreetopSpire:
@@ -285,7 +285,7 @@ public class CardImplBase extends CardImpl {
                 game.drawToHand(context,this,1,true);
                 break;
             case GuardTower:
-                banishOrDiscard(context, currentPlayer, Cards.virtualEnemy);
+                banishOrReplace(context, currentPlayer, Cards.virtualEnemy);
                 break;
             case RockFallTrap:
                 actionPhaseAttack(context, currentPlayer, true, false, 2);
@@ -833,11 +833,11 @@ public class CardImplBase extends CardImpl {
         }
     }
 
-    private void banishOrDiscard(MoveContext context, Player currentPlayer, Card cardTemplate) {
+    private void banishOrReplace(MoveContext context, Player currentPlayer, Card cardTemplate) {
         Card topCard = context.game.takeFromPile(cardTemplate);
 
         if(topCard != null) {
-            boolean discard = currentPlayer.duchess_shouldDiscardCard(context, topCard);
+            boolean discard = currentPlayer.shouldDiscardCard(context, topCard, this );
             context.game.addToPile(topCard, discard);
         }
     }

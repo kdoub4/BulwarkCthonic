@@ -8,7 +8,7 @@ import com.vdom.core.MoveContext.TurnPhase;
 
 public abstract class QuickPlayPlayer extends BasePlayer {
     //trash in this order!
-    protected static final Card[] TRASH_CARDS = new Card[] { Cards.curse, Cards.rats, Cards.overgrownEstate, Cards.ruinedVillage, Cards.ruinedMarket, Cards.survivors, Cards.ruinedLibrary, Cards.abandonedMine, Cards.virtualRuins, Cards.hovel, Cards.estate, Cards.copper, Cards.masterpiece };
+    protected static final Card[] TRASH_CARDS = new Card[] { Cards.curse,  Cards.estate, Cards.copper, Cards.masterpiece };
 
 //    public static QuickPlayPlayer instance = new QuickPlayPlayer();
     

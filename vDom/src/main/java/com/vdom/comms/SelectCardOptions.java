@@ -245,7 +245,6 @@ public class SelectCardOptions implements Serializable {
         if (isNonVictory && cardIsVictory) return false;
         if (fromPrizes && !c.is(CardType.Prize, null)) return false;
         if (fromTable && !fromPrizes && c.is(CardType.Prize, null)) return false;
-        if (isNonRats && c.equals(Cards.rats)) return false;
         if (c.equals(Cards.grandMarket) && copperCountInPlay > 0) return false;
         if (isNonShelter && c.is(CardType.Shelter, p)) return false;
         if (isAttack && !c.is(CardType.Attack, p)) return false;

@@ -424,10 +424,6 @@ public class CardImpl implements Card, Comparable<Card>{
         		return new CardImplProsperity(this);
         	case Cornucopia:
         		return new CardImplCornucopia(this);
-        	case Hinterlands:
-        		return new CardImplHinterlands(this);
-        	case DarkAges:
-        		return new CardImplDarkAges(this);
         	case Guilds:
         		return new CardImplGuilds(this);
         	case Adventures:
@@ -491,12 +487,6 @@ public class CardImpl implements Card, Comparable<Card>{
 	    		break;
 	    	case Cornucopia:
 	    		c = new CardImplCornucopia();
-	    		break;
-	    	case Hinterlands:
-	    		c = new CardImplHinterlands();
-	    		break;
-	    	case DarkAges:
-	    		c = new CardImplDarkAges();
 	    		break;
 	    	case Guilds:
 	    		c = new CardImplGuilds();
@@ -1376,11 +1366,7 @@ public class CardImpl implements Card, Comparable<Card>{
         // If an Urchin has been played, offer the player the option to trash it for a Mercenary
         for (int i = currentPlayer.playedCards.size() - 1; i >= 0 ; --i) {
             Card c = currentPlayer.playedCards.get(i);
-            if (!(c.behaveAsCard() == this) && c.behaveAsCard().getKind() == Cards.Kind.Urchin && currentPlayer.controlPlayer.urchin_shouldTrashForMercenary(context, c.getControlCard())) {
-                currentPlayer.trash(c.getControlCard(), this, context);
-                currentPlayer.gainNewCard(Cards.mercenary, this, context);
-                currentPlayer.playedCards.remove(i);
-            }
+
         }
     }
     

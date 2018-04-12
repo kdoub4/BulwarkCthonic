@@ -322,9 +322,7 @@ public class Util {
                 doSecretChamber(context, game, player, responsible, reactionCard);
         	else if (reactionCardAbility.equals(Cards.horseTraders))
                 doHorseTraders(context, game, player, responsible, reactionCard);
-        	else if (reactionCardAbility.equals(Cards.beggar))
-                doBeggar(context, game, player, responsible, reactionCard);
-            else if (reactionCardAbility.equals(Cards.caravanGuard))
+        	else if (reactionCardAbility.equals(Cards.caravanGuard))
                 doCaravanGuard(context, game, player, responsible, reactionCard);
             else if (reactionCardAbility.equals(Cards.diplomat))
                 doDiplomat(context, game, player, responsible, reactionCard);

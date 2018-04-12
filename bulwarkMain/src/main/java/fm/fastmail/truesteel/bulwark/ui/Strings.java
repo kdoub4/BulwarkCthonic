@@ -536,6 +536,7 @@ public class Strings {
     public static String[] getOptions(Card card, Object[] options, Object[] amounts) {
         int startIndex = getOptionStartIndex(card, options);
         String[] strings = new String[options.length - startIndex];
+        /*
         if (card != null && getCardName(card).equals(getCardName(Cards.hermit)) && !(options[0] instanceof String)) {
             strings = new String[options.length - 1];
             strings[0] = getString(R.string.none);
@@ -549,7 +550,7 @@ public class Strings {
             }
             return strings;
         }
-
+*/
         if (card != null && getCardName(card).equals(getCardName(Cards.prince)) && !(options.length > 0 && options[0] instanceof String && options[0].equals(IndirectPlayer.OPTION_CALL_RESOLVE_ACTION))) {
             String[] strings2 = new String[(options.length - startIndex)/2];
             for (int i = startIndex; i < options.length-1; i=i+2) {
@@ -708,8 +709,6 @@ public class Strings {
             return 2;
         } else if (cardName.equals(getCardName(Cards.lookout)) || cardName.equals(getCardName(Cards.scoutingParty))) {
             return 1;
-        } else if (cardName.equals(getCardName(Cards.pillage))) {
-            return 1;
         } else if (cardName.equals(getCardName(Cards.watchTower))) {
             return 1;
         } else if (cardName.equals(getCardName(Cards.annex))) {
@@ -718,8 +717,6 @@ public class Strings {
             return 2;
         } else if (cardName.equals(getCardName(Cards.secretPassage))) {
             return 1;
-        } else if (cardName.equals(getCardName(Cards.foolsGold))) {
-			return 1;
         }
 
         return 0;
@@ -772,8 +769,6 @@ public class Strings {
             return format(R.string.secretPassage_query, getCardName((Card)extras[0]));
         } else if (cardName.equals(getCardName(Cards.ambassador))) {
             return format(R.string.ambassador_query, getCardName((Card)extras[0]));
-        } else if (cardName.equals(getCardName(Cards.cartographer))) {
-            return getString(R.string.Cartographer_query) + " [" + cardName + "]";
         } else if (cardName.equals(getCardName(Cards.countingHouse))) {
             return getString(R.string.countingHouse_query);
         } else if (cardName.equals(getCardName(Cards.doctor))) {
@@ -792,8 +787,6 @@ public class Strings {
             return getString(R.string.herald_overpay_query) + " [" + cardName + "]";
         } else if (cardName.equals(getCardName(Cards.herbalist))) {
             return getString(R.string.herbalist_query);
-        } else if (cardName.equals(getCardName(Cards.hermit))) {
-            return getActionString(ActionType.TRASH, Cards.hermit);
         } else if (cardName.equals(getCardName(Cards.jester))) {
             return format(R.string.card_revealed, cardName, getCardName((Card)extras[1]));
         } else if (cardName.equals(getCardName(Cards.lookout)) || cardName.equals(getCardName(Cards.scoutingParty))) {
@@ -802,18 +795,12 @@ public class Strings {
             } else if (extras[0] == ActionType.DISCARD) {
                 return getString(R.string.lookout_query_discard);
             }
-        } else if (cardName.equals(getCardName(Cards.pillage))) {
-            return getActionString(ActionType.OPPONENTDISCARD, card, (String) extras[0]);
         } else if (cardName.equals(getCardName(Cards.pirateShip))) {
             return getString(R.string.treasure_to_trash);
         } else if (cardName.equals(getCardName(Cards.quest)) && extras[0] instanceof Card) {
             return getString(R.string.quest_attack_to_discard);
         } else if (cardName.equals(getCardName(Cards.raze))) {
             return getString(R.string.raze_query);
-        } else if(cardName.equals(getCardName(Cards.rogue))) {
-			return getString(R.string.rogue_query);
-		} else if (cardName.equals(getCardName(Cards.scheme))) {
-            return getString(R.string.scheme_query);
         } else if (cardName.equals(getCardName(Cards.sentry))) {
         	Card currentCard = (Card)extras[0];
         	Card[] cards = (Card[])extras[1];
@@ -1148,19 +1135,7 @@ public class Strings {
         } else if (cardName.equals(getCardName(Cards.baron))) {
             strings[1] = getString(R.string.baron_option_one);
             strings[2] = getString(R.string.baron_option_two);
-        } else if (cardName.equals(getCardName(Cards.catacombs))) {
-            strings[0] = format(R.string.catacombs_header, combineCardNames(extras));
-            strings[1] = getString(R.string.catacombs_option_one);
-            strings[2] = getString(R.string.catacombs_option_two);
-        } else if (   cardName.equals(getCardName(Cards.chancellor))
-        		   || cardName.equals(getCardName(Cards.scavenger))
-        		   || cardName.equals(getCardName(Cards.messenger))) {
-            strings[1] = getString(R.string.chancellor_query);
-            strings[2] = getString(R.string.pass);
-        } else if (cardName.equals(getCardName(Cards.cultist))) {
-            strings[1] = getString(R.string.cultist_play_next);
-            strings[2] = getString(R.string.pass);
-        } else if (cardName.equals(getCardName(Cards.duchess))) {
+        } else if (cardName.equals(getCardName(Cards.galleryOfLeaves)) || cardName.equals(getCardName(Cards.guardTower))) {
             if (extras == null) {
                 // This is asking if you want to _gain_ a duchess (upon purchase of a duchy).
                 strings[0] = getString(R.string.duchess_query);
@@ -1175,24 +1150,6 @@ public class Strings {
         } else if (cardName.equals(getCardName(Cards.explorer))) {
             strings[1] = getString(R.string.explorer_reveal);
             strings[2] = getString(R.string.pass);
-        } else if (cardName.equals(getCardName(Cards.hovel))) {
-            strings[1] = getString(R.string.hovel_option);
-            strings[2] = getString(R.string.pass);
-        } else if (cardName.equals(getCardName(Cards.illGottenGains))) {
-            strings[1] = getString(R.string.ill_gotten_gains_option_one);
-            strings[2] = getString(R.string.pass);
-        } else if (cardName.equals(getCardName(Cards.inn))) {
-            strings[0] = getCardRevealedHeader(extras);
-            strings[1] = getString(R.string.inn_option_one);
-            strings[2] = getString(R.string.inn_option_two);
-        } else if (cardName.equals(getCardName(Cards.ironmonger))) {
-            strings[0] = getCardRevealedHeader(extras);
-            strings[1] = getString(R.string.ironmonger_option_one);
-            strings[2] = getString(R.string.discard);
-        } else if (cardName.equals(getCardName(Cards.jackOfAllTrades))) {
-            strings[0] = getCardRevealedHeader(extras);
-            strings[1] = getString(R.string.jack_of_all_trades_option_one);
-            strings[2] = getString(R.string.discard);
         } else if (cardName.equals(getCardName(Cards.library))) {
             strings[0] = getCardRevealedHeader(extras);
             strings[1] = getString(R.string.keep);
@@ -1201,15 +1158,6 @@ public class Strings {
             strings[0] = getCardRevealedHeader(extras);
             strings[1] = getString(R.string.trash);
             strings[2] = getString(R.string.discard);
-        } else if (cardName.equals(getCardName(Cards.madman))) {
-            strings[1] = getString(R.string.madman_option);
-            strings[2] = getString(R.string.pass);
-        } else if (cardName.equals(getCardName(Cards.marketSquare))) {
-        	if (getCardName((Card)extras[0]).equals(getCardName(Cards.estate))) {
-        		strings[0] = getCardName(Cards.estate) + " (" + getCardName(Cards.marketSquare) + ")";
-        	}
-            strings[1] = getString(R.string.discard);
-            strings[2] = getString(R.string.keep);
         } else if (cardName.equals(getCardName(Cards.miningVillage))) {
             if (!controlName.equals(cardName)) strings[0] = Strings.format(getString(R.string.card_played_as_card), controlName, cardName);
             strings[1] = getString(R.string.mining_village_option_one);
@@ -1238,15 +1186,6 @@ public class Strings {
             strings[0] = Strings.format(R.string.navigator_header, combineCardNames(extras));
             strings[1] = getString(R.string.discard);
             strings[2] = getString(R.string.navigator_option_two);
-        } else if (cardName.equals(getCardName(Cards.nobleBrigand))) {
-            strings[0] = Strings.format(R.string.noble_brigand_query, extras[0]);
-            strings[1] = getCardName((Card) extras[1]);
-            strings[2] = getCardName((Card) extras[2]);
-        } else if (cardName.equals(getCardName(Cards.oracle))) {
-            String cardNames = combineCardNames(extras, 1);
-            strings[0] = format(R.string.card_revealed, extras[0], cardNames);
-            strings[1] = getString(R.string.top_of_deck);
-            strings[2] = getString(R.string.discard);
         } else if (cardName.equals(getCardName(Cards.raze))) {
             if (!controlName.equals(cardName)) strings[0] = Strings.format(getString(R.string.card_played_as_card), controlName, cardName);
             strings[1] = getString(R.string.trash_this);
@@ -1267,25 +1206,6 @@ public class Strings {
             strings[0] = getPlayerRevealedCardHeader(extras);
             strings[1] = getString(R.string.discard);
             strings[2] = getString(R.string.replace);
-        } else if (cardName.equals(getCardName(Cards.survivors))) {
-            strings[0] = Strings.format(R.string.survivors_header, combineCardNames(extras));
-            strings[1] = getString(R.string.discard);
-            strings[2] = getString(R.string.navigator_option_two);
-        } else if (cardName.equals(getCardName(Cards.tournament))) {
-            strings[1] = getString(R.string.tournament_reveal);
-            strings[2] = getString(R.string.tournament_option_one);
-        } else if (cardName.equals(getCardName(Cards.trader))) {
-            String c_name = getCardName((Card)extras[0]);
-            strings[1] = format(R.string.trader_gain, c_name);
-            strings[2] = format(R.string.trader_gain_instead_of, getCardName(Cards.silver), c_name);
-        } else if (cardName.equals(getCardName(Cards.tunnel))) {
-            strings[0] = getString(R.string.tunnel_query);
-            strings[1] = getString(R.string.tunnel_option_one);
-            strings[2] = getString(R.string.pass);
-        } else if (cardName.equals(getCardName(Cards.urchin))) {
-            if (!controlName.equals(cardName)) strings[0] = Strings.format(getString(R.string.card_played_as_card), controlName, cardName);
-            strings[1] = getString(R.string.urchin_trash_for_mercenary);
-            strings[2] = getString(R.string.pass);
         } else if (cardName.equals(getCardName(Cards.vassal))) {
             strings[1] = format(R.string.vassal_option_play, getCardName((Card)extras[0]));
             strings[2] = getString(R.string.pass);
@@ -1599,67 +1519,7 @@ public class Strings {
             getCardName(Cards.ironShodStaff),
             getCardName(Cards.carvedStaff),
 
-            getCardName(Cards.altar),
-            getCardName(Cards.ambassador),
-            getCardName(Cards.apprentice),
-            getCardName(Cards.armory),
-            getCardName(Cards.borderVillage),
-            getCardName(Cards.butcher),
-            getCardName(Cards.catacombs),
             getCardName(Cards.cellar),
-            getCardName(Cards.chapel),
-            getCardName(Cards.counterfeit),
-            getCardName(Cards.dameAnna),
-            getCardName(Cards.dameNatalie),
-            getCardName(Cards.deathCart),
-            getCardName(Cards.develop),
-            getCardName(Cards.diplomat),
-            getCardName(Cards.doctor),
-            getCardName(Cards.embassy),
-            getCardName(Cards.expand),
-            getCardName(Cards.farmland),
-            getCardName(Cards.feast),
-            getCardName(Cards.forager),
-            getCardName(Cards.forge),
-            getCardName(Cards.graverobber),
-            getCardName(Cards.governor),
-            getCardName(Cards.haggler),
-            getCardName(Cards.hermit),
-            getCardName(Cards.hornOfPlenty),
-            getCardName(Cards.horseTraders),
-            getCardName(Cards.inn),
-            getCardName(Cards.ironworks),
-            getCardName(Cards.jackOfAllTrades),
-            getCardName(Cards.journeyman),
-            getCardName(Cards.junkDealer),
-            getCardName(Cards.messenger),
-            getCardName(Cards.mill),
-            getCardName(Cards.oasis),
-            getCardName(Cards.plaza),
-            getCardName(Cards.poacher),
-            getCardName(Cards.quest),
-            getCardName(Cards.rats),
-            getCardName(Cards.rebuild),
-            getCardName(Cards.remake),
-            getCardName(Cards.remodel),
-            getCardName(Cards.replace),
-            getCardName(Cards.salvager),
-            /* secretChamber isn't simple, causes error in getActionString() */
-            getCardName(Cards.spiceMerchant),
-            getCardName(Cards.squire),
-            getCardName(Cards.stables),
-            getCardName(Cards.steward),
-            getCardName(Cards.stonemason),
-            getCardName(Cards.storeroom),
-            getCardName(Cards.torturer),
-            getCardName(Cards.tradeRoute),
-            getCardName(Cards.trader),
-            getCardName(Cards.tradingPost),
-            getCardName(Cards.transmute),
-            getCardName(Cards.upgrade),
-            getCardName(Cards.warehouse),
-            getCardName(Cards.workshop),
-            getCardName(Cards.youngWitch),
             /*Adventures*/
             getCardName(Cards.amulet),
             getCardName(Cards.artificer),
@@ -1720,7 +1580,6 @@ public class Strings {
 
         actionStringMap = new HashMap<String, String>();
         actionStringMap.put(getCardName(Cards.bureaucrat), getString(R.string.bureaucrat_part));
-        actionStringMap.put(getCardName(Cards.bandOfMisfits), getString(R.string.part_play));
         actionStringMap.put(getCardName(Cards.ferry), getString(R.string.part_move_token_minus_2_cost));
         actionStringMap.put(getCardName(Cards.courtyard),
                             Strings.format(R.string.courtyard_part_top_of_deck,
@@ -1739,14 +1598,11 @@ public class Strings {
         actionStringMap.put(getCardName(Cards.kingsCourt), getString(R.string.kings_court_part));
         actionStringMap.put(getCardName(Cards.legionary), getString(R.string.legionary_part));
         actionStringMap.put(getCardName(Cards.lostArts), getString(R.string.part_move_token_plus_one_action));
-        actionStringMap.put(getCardName(Cards.mandarin), getString(R.string.mandarin_part));
-        actionStringMap.put(getCardName(Cards.margrave), getString(R.string.margrave_part));
         actionStringMap.put(getCardName(Cards.militia), getString(R.string.militia_part));
         actionStringMap.put(getCardName(Cards.mint), getString(R.string.mint_part));
         actionStringMap.put(getCardName(Cards.overlord), getString(R.string.part_play));
         actionStringMap.put(getCardName(Cards.saboteur), getString(R.string.saboteur_part));
         actionStringMap.put(getCardName(Cards.save), getString(R.string.save_part));
-        actionStringMap.put(getCardName(Cards.sirMichael), getString(R.string.sir_michael_part));
         actionStringMap.put(getCardName(Cards.tax), getString(R.string.tax_part));
         actionStringMap.put(getCardName(Cards.throneRoom), getString(R.string.throne_room_part));
         actionStringMap.put(getCardName(Cards.disciple), getString(R.string.throne_room_part));
@@ -1754,7 +1610,6 @@ public class Strings {
         actionStringMap.put(getCardName(Cards.tournament), getString(R.string.select_prize));
         actionStringMap.put(getCardName(Cards.training), getString(R.string.part_move_token_plus_one_coin));
         actionStringMap.put(getCardName(Cards.university), getString(R.string.university_part));
-        actionStringMap.put(getCardName(Cards.urchin), getString(R.string.urchin_keep));
         actionStringMap.put(getCardName(Cards.attack), getString(R.string.attack_part));
         actionStringMap.put(getCardName(Cards.shield), getString(R.string.shield_part));
         actionStringMap.put(getCardName(Cards.towerShield), getString(R.string.towershield_part));
@@ -1842,24 +1697,6 @@ public class Strings {
                 return getString(R.string.secretchamber_query_discard);
             } else {
                 return getString(R.string.secretchamber_part);
-            }
-        } else if (cardName.equals(getCardName(Cards.count))) {
-            if (sco.actionType == ActionType.DISCARD) {
-                return getActionString(sco);
-            } else {
-                return Strings.format(R.string.count_part_top_of_deck, getCardName(Cards.count));
-            }
-        } else if (cardName.equals(getCardName(Cards.procession))) {
-            if (sco.actionType == ActionType.GAIN) {
-                return getActionString(sco);
-            } else {
-                return getCardName(Cards.procession);
-            }
-        } else if (cardName.equals(getCardName(Cards.mercenary))) {
-            if (sco.actionType == ActionType.TRASH) {
-                return getActionString(sco);
-            } else {
-                return getString(R.string.mercenary_part);
             }
         } else if (cardName.equals(getCardName(Cards.taxman))) {
             if (sco.actionType == ActionType.TRASH) {

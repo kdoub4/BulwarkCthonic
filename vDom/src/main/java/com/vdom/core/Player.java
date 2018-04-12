@@ -266,17 +266,6 @@ public abstract class Player {
         return false;
     }
 
-    public int mineableCards(Card[] hand) {
-        int mineableCards = 0;
-        for (Card card : hand) {
-            if (card.equals(Cards.potion) || card.equals(Cards.loan) || card.equals(Cards.masterpiece) || card.equals(Cards.illGottenGains) || card.equals(Cards.copper) || card.equals(Cards.silver) || card.equals(Cards.gold)) {
-                mineableCards++;
-            }
-        }
-
-        return mineableCards;
-    }
-
     public int inHandCount(Card card) {
         return Util.getCardCount(getHand(), card);
     }
@@ -496,11 +485,6 @@ public abstract class Player {
                     }
 
                     Card card = playedCards.remove(index);
-                    if (card.behaveAsCard().equals(Cards.hermit) &&
-                        (context != null) && 
-                        (context.totalCardsBoughtThisTurn == 0)) {
-                        controlPlayer.gainNewCard(Cards.madman, card, context);
-                    }
                     putBackCards.add(card);
                 }
             }
@@ -999,10 +983,6 @@ public abstract class Player {
             totals.put(Cards.fairgrounds, counts.get(Cards.fairgrounds) * ((counts.get(DISTINCT_CARDS) / 5) * 2));
         if(counts.containsKey(Cards.vineyard))
             totals.put(Cards.vineyard, counts.get(Cards.vineyard) * (this.getActionCardCount(this) / 3));
-        if(counts.containsKey(Cards.silkRoad))
-            totals.put(Cards.silkRoad, counts.get(Cards.silkRoad) * (this.getVictoryCardCount() / 4));
-        if(counts.containsKey(Cards.feodum))
-            totals.put(Cards.feodum, counts.get(Cards.feodum) * (Util.getCardCount(allCards, Cards.silver)  / 3));
         if(counts.containsKey(Cards.distantLands)) {
         	// counts only if on tavern
             counts.put(Cards.distantLands, Util.getCardCount(this.tavern, Cards.distantLands));
@@ -1277,7 +1257,7 @@ public abstract class Player {
         boolean willDiscard = false;
         Card exchange = null;
         
-        if (card.behaveAsCard().equals(Cards.hermit)) {
+        if (false) {//was hermit
             if (!commandedDiscard && 
                 (context != null) && 
                 (context.totalCardsBoughtThisTurn == 0))
@@ -1292,7 +1272,7 @@ public abstract class Player {
                 else {
                     trash(card, card, context);
                 }
-                controlPlayer.gainNewCard(Cards.madman, card, context);
+                //controlPlayer.gainNewCard(Cards.madman, card, context);
             }
             else
             {
@@ -1338,18 +1318,6 @@ public abstract class Player {
                 discard.add(card);
             }
         }
-        if (willDiscard) {
-        	if(commandedDiscard && card.equals(Cards.tunnel)) {
-
-                MoveContext tunnelContext = new MoveContext(game, this);
-
-                if(game.pileSize(Cards.gold) > 0 && controlPlayer.tunnel_shouldReveal(tunnelContext)) {
-                    reveal(card, card, tunnelContext);
-                    gainNewCard(Cards.gold, card, tunnelContext);
-                }
-            }
-        }
-
         // card left play - stop impersonations
         ((CardImpl) card).stopImpersonatingCard();
 
@@ -1385,9 +1353,6 @@ public abstract class Player {
 
             // Check if Trader swapped the card, so it can be made responsible, putting the card in the discard
             // pile rather than were it would go otherwise (according to faq)
-            if(!cardToGain.equals(card) && card.equals(Cards.silver)) {
-                gainEvent.responsible = Cards.trader;
-            }
 
             context.game.broadcastEvent(gainEvent);
 
@@ -1439,7 +1404,7 @@ public abstract class Player {
     }
 
     public void trash(Card card, Card responsible, MoveContext context) {
-        if(context != null) {
+        if (context != null) {
             // TODO: Track in main game event listener instead
             context.cardsTrashedThisTurn++;
         }
@@ -1448,38 +1413,36 @@ public abstract class Player {
         event.card = card;
         event.responsible = responsible;
         context.game.broadcastEvent(event);
-        
+
         // Add to trash pile
         if (isPossessed()) {
             context.game.possessedTrashPile.add(card);
-        } else if (card.is(CardType.Wound) || card.getKind() == Cards.Kind.One)
-        {
-            context.game.addToPile(card,true);
+        } else if (card.is(CardType.Wound) || card.getKind() == Cards.Kind.One) {
+            context.game.addToPile(card, true);
             if (card.getKind() == Cards.Kind.StaggeringWound) {
-                context.game.drawToHand(context, card, 2, true );
-                context.game.drawToHand(context, card, 1,true);
+                context.game.drawToHand(context, card, 2, true);
+                context.game.drawToHand(context, card, 1, true);
             }
-        }
-        else {
+        } else {
             context.game.trashPile.add(card);
         }
 
         if (context.phase != MoveContext.TurnPhase.Buy && !card.is(CardType.Enemy)) {
-            for(int i=context.game.enemyCount("spectre"); i > 0; i--) {
+            for (int i = context.game.enemyCount("spectre"); i > 0; i--) {
                 context.game.takeWounds(context.getPlayer(), 1, context, Cards.spectre, false);
             }
-            Card selectedCard = cardToPlay(context,Util.canReact(context,this, CardType.OnTrash),card,true,"");
+            Card selectedCard = cardToPlay(context, Util.canReact(context, this, CardType.OnTrash), card, true, "");
             if (selectedCard != null && selectedCard.getKind() == Cards.Kind.Belltower) {
-                discard(selectedCard,selectedCard,context);
-                context.game.drawToHand(context, card, 3, true );
-                context.game.drawToHand(context, card, 2, true );
-                context.game.drawToHand(context, card, 1,true);
+                discard(selectedCard, selectedCard, context);
+                context.game.drawToHand(context, card, 3, true);
+                context.game.drawToHand(context, card, 2, true);
+                context.game.drawToHand(context, card, 1, true);
             }
         }
 
         //Add VP token if Tomb is in play
         if (context.game.cardInGame(Cards.tomb)) {
-        	addVictoryTokens(context, 1, Cards.tomb);
+            addVictoryTokens(context, 1, Cards.tomb);
         }
 
         // Execute special card logic when the trashing occurs
@@ -1487,27 +1450,6 @@ public abstract class Player {
             getInheritance().behaveAsCard().isTrashed(context);
         } else {
             card.behaveAsCard().isTrashed(context);
-        }
-
-        // Market Square trashing reaction
-        boolean hasInheritedMarketSquare = Cards.marketSquare.equals(context.getPlayer().getInheritance()) && context.getPlayer().hand.contains(Cards.estate);
-        boolean hasMarketSquare = context.getPlayer().hand.contains(Cards.marketSquare);
-        if (hasMarketSquare || hasInheritedMarketSquare) {
-            ArrayList<Card> marketSquaresInHand = new ArrayList<Card>();
-
-            for (Card c : hand) {
-                if (c.getKind() == Cards.Kind.MarketSquare || (hasInheritedMarketSquare && c.equals(Cards.estate))) {
-                    marketSquaresInHand.add(c);
-                }
-            }
-
-            for (Card c : marketSquaresInHand) {
-                if (controlPlayer.marketSquare_shouldDiscard(context, c)) {
-                    hand.remove(c);
-                    discard(c, card, context);
-                    gainNewCard(Cards.gold, Cards.marketSquare, context);
-                }
-            }
         }
 
     }
@@ -2070,7 +2012,7 @@ public abstract class Player {
 
     public abstract Card stables_treasureToDiscard(MoveContext context);
 
-    public abstract boolean duchess_shouldDiscardCard(MoveContext context, Card card);
+    public abstract boolean shouldDiscardCard(MoveContext context, Card card, Card responsible);
 
     public abstract boolean duchess_shouldGainBecauseOfDuchy(MoveContext context);
 
@@ -2092,10 +2034,6 @@ public abstract class Player {
 
     public abstract Card jackOfAllTrades_nonTreasureToTrash(MoveContext context);
 
-    public abstract Card spiceMerchant_treasureToTrash(MoveContext context);
-
-    public abstract SpiceMerchantOption spiceMerchant_chooseOption(MoveContext context);
-
     public abstract Card[] embassy_cardsToDiscard(MoveContext context);
 
     public abstract Card[] cartographer_cardsFromTopOfDeckToDiscard(MoveContext context, Card[] cards);
@@ -2103,8 +2041,6 @@ public abstract class Player {
     public abstract Card[] cartographer_cardOrder(MoveContext context, Card[] cards);
 
     public abstract Card scheme_actionToPutOnTopOfDeck(MoveContext context, Card[] actions);
-
-    public abstract boolean tunnel_shouldReveal(MoveContext context);
 
     public abstract boolean trader_shouldGainSilverInstead(MoveContext context, Card card);
 

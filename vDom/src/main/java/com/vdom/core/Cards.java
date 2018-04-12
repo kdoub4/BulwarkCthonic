@@ -545,96 +545,6 @@ public class Cards {
     public static final Card princess;
     public static final Card trustySteed;
 
-    // Hinterlands expansion
-    public static final Card borderVillage;
-    public static final Card cache;
-    public static final Card cartographer;
-    public static final Card crossroads;
-    public static final Card develop;
-    public static final Card duchess;
-    public static final Card embassy;
-    public static final Card farmland;
-    public static final Card foolsGold;
-    public static final Card haggler;
-    public static final Card highway;
-    public static final Card illGottenGains;
-    public static final Card inn;
-    public static final Card jackOfAllTrades;
-    public static final Card mandarin;
-    public static final Card margrave;
-    public static final Card nobleBrigand;
-    public static final Card nomadCamp;
-    public static final Card oasis;
-    public static final Card oracle;
-    public static final Card scheme;
-    public static final Card silkRoad;
-    public static final Card spiceMerchant;
-    public static final Card stables;
-    public static final Card trader;
-    public static final Card tunnel;
-
-    // Dark Ages expansion
-    public static final Card altar;
-    public static final Card armory;
-    public static final Card banditCamp;
-    public static final Card bandOfMisfits;
-    public static final Card beggar;
-    public static final Card deathCart;
-    public static final Card feodum;
-    public static final Card fortress;
-    public static final Card poorHouse;
-    public static final Card rats;
-    public static final Card sage;
-    public static final Card squire;
-    public static final Card catacombs;
-    public static final Card count;
-    public static final Card forager;
-    public static final Card graverobber;
-    public static final Card huntingGrounds;
-    public static final Card ironmonger;
-    public static final Card junkDealer;
-    public static final Card marketSquare;
-    public static final Card mystic;
-    public static final Card scavenger;
-    public static final Card storeroom;
-    public static final Card wanderingMinstrel;
-    public static final Card procession;
-    public static final Card rebuild;
-    public static final Card rogue;
-    public static final Card spoils;
-    public static final Card counterfeit;
-    public static final Card pillage;
-    public static final Card cultist;
-    public static final Card urchin;
-    public static final Card mercenary;
-    public static final Card marauder;
-    public static final Card hermit;
-    public static final Card madman;
-    public static final Card vagrant;
-
-    public static final Card dameAnna;
-    public static final Card dameJosephine;
-    public static final Card dameMolly;
-    public static final Card dameSylvia;
-    public static final Card dameNatalie;
-    public static final Card sirBailey;
-    public static final Card sirDestry;
-    public static final Card sirMartin;
-    public static final Card sirMichael;
-    public static final Card sirVander;
-    public static final Card virtualKnight;
-
-    public static final Card necropolis;
-    public static final Card hovel;
-    public static final Card overgrownEstate;
-
-    public static final Card abandonedMine;
-    public static final Card ruinedLibrary;
-    public static final Card ruinedMarket;
-    public static final Card ruinedVillage;
-    public static final Card survivors;
-    public static final Card virtualRuins;
-
     // Guilds expansion
     public static final Card advisor;
     public static final Card baker;
@@ -1163,70 +1073,6 @@ public class Cards {
         prizeCards.add(princess    = new CardImpl.Builder(Cards.Kind.Princess, 0, CardType.Action, CardType.Prize).addBuys(1).description("While this is in play, cards cost 2 coins less, but not less than 0.  (This is not in the Supply.)").expansion(Expansion.Cornucopia).build());
         prizeCards.add(trustySteed = new CardImpl.Builder(Cards.Kind.TrustySteed, 0, CardType.Action, CardType.Prize).description("Choose two:  +2 Cards; +2 Actions; +2 coins; gain 4 silvers and put your deck into your discard pile.  (The choices must be different.)  (This is not in the Supply.)").expansion(Expansion.Cornucopia).build());
 
-        // Hinterlands
-        actionCardsHinterlands.add(borderVillage = new CardImpl.Builder(Cards.Kind.BorderVillage, 6, CardType.Action).addCards(1).addActions(2).description("When you gain this, gain a card costing less than this.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(cache = new CardImpl.Builder(Cards.Kind.Cache, 5, CardType.Treasure).addHeroism(3).description("When you gain this, gain two Coppers.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(cartographer = new CardImpl.Builder(Cards.Kind.Cartographer, 5, CardType.Action).addCards(1).addActions(1).description("Look at the top 4 cards of your deck. Discard any number of them. Put the rest back on top in any order.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(crossroads = new CardImpl.Builder(Cards.Kind.Crossroads, 2, CardType.Action).description("Reveal your hand. +1 Card per Victory card revealed. If this is the first time you played a Crossroads this turn, +3 Actions.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(develop = new CardImpl.Builder(Cards.Kind.Develop, 3, CardType.Action).trashForced().description("Trash a card from your hand. Gain a card costing exactly 1 coin more than it and a card costing exactly 1 less than it, in either order, putting them on top of your deck.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(duchess = new CardImpl.Builder(Cards.Kind.Duchess, 2, CardType.Action).addHeroism(2).description("Each player (including you) looks at the top card of his deck, and discards it or puts it back - In games using this, when you gain a Duchy, you may gain a Duchess.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(embassy = new CardImpl.Builder(Cards.Kind.Embassy, 5, CardType.Action).addCards(5).description("Discard 3 cards - When you gain this, each other player gains a Silver.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(farmland = new CardImpl.Builder(Cards.Kind.Farmland, 6, CardType.Victory).vp(2).description("When you buy this, trash a card from your hand. Gain a card costing exactly 2 coins more than the trashed card.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(foolsGold = new CardImpl.Builder(Cards.Kind.FoolsGold, 2, CardType.Treasure, CardType.InHandReaction).addHeroism(1).description("If this is the first time you played a Fool's Gold this turn, this is worth 1 coin, otherwise it's worth 4 coins - When another player gains a Province, you may trash this from your hand. If you do, gain a Gold, putting it on your deck.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(haggler = new CardImpl.Builder(Cards.Kind.Haggler, 5, CardType.Action).addHeroism(2).description("While this is in play, when you buy a card, gain a card costing less than it that is not a Victory card.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(highway = new CardImpl.Builder(Cards.Kind.Highway, 5, CardType.Action).addCards(1).addActions(1).description("While this is in play, cards cost 1 coin less, but not less than 0 coin.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(illGottenGains = new CardImpl.Builder(Cards.Kind.IllGottenGains, 5, CardType.Treasure).addHeroism(1).description("When you play this, you may gain a Copper, putting it into your hand - When you gain this, each other player gains a Curse.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(inn = new CardImpl.Builder(Cards.Kind.Inn, 5, CardType.Action).addCards(2).addActions(2).description("Discard 2 cards - When you gain this, look through your discard pile (including this), reveal any number of Action cards from it, and shuffle them into your deck.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(jackOfAllTrades = new CardImpl.Builder(Cards.Kind.JackofallTrades, 4, CardType.Action).description("Gain a Silver. Look at the top card of your deck; discard it or put it back. Draw until you have 5 cards in hand. You may trash a card from your hand that is not a Treasure.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(mandarin = new CardImpl.Builder(Cards.Kind.Mandarin, 5, CardType.Action).addHeroism(3).description("Put a card from your hand on top of your deck - When you gain this, put all Treasures you have in play on top of your deck in any order.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(margrave = new CardImpl.Builder(Cards.Kind.Margrave, 5, CardType.Action, CardType.Attack).addCards(3).addBuys(1).description("Each other player draws a card, then discards down to 3 cards in hand.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(nobleBrigand = new CardImpl.Builder(Cards.Kind.NobleBrigand, 4, CardType.Action, CardType.Attack).addHeroism(1).description("When you buy this or play it, each other player reveals the top 2 cards of his deck, trashes a revealed Silver or Gold you choose, and discards the rest. If he didn't reveal a Treasure, he gains a Copper. You gain the trashed cards.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(nomadCamp = new CardImpl.Builder(Cards.Kind.NomadCamp, 4, CardType.Action).addBuys(1).addHeroism(2).description("When you gain this, put it on top of your deck.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(oasis = new CardImpl.Builder(Cards.Kind.Oasis, 3, CardType.Action).addCards(1).addActions(1).addHeroism(1).description("Discard a card.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(oracle = new CardImpl.Builder(Cards.Kind.Oracle, 3, CardType.Action, CardType.Attack).description("Each player (including you) reveals the top 2 cards of his deck, and you choose one: either he discards them, or he puts them back on top in an order he chooses.\n+2 Cards").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(scheme = new CardImpl.Builder(Cards.Kind.Scheme, 3, CardType.Action).addCards(1).addActions(1).description("At the start of Clean-up this turn, you may choose an Action card you have in play. If you discard it from play this turn, put it on your deck.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(silkRoad = new CardImpl.Builder(Cards.Kind.SilkRoad, 4, CardType.Victory).description("Worth 1 VP for every 4 Victory cards in your deck (round down).").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(spiceMerchant = new CardImpl.Builder(Cards.Kind.SpiceMerchant, 4, CardType.Action).trashForced().description("You may trash a Treasure from your hand. If you do, choose one: +2 Cards and +1 Action; or +2 Coin and +1 Buy.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(stables = new CardImpl.Builder(Cards.Kind.Stables, 5, CardType.Action).description("You may discard a Treasure. If you do, +3 Cards and +1 Action.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(trader = new CardImpl.Builder(Cards.Kind.Trader, 4, CardType.Action, CardType.InHandReaction).trashForced().description("Trash a card from your hand. Gain a number of Silvers equal to its cost in coins - When you would gain a card, you may reveal this from your hand. If you do, instead, gain a silver.").expansion(Expansion.Hinterlands).build());
-        actionCardsHinterlands.add(tunnel = new CardImpl.Builder(Cards.Kind.Tunnel, 3, CardType.Victory, CardType.InHandReaction).vp(2).description("When you discard this other than during a Clean-up phase, you may reveal it. If you do, gain a Gold.").expansion(Expansion.Hinterlands).build());
-
-        // Dark Ages
-        actionCardsDarkAges.add(altar = new CardImpl.Builder(Cards.Kind.Altar, 6, CardType.Action).trashForced().description("Trash a card from your hand. Gain a card costing up to 5 coins.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(armory = new CardImpl.Builder(Cards.Kind.Armory, 4, CardType.Action).description("Gain a card costing up to 4 coins. Put it on top of your deck.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(banditCamp = new CardImpl.Builder(Cards.Kind.BanditCamp, 5, CardType.Action).addActions(2).addCards(1).description("Gain a Spoils from the Spoils pile.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(bandOfMisfits = new CardImpl.Builder(Cards.Kind.BandOfMisfits, 5, CardType.Action).description("Play this as if it were an Action card in the supply costing less than it that you choose. This is that card until it leaves play.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(beggar = new CardImpl.Builder(Cards.Kind.Beggar, 2, CardType.Action, CardType.InHandReaction).description("Gain 3 Coppers, putting them into your hand. When another player plays an Attack card, you may discard this. If you do, gain two Silvers, putting one on top of your deck.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(catacombs = new CardImpl.Builder(Cards.Kind.Catacombs, 5, CardType.Action).description("Look at the top 3 cards of your deck. Choose one: Put them into your hand; or discard them and +3 Cards. When you trash this, gain a cheaper card.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(count = new CardImpl.Builder(Cards.Kind.Count, 5, CardType.Action).description("Choose one: Discard 2 cards; or put a card from your hand on top of your deck; or gain a Copper. Choose one: +3 coins; or trash your hand; or gain a Duchy.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(counterfeit = new CardImpl.Builder(Cards.Kind.Counterfeit, 5, CardType.Treasure).addBuys(1).addHeroism(1).description("When you play this, you may play a Treasure from your hand twice. If you do, trash that Treasure.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(cultist = new CardImpl.Builder(Cards.Kind.Cultist, 5, CardType.Action, CardType.Attack, CardType.Blast).addCards(2).description("Each other player gains a Range. You may play a Cultist from your hand. When you trash this, +3 Cards.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(deathCart = new CardImpl.Builder(Cards.Kind.DeathCart, 4, CardType.Action, CardType.Blast).addHeroism(5).description("You may trash an Action card from your hand. If you don't, trash this. When you gain this, gain 2 Range.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(feodum = new CardImpl.Builder(Cards.Kind.Feodum, 4, CardType.Victory).description("Worth 1 VP for every 3 Silvers in your deck (round down). When you trash this, gain 3 Silvers.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(forager = new CardImpl.Builder(Cards.Kind.Forager, 3, CardType.Action).addActions(1).addBuys(1).trashForced().description("Trash a card from your hand. +1 coin per differently named Treasure in the trash.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(fortress = new CardImpl.Builder(Cards.Kind.Fortress, 4, CardType.Action).addCards(1).addActions(2).description("When you trash this, put it into your hand.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(graverobber = new CardImpl.Builder(Cards.Kind.Graverobber, 5, CardType.Action).description("Choose one: Gain a card from the trash costing from 3 to 6 coins, putting it on top of your deck; or trash an Action card from your hand and gain a card costing up to 3 more than it.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(hermit = new CardImpl.Builder(Cards.Kind.Hermit, 3, CardType.Action).description("Look through your discard pile. You may trash a card from your discard pile or hand that is not a Treasure. Gain a card costing up to 3 coins. When you discard this from play, if you did not buy any cards this turn, trash this and gain a Madman from the Madman pile.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(huntingGrounds = new CardImpl.Builder(Cards.Kind.HuntingGrounds, 6, CardType.Action).addCards(4).description("When you trash this, gain a Duchy or 3 Estates.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(ironmonger = new CardImpl.Builder(Cards.Kind.Ironmonger, 4, CardType.Action).addCards(1).addActions(1).description("Reveal the top card of your deck; you may discard it. Either way, if it is an Action card, +1 Action; Treasure card, + 1 coin; Victory card, +1 Card.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(junkDealer = new CardImpl.Builder(Cards.Kind.JunkDealer, 5, CardType.Action).addCards(1).addActions(1).addHeroism(1).trashForced().description("Trash a card from your hand.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(marauder = new CardImpl.Builder(Cards.Kind.Marauder, 4, CardType.Action, CardType.Attack, CardType.Blast).description("Gain a Spoils from the Spoils pile. Each other player gains a Range.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(marketSquare = new CardImpl.Builder(Cards.Kind.MarketSquare, 3, CardType.Action, CardType.InHandReaction).addCards(1).addActions(1).addBuys(1).description("When one of your cards is trashed, you may discard this from your hand. If you do, gain a Gold.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(mystic = new CardImpl.Builder(Cards.Kind.Mystic, 5, CardType.Action).addActions(1).addHeroism(2).description("Name a card. Reveal the top card of your deck. If it’s the named card, put it into your hand.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(pillage = new CardImpl.Builder(Cards.Kind.Pillage, 5, CardType.Action, CardType.Attack).trashOnUse().description("Trash this. Each other player with 5 or more cards in hand reveals his hand and discards a card that you choose. Gain 2 Spoils from the Spoils pile.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(poorHouse = new CardImpl.Builder(Cards.Kind.PoorHouse, 1, CardType.Action).addHeroism(4).description("Reveal your hand. -1 coin per treasure card in your hand, to a minimum of 0 coins.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(procession = new CardImpl.Builder(Cards.Kind.Procession, 4, CardType.Action).description("You may play an Action card from your hand twice. Trash it. Gain an Action card costing exactly 1 more than it.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(rats = new CardImpl.Builder(Cards.Kind.Rats, 4, CardType.Action).addCards(1).addActions(1).trashForced().description("Gain a Rats. Trash a card from your hand other than a Rats (or reveal a hand of all Rats).").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(rebuild = new CardImpl.Builder(Cards.Kind.Rebuild, 5, CardType.Action).addActions(1).description("Name a card. Reveal cards from the top of your deck until you reveal a Victory card that is not the named card. Discard the other cards. Trash the Victory card and gain a Victory card costing up to 3 more than it.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(rogue = new CardImpl.Builder(Cards.Kind.Rogue, 5, CardType.Action, CardType.Attack).addHeroism(2).description("If there are any cards in the trash costing from 3 to 6 coins, gain one of them. Otherwise, each other player reveals the top 2 cards of his deck, trashes one of them costing from 3 to 6 coins, and discards the rest.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(sage = new CardImpl.Builder(Cards.Kind.Sage, 3, CardType.Action).addActions(1).description("Reveal cards from the top of your deck until you reveal one costing 3 coins or more. Put that card into your hand and discard the rest.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(scavenger = new CardImpl.Builder(Cards.Kind.Scavenger, 4, CardType.Action).addHeroism(2).description("You may put your deck into your discard pile. Look through your discard pile and put one card from it on top of your deck.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(squire = new CardImpl.Builder(Cards.Kind.Squire, 2, CardType.Action).addHeroism(1).description("Choose one: +2 Actions; or +2 Buys; or gain a Silver. - When you trash this, gain an Attack card.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(storeroom = new CardImpl.Builder(Cards.Kind.Storeroom, 3, CardType.Action).addBuys(1).description("Discard any number of cards. +1 Card per card discarded. Discard any number of cards. +1 coin per card discarded the second time.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(urchin = new CardImpl.Builder(Cards.Kind.Urchin, 3, CardType.Action, CardType.Attack).addCards(1).addActions(1).description("Each other player discards down to 4 cards in hand. When you play another attack card with this in play, you may trash this. If you do, gain a Mercenary from the Mercenary pile.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(vagrant = new CardImpl.Builder(Cards.Kind.Vagrant, 2, CardType.Action).addCards(1).addActions(1).description("Reveal the top card of your deck. If it's a Curse, Range, Shelter, or Victory card, put it into your hand.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(wanderingMinstrel = new CardImpl.Builder(Cards.Kind.WanderingMinstrel, 4, CardType.Action).addCards(1).addActions(2).description("Reveal the top 3 cards of your deck. Put the Actions back on top in any order and discard the rest.").expansion(Expansion.DarkAges).build());
-
         // Guilds
         actionCardsGuilds.add(advisor          = new CardImpl.Builder(Cards.Kind.Advisor, 4, CardType.Action).addActions(1).description("Reveal the top 3 cards of your deck. The player to your left chooses one of them. Discard that card. Put the other cards into your hand.").expansion(Expansion.Guilds).build());
         actionCardsGuilds.add(soothsayer       = new CardImpl.Builder(Cards.Kind.Soothsayer, 5, CardType.Action, CardType.Attack).description("Gain a Gold. Each other player gains a Curse. Each player who did draws a card.").expansion(Expansion.Guilds).build());
@@ -1241,37 +1087,6 @@ public class Cards {
         actionCardsGuilds.add(masterpiece      = new CardImpl.Builder(Cards.Kind.Masterpiece, 3, CardType.Treasure).addHeroism(1).isOverpay().description("When you buy this, you may overpay for it. If you do, gain a Silver per $1 you overpaid.").expansion(Expansion.Guilds).build());
         actionCardsGuilds.add(doctor           = new CardImpl.Builder(Cards.Kind.Doctor, 3, CardType.Action).isOverpay().description("Name a card. Reveal the top 3 cards of your deck. Trash the matches. Put the rest back on top in any order.  When you buy this, you may overpay for it. For each $1 you overpaid, look at the top card of your deck; trash it, discard it, or put it back.").expansion(Expansion.Guilds).build());
         actionCardsGuilds.add(herald           = new CardImpl.Builder(Cards.Kind.Herald, 4, CardType.Action).addCards(1).addActions(1).isOverpay().description("Reveal the top card of your deck. If it is an Action, play it. When you buy this, you may overpay for it. For each $1 you overpaid, look through your discard pile and put a card from it on top of your deck.").expansion(Expansion.Guilds).build());
-
-        // Non-Supply Cards
-        nonSupplyCards.add(madman    = new CardImpl.Builder(Cards.Kind.Madman, 0, CardType.Action).addActions(2).description("Return this to the Madman pile. If you do, +1 Card per card in your hand. (This is not in the Supply.)").expansion(Expansion.DarkAges).build());
-        nonSupplyCards.add(mercenary = new CardImpl.Builder(Cards.Kind.Mercenary, 0, CardType.Action, CardType.Attack).description("You may trash 2 cards from your hand. If you do, +2 cards, +2 coins, and each other player discards down to 3 cards in hand. (This is not in the Supply.)").expansion(Expansion.DarkAges).build());
-        nonSupplyCards.add(spoils    = new CardImpl.Builder(Cards.Kind.Spoils, 0, CardType.Treasure).addHeroism(3).description("When you play this, return it to the Spoils pile. (This is not in the Supply.)").expansion(Expansion.DarkAges).build());
-
-        // Range
-        ruinsCards.add(abandonedMine     = new CardImpl.Builder(Cards.Kind.AbandonedMine, 0, CardType.Action, CardType.Range).addHeroism(1).expansion(Expansion.DarkAges).build());
-        ruinsCards.add(ruinedLibrary     = new CardImpl.Builder(Cards.Kind.RuinedLibrary, 0, CardType.Action, CardType.Range).addCards(1).expansion(Expansion.DarkAges).build());
-        ruinsCards.add(ruinedMarket      = new CardImpl.Builder(Cards.Kind.RuinedMarket, 0, CardType.Action, CardType.Range).addBuys(1).expansion(Expansion.DarkAges).build());
-        ruinsCards.add(ruinedVillage     = new CardImpl.Builder(Cards.Kind.RuinedVillage, 0, CardType.Action, CardType.Range).addActions(1).expansion(Expansion.DarkAges).build());
-        ruinsCards.add(survivors         = new CardImpl.Builder(Cards.Kind.Survivors, 0, CardType.Action, CardType.Range).description("Look at the top 2 cards of your deck. Discard them or put them back in any order.").expansion(Expansion.DarkAges).build());
-        nonKingdomCards.add(virtualRuins = new CardImpl.Builder(Cards.Kind.VirtualRuins, 0, CardType.Action, CardType.Range).pileCreator(new RuinsPileCreator()).expansion(Expansion.DarkAges).build());
-        
-        // Knights
-        knightsCards.add(dameAnna = new CardImpl.Builder(Cards.Kind.DameAnna, 5, CardType.Action, CardType.Attack, CardType.Knight).description("You may trash up to 2 cards from your hand. " + KNIGHTS_TEXT).expansion(Expansion.DarkAges).build());
-        knightsCards.add(dameJosephine = new CardImpl.Builder(Cards.Kind.DameJosephine, 5, CardType.Action, CardType.Attack, CardType.Victory, CardType.Knight).vp(2).description(KNIGHTS_TEXT).expansion(Expansion.DarkAges).build());
-        knightsCards.add(dameMolly = new CardImpl.Builder(Cards.Kind.DameMolly, 5, CardType.Action, CardType.Attack, CardType.Knight).addActions(2).description(KNIGHTS_TEXT).expansion(Expansion.DarkAges).build());
-        knightsCards.add(dameNatalie = new CardImpl.Builder(Cards.Kind.DameNatalie, 5, CardType.Action, CardType.Attack, CardType.Knight).description("You may gain a card costing up to 3 coins. " + KNIGHTS_TEXT).expansion(Expansion.DarkAges).build());
-        knightsCards.add(dameSylvia = new CardImpl.Builder(Cards.Kind.DameSylvia, 5, CardType.Action, CardType.Attack, CardType.Knight).addHeroism(2).description(KNIGHTS_TEXT).expansion(Expansion.DarkAges).build());
-        knightsCards.add(sirBailey = new CardImpl.Builder(Cards.Kind.SirBailey, 5, CardType.Action, CardType.Attack, CardType.Knight).addActions(1).addCards(1).description(KNIGHTS_TEXT).expansion(Expansion.DarkAges).build());
-        knightsCards.add(sirDestry = new CardImpl.Builder(Cards.Kind.SirDestry, 5, CardType.Action, CardType.Attack, CardType.Knight).addCards(2).description(KNIGHTS_TEXT).expansion(Expansion.DarkAges).build());
-        knightsCards.add(sirMartin = new CardImpl.Builder(Cards.Kind.SirMartin, 4, CardType.Action, CardType.Attack, CardType.Knight).addBuys(2).description(KNIGHTS_TEXT).expansion(Expansion.DarkAges).build());
-        knightsCards.add(sirMichael = new CardImpl.Builder(Cards.Kind.SirMichael, 5, CardType.Action, CardType.Attack, CardType.Knight).description("Each other player discards down to 3 cards in hand. " + KNIGHTS_TEXT).expansion(Expansion.DarkAges).build());
-        knightsCards.add(sirVander = new CardImpl.Builder(Cards.Kind.SirVander, 5, CardType.Action, CardType.Attack, CardType.Knight).description(KNIGHTS_TEXT + " When you trash this, gain a Gold.").expansion(Expansion.DarkAges).build());
-        actionCardsDarkAges.add(virtualKnight = new CardImpl.Builder(Kind.VirtualKnight, 5, CardType.Action, CardType.Attack, CardType.Knight).pileCreator(new KnightsPileCreator()).expansion(Expansion.DarkAges).build());
-
-        // Shelters
-        nonSupplyCards.add(necropolis = new CardImpl.Builder(Cards.Kind.Necropolis, 1, CardType.Action, CardType.Shelter).addActions(2).expansion(Expansion.DarkAges).build());
-        nonSupplyCards.add(overgrownEstate = new CardImpl.Builder(Cards.Kind.OvergrownEstate, 1, CardType.Victory, CardType.Shelter).description("When you trash this, +1 Card").expansion(Expansion.DarkAges).build());
-        nonSupplyCards.add(hovel = new CardImpl.Builder(Cards.Kind.Hovel, 1, CardType.InHandReaction, CardType.Shelter).description("When you buy a Victory card, you may trash this from your hand").expansion(Expansion.DarkAges).build());
 
         // Adventures
         actionCardsAdventures.add(amulet          = new CardImpl.Builder(Cards.Kind.Amulet, 3, CardType.Action, CardType.Duration).description("Now and at the start of your next turn, choose one: +1 Coin; or trash a card from your hand; or gain a Silver.").expansion(Expansion.Adventures).build());
@@ -1443,7 +1258,6 @@ public class Cards {
         eventCardsPromo.add(summon         = new CardImpl.Builder(Cards.Kind.Summon, 5, CardType.Event).description("Gain an Action card costing up to 4 Coins. Set it aside. If you do, then at the start of your next turn, play it.").expansion(Expansion.Promo).build());
 
         // Create map for from variable pile card to randomizer
-        for (Card card : knightsCards) { variablePileCardToRandomizer.put(card, virtualKnight); }
         for (Card card : castleCards) { variablePileCardToRandomizer.put(card, virtualCastle); }
         variablePileCardToRandomizer.put(catapult, virtualCatapultRocks);
         variablePileCardToRandomizer.put(rocks, virtualCatapultRocks);
@@ -1481,8 +1295,6 @@ public class Cards {
         for (Card card : actionCardsAlchemy)     { actionCards.add(card); }
         for (Card card : actionCardsProsperity)  { actionCards.add(card); }
         for (Card card : actionCardsCornucopia)  { actionCards.add(card); }
-        for (Card card : actionCardsHinterlands) { actionCards.add(card); }
-        for (Card card : actionCardsDarkAges)    { actionCards.add(card); }
         for (Card card : actionCardsGuilds)      { actionCards.add(card); }
         for (Card card : actionCardsAdventures)  { actionCards.add(card); }
         for (Card card : actionCardsEmpires)     { actionCards.add(card); }
@@ -1511,8 +1323,6 @@ public class Cards {
         for (Card card : actionCards)       { cardNameToCard.put(card.getName(), card); }
         for (Card card : prizeCards)        { cardNameToCard.put(card.getName(), card); }
         for (Card card : nonSupplyCards)    { cardNameToCard.put(card.getName(), card); }
-        for (Card card : knightsCards)      { cardNameToCard.put(card.getName(), card); }
-        for (Card card : ruinsCards)        { cardNameToCard.put(card.getName(), card); }
         for (Card card : castleCards)       { cardNameToCard.put(card.getName(), card); }
         for (Card card : variablePileCards) { cardNameToCard.put(card.getName(), card); }
         for (Card card : nonKingdomCards)   { cardNameToCard.put(card.getName(), card); }

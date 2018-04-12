@@ -22,51 +22,6 @@ class DefaultPileCreator extends PileCreator {
     }
 }
 
-class RuinsPileCreator extends PileCreator {
-    public CardPile create(Card template, int count) {
-        Map<Card, Integer> cardShuffle = new HashMap<Card, Integer>();
-        List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
-        for (Card ruin : Cards.ruinsCards) {
-            cardShuffle.put(ruin, 0);
-        }
-
-        ArrayList<Card> ruins = new ArrayList<Card>();
-        for (int i = 0; i < 10; i++) {
-            ruins.add(Cards.abandonedMine);
-            ruins.add(Cards.ruinedLibrary);
-            ruins.add(Cards.ruinedMarket);
-            ruins.add(Cards.ruinedVillage);
-            ruins.add(Cards.survivors);
-        }
-        Collections.shuffle(ruins);
-
-        int i = 0;
-        for (Card c : ruins) {
-            cardShuffle.put(c, cardShuffle.get(c) + 1);
-            if (++i >= count) {
-                break;
-            }
-        }
-        for (Map.Entry<Card, Integer> entry : cardShuffle.entrySet()) {
-            cards.add(new CardPile.CardMultiplicity(entry.getKey(), entry.getValue()));
-        }
-        return new CardPile(template, cards, false, false);
-    }
-}
-
-class KnightsPileCreator extends PileCreator {
-
-    public CardPile create(Card template, int count) {
-        List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
-        //Currently count is ignored because there should always be ten knights.
-        for (Card c: Cards.knightsCards) {
-            cards.add(new CardPile.CardMultiplicity(c, 1));
-        }
-        return new CardPile(template, cards, false, false);
-
-    }
-}
-
 class GoblinPileCreator extends PileCreator {
     public CardPile create(Card template, int count) {
         List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();

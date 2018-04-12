@@ -118,11 +118,6 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         card.isCastle = c.is(CardType.Castle, null);
         card.isGathering = c.is(CardType.Gathering, null);
         card.isLandmark = c.is(CardType.Landmark, null);
-        card.isAttack = c.is(CardType.Attack, null) || c.equals(Cards.virtualKnight);
-        if (c.equals(Cards.virtualRuins))
-            card.isRuins = true;
-        else
-            card.isRuins = c.is(CardType.Range, null);
 
 
         if (uniqueCardPile) {
@@ -136,10 +131,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
             card.isPrize = true;
         }
 
-        if (   c.equals(Cards.spoils)
-            || c.equals(Cards.mercenary)
-            || c.equals(Cards.madman)
-            || c.equals(Cards.soldier)
+        if (  c.equals(Cards.soldier)
             || c.equals(Cards.fugitive)
             || c.equals(Cards.disciple)
             || c.equals(Cards.teacher)
@@ -152,12 +144,6 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
             card.pile = MyCard.NON_SUPPLY_PILE;
         }
 
-        if (c.equals(Cards.necropolis) ||
-            c.equals(Cards.overgrownEstate) ||
-            c.equals(Cards.hovel))
-        {
-            card.pile = MyCard.SHELTER_PILES;
-        }
 
         if ((c.equals(Cards.copper)) ||
             (c.equals(Cards.silver)) ||
