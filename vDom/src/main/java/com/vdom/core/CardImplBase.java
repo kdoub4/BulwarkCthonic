@@ -107,7 +107,7 @@ public class CardImplBase extends CardImpl {
                 toDiscard = currentPlayer.getCardFromHand(context,sco) ;
                 if (toDiscard != null) {
                     context.actions++;
-                    currentPlayer.discard(toDiscard, this, context);
+                    currentPlayer.discard(currentPlayer.hand.removeCard(toDiscard), this, context);
                 }
                 break;
             case SamuGarden:
@@ -1309,7 +1309,7 @@ public class CardImplBase extends CardImpl {
     private void callAction(MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
             case SilkenSnare:
-                if (context.countCardsInPlayByIdentifier("snare")>1 &&
+                if (Util.getCardCount(currentPlayer.getTavern(), "snare") > 0 &&
                         ((IndirectPlayer)currentPlayer).selectBoolean(context, this)) {
                     context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
                     actionPhaseAttack(context, currentPlayer, false, true, 2);
@@ -1317,7 +1317,7 @@ public class CardImplBase extends CardImpl {
                 else {
                     context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
                     SelectCardOptions sco = new SelectCardOptions().isNonCrown()
-                            .setCardResponsible(this)
+                            .setCardResponsible(this).isSelect()
                             .setCount(1).fromBlackMarket().setActionType(SelectCardOptions.ActionType.DISCARD);
                     int[] toBanish = currentPlayer.doSelectFoe(context, sco, 1, GameEvent.EventType.SelectFoe);
                     if (toBanish.length == 1) {

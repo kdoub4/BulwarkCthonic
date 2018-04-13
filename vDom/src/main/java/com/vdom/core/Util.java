@@ -552,6 +552,16 @@ public class Util {
         }
         return count;
     }
+
+    public static <T> int getCardCount(Iterable<T> cards, String... identifiers) {
+        int count = 0;
+        for (T thisCard : cards) {
+            if (((Card)thisCard).is(identifiers)) {
+                count++;
+            }
+        }
+        return count;
+    }
     
 
 	public static boolean areCardsInHand(Card[] cards, MoveContext context) {
