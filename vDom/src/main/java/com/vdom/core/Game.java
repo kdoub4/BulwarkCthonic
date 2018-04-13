@@ -85,7 +85,7 @@ public class Game {
     public static boolean platColonyPassedIn = false;
     public static double chanceForPlatColony = -1;
     public static double chanceForShelters = 0.0;
-    
+
     public static enum BlackMarketSplitPileOptions {
     	NONE, ONE, ANY, ALL
     }
@@ -3275,6 +3275,11 @@ public class Game {
                         player.discard(takeFromPile(Cards.sidestep), null, null);
                         player.discard(takeFromPile(Cards.sidestep), null, null);
                         break;
+                    case Jakob:
+                        player.discard(takeFromPile(Cards.magicMissile), null, null);
+                        player.discard(takeFromPile(Cards.magicMissile), null, null);
+                        player.discard(takeFromPile(Cards.crystalOrb), null, null);
+                        break;
                 }
                 //TODO Bulwark multiplayer
                 player.discard(takeFromPile(Cards.one), null, null);
@@ -3584,6 +3589,12 @@ public class Game {
                     break;
                 case Wiola:
                     for (Card c : Cards.heroCardsWiola) {
+                        addPile(c);
+                        added++;
+                    }
+                    break;
+                case Jakob:
+                    for (Card c : Cards.heroCardsJakob) {
                         addPile(c);
                         added++;
                     }
