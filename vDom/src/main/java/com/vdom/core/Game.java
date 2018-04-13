@@ -701,7 +701,8 @@ public class Game {
     private int activateEnemy(Card enemyCard, Player currentPlayer, MoveContext context, int i) {
         int wounds = 0;
         if (currentPlayer.preventActivation(context, enemyCard))
-            if (enemyCard.getId() != context.game.blackMarketPile.get(i).getId()) {
+            if (i >= this.blackMarketPile.size() ||
+                    enemyCard.getId() != context.game.blackMarketPile.get(i).getId()) {
                 //must have been killed roll back i
                 i--;
             }
@@ -825,12 +826,12 @@ public class Game {
                     takeWounds(currentPlayer, wounds, context, enemyCard, false);
                     break;
                 case YoonIseulLizard:
-                    try {
+                    try { //if previous enemy kills itself or others go back
                         i = activateEnemy(context.game.blackMarketPile.get(i - 1), currentPlayer, context, i - 1) + 1;
                     } catch (IndexOutOfBoundsException e) {
                     }
-                    try {
-                        i = activateEnemy(context.game.blackMarketPile.get(i + 1), currentPlayer, context, i + 1) - 1;
+                    try { //doesn't matter what happens to future enemies, always go to the next
+                        activateEnemy(context.game.blackMarketPile.get(i + 1), currentPlayer, context, i + 1);
                     } catch (IndexOutOfBoundsException e) {
                     }
 
@@ -971,6 +972,7 @@ public class Game {
             if (enemyCard.is(CardType.Blast))
                 context.blastActivations++;
         }
+        i = Util.indexOfCardId(enemyCard.getId(), context.game.blackMarketPile);
         return i;
     }
 
