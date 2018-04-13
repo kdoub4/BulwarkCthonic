@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.vdom.api.Card;
 import com.vdom.api.GameEvent;
+import com.vdom.comms.SelectCardOptions;
 import com.vdom.core.MoveContext.TurnPhase;
 
 public class CardImpl implements Card, Comparable<Card>{
@@ -1644,7 +1645,7 @@ public class CardImpl implements Card, Comparable<Card>{
 
                     boolean discard = false;
 
-                    if(equals(Cards.spy)  || equals(Cards.stalk)) {
+                    if(equals(Cards.spy)  || equals(Cards.stalk) || equals(Cards.crystalOrb)) {
                         discard = currentPlayer.controlPlayer.reveal_shouldDiscard(context, player, card, this);
                     } else if (equals(Cards.scryingPool)) {
                         discard = currentPlayer.controlPlayer.scryingPool_shouldDiscard(context, player, card);
@@ -1853,6 +1854,26 @@ public class CardImpl implements Card, Comparable<Card>{
             return new DefaultPileCreator();
         } else {
             return this.pileCreator;
+        }
+    }
+
+    protected void putCardUnderFromHand(Game game, MoveContext context, Player currentPlayer, SelectCardOptions sco) {
+        Card underCard = currentPlayer.getCardFromHand(context, sco);
+        if (underCard != null) {
+            // Move to tavern mat
+            if (underCard.getControlCard().numberTimesAlreadyPlayed == 0) {
+                currentPlayer.hand.remove(underCard.getControlCard());
+                currentPlayer.tavern.add(underCard);
+                underCard.getControlCard().stopImpersonatingCard();
+
+                GameEvent event = new GameEvent(GameEvent.EventType.CardSetAsideOnTavernMat, context);
+                event.card = underCard.getControlCard();
+                game.broadcastEvent(event);
+            } else {
+                // reset clone count
+                this.getControlCard().cloneCount = 1;
+            }
+            this.cardsUnder.add(underCard);
         }
     }
 

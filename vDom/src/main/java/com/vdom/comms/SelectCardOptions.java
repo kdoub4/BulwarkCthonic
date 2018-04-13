@@ -105,6 +105,7 @@ public class SelectCardOptions implements Serializable {
     public boolean isCorpse = false;
     public boolean isManoeuvre = false;
     public boolean isSelect = false;
+    public boolean isSpell = false;
 
     public boolean applyOptionsToPile = false;
     
@@ -172,6 +173,8 @@ public class SelectCardOptions implements Serializable {
     public SelectCardOptions isCorpse() {isCorpse = true; return this;}
     public SelectCardOptions isManoeuvre() {isManoeuvre = true; return this;}
     public SelectCardOptions isSelect() {isSelect = true; return this;}
+    public SelectCardOptions isSpell() {isSpell = true; return this;}
+
 
     public SelectCardOptions applyOptionsToPile() {applyOptionsToPile = true; return this;}
     
@@ -277,6 +280,7 @@ public class SelectCardOptions implements Serializable {
                    context.phase == MoveContext.TurnPhase.Action)
                 && c.is(CardType.Enemy) &&
                 (!properAttackType(context, c) && !isSelect)) return false;
+        if (isSpell && !c.is(CardType.Spell)) return false;
 
         return true;
     }
