@@ -29,9 +29,7 @@ import com.vdom.api.LocationType;
 import com.vdom.comms.SelectCardOptions;
 import com.vdom.core.MoveContext.TurnPhase;
 import com.vdom.core.Player.ExtraTurnOption;
-import com.vdom.core.Player.HuntingGroundsOption;
 import com.vdom.core.Player.WatchTowerOption;
-import com.vdom.core.Player.FoolsGoldOption;
 
 public class Game {
     public static boolean junit = false;
@@ -958,12 +956,12 @@ public class Game {
                     boolean takeWound = false;
                     if (i > 0) {
                         prevCard = context.game.blackMarketPile.get(i - 1);
-                        if (prevCard.is("Alchemist", CardType.Blast))
+                        if (prevCard.is(new String[]{"Alchemist"}, CardType.Blast))
                             takeWound = true;
                     }
                     if (i < context.game.blackMarketPile.size() - 1) {
                         nextCard = context.game.blackMarketPile.get(i + 1);
-                        if (nextCard.is("Alchemist", CardType.Blast))
+                        if (nextCard.is(new String[]{"Alchemist"}, CardType.Blast))
                             takeWound = true;
                     }
                     if (takeWound)
@@ -1429,16 +1427,16 @@ public class Game {
                 drawFoe(player,context);
                 break;
             case TheLeftHandGoblin:
-                revealKillPlay(player,context, "goblin" , CardType.Undead);
+                revealKillPlay(player,context, new String[]{"goblin"} , CardType.Undead);
                 break;
             case TheRightHandHuman:
-                revealKillPlay(player,context, "human" , CardType.Undead);
+                revealKillPlay(player,context, new String[]{"human"} , CardType.Undead);
                 break;
             case TheCatacombite:
                 takeWounds(player,1, context, cardPlayed, false);
                 break;
             case KangaxxTheLich:
-                revealKillPlay(player, context,"" , CardType.Undead);
+                revealKillPlay(player, context, null , CardType.Undead);
                 break;
             case ElfRabble:
                 SelectCardOptions sco = new SelectCardOptions().isNonCrown().isNonRabble()
@@ -1482,18 +1480,19 @@ public class Game {
 
     }
 
-    private void revealKillPlay(Player player, MoveContext context, String ident, CardType... type) {
+    private void revealKillPlay(Player player, MoveContext context, String[] identifiers, CardType... types) {
         boolean draw = false;
         Card topCard = getGamePile(Cards.virtualEnemy).topCard();
-        if (topCard.is(ident)) {
+        if (topCard.is(identifiers, types)) {
             draw = true;
         }
-        if (!draw) for (CardType t : type) {
+/*        if (!draw) for (CardType t : types) {
             if (topCard.is(t)) {
                 draw = true;
                 break;
             }
         }
+        */
         if (draw) {
             drawFoe(player,context);
         } else {

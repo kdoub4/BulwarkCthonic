@@ -28,7 +28,7 @@ public interface Card extends Serializable {
 
     public boolean is(String ... identifier);
 
-    public boolean is(String s, CardType t);
+    public boolean is(String[] identifiers, CardType... types);
 
     public String getStats();
 

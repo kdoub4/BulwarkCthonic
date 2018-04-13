@@ -922,7 +922,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         ArrayList<Card> options = new ArrayList<Card>();
         Set<Card> inTrashPile = new HashSet<Card>();
         for (Card c : game.trashPile) {
-            if (c.is(CardType.Enemy) && (c.is("elf", CardType.Undead)))
+            if (c.is(CardType.Enemy) && (c.is(new String[]{"elf"}, CardType.Undead)))
                 inTrashPile.add(c);
         }
         options.addAll(inTrashPile);

@@ -579,9 +579,9 @@ public class CardImpl implements Card, Comparable<Card>{
     }
 
     @Override
-    public boolean is(String s, CardType t) {
-        if (is(t)) return true;
-        if (is(s)) return true;
+    public boolean is(String[] identifiers, CardType... types) {
+        if (is(types)) return true;
+        if (is(identifiers)) return true;
         return false;
     }
 

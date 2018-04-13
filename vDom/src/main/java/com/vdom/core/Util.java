@@ -553,10 +553,10 @@ public class Util {
         return count;
     }
 
-    public static <T> int getCardCount(Iterable<T> cards, String... identifiers) {
+    public static <T extends Card> int getCardCount(Iterable<T> cards, String... identifiers) {
         int count = 0;
         for (T thisCard : cards) {
-            if (((Card)thisCard).is(identifiers)) {
+            if (thisCard.is(identifiers)) {
                 count++;
             }
         }
