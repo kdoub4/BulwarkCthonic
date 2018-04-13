@@ -108,17 +108,18 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         card.costPotion = c.costPotion();
         card.isBane = isBane;
         card.isObeliskCard = isObeliskCard;
-        card.isShelter = c.is(CardType.Shelter, null);
-        card.isLooter = c.is(CardType.Blast, null);
+        card.isShelter = c.is(CardType.Shelter);
+        card.isLooter = c.is(CardType.Blast);
         card.isOverpay = c.isOverpay(null);
-        card.isEvent = c.is(CardType.Event, null);
-        card.isReserve = c.is(CardType.Remains, null);
-        card.isTraveller = c.is(CardType.Crown, null);
-        card.isKnight = c.is(CardType.Knight, null);
-        card.isCastle = c.is(CardType.Castle, null);
-        card.isGathering = c.is(CardType.Gathering, null);
-        card.isLandmark = c.is(CardType.Landmark, null);
-
+        card.isEvent = c.is(CardType.Event);
+        card.isReserve = c.is(CardType.Remains);
+        card.isTraveller = c.is(CardType.Crown);
+        card.isKnight = c.is(CardType.Knight);
+        card.isCastle = c.is(CardType.Castle);
+        card.isGathering = c.is(CardType.Gathering);
+        card.isLandmark = c.is(CardType.Landmark);
+        card.isAttack = c.is(CardType.Attack);
+        card.isRuins = c.is(com.vdom.core.CardType.Range, null);
 
         if (uniqueCardPile) {
             card.pile = MyCard.SUPPLYPILE;
@@ -131,31 +132,32 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
             card.isPrize = true;
         }
 
-        if (  c.equals(Cards.soldier)
-            || c.equals(Cards.fugitive)
-            || c.equals(Cards.disciple)
-            || c.equals(Cards.teacher)
-            || c.equals(Cards.treasureHunter)
-            || c.equals(Cards.warrior)
-            || c.equals(Cards.hero)
-            || c.equals(Cards.champion)
-           )
+        if (    c.equals(Cards.soldier)
+                || c.equals(Cards.fugitive)
+                || c.equals(Cards.disciple)
+                || c.equals(Cards.teacher)
+                || c.equals(Cards.treasureHunter)
+                || c.equals(Cards.warrior)
+                || c.equals(Cards.hero)
+                || c.equals(Cards.champion)
+
+
+                )
         {
             card.pile = MyCard.NON_SUPPLY_PILE;
         }
 
-
         if ((c.equals(Cards.copper)) ||
-            (c.equals(Cards.silver)) ||
-            (c.equals(Cards.potion)) ||
-            (c.equals(Cards.gold)) ||
-            (c.equals(Cards.platinum))) card.pile = MyCard.MONEYPILE;
+                (c.equals(Cards.silver)) ||
+                (c.equals(Cards.potion)) ||
+                (c.equals(Cards.gold)) ||
+                (c.equals(Cards.platinum))) card.pile = MyCard.MONEYPILE;
 
         if ((c.equals(Cards.estate)) ||
-            (c.equals(Cards.duchy)) ||
-            (c.equals(Cards.province)) ||
-            (c.equals(Cards.colony)) ||
-            (c.equals(Cards.curse))) card.pile = MyCard.VPPILE;
+                (c.equals(Cards.duchy)) ||
+                (c.equals(Cards.province)) ||
+                (c.equals(Cards.colony)) ||
+                (c.equals(Cards.curse))) card.pile = MyCard.VPPILE;
 
 
         if (c.equals(Cards.potion)) card.isPotion = true;
@@ -173,9 +175,9 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         }
         if (c.is(CardType.Action, null)) {
             card.isAction = true;
-            if (c.is(CardType.Duration, null)) {
-                card.isDuration = true;
-            }
+        }
+        if (c.is(CardType.Duration, null)) {
+            card.isDuration = true;
         }
         if (c.is(CardType.InHandReaction, null))
             card.isReaction = true;
@@ -192,11 +194,12 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
             card.pile = MyCard.EVENTPILE;
         }
         if (c.equals(Cards.stash)) {
-        	card.isStash = true;
+            card.isStash = true;
         }
 
         return card;
     }
+
 
     public Card intToCard(int i) {
         return cardsInPlay.get(i);
@@ -1010,13 +1013,12 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         Card preventCard = cardToPlay(context, Util.canReact(context,this, CardType.OnActivation),
                 Enemy, true, OPTION_ACTIVATION);
         if (preventCard != null) {
-            tavern.a.remove(preventCard);
             switch (preventCard.getKind()) {
                 case SilkenSnare:
                     preventCard.callWhenActionResolved(context, Enemy);
-//                    context.game.addToPile(preventCard, false);
                     break;
                 case ContempuousShot:
+                    tavern.a.remove(preventCard);
                     trash(preventCard, preventCard, context);
                     break;
             }

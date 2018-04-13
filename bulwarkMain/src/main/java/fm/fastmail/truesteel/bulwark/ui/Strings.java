@@ -1135,7 +1135,8 @@ public class Strings {
         } else if (cardName.equals(getCardName(Cards.baron))) {
             strings[1] = getString(R.string.baron_option_one);
             strings[2] = getString(R.string.baron_option_two);
-        } else if (cardName.equals(getCardName(Cards.galleryOfLeaves)) || cardName.equals(getCardName(Cards.guardTower))) {
+        } else if (cardName.equals(getCardName(Cards.guardTower)) ||
+                (cardName.equals(getCardName(Cards.galleryOfLeaves)) && extras!=null && extras[0] instanceof Card)) {
             if (extras == null) {
                 // This is asking if you want to _gain_ a duchess (upon purchase of a duchy).
                 strings[0] = getString(R.string.duchess_query);
@@ -1145,7 +1146,7 @@ public class Strings {
                 // And this one is from _playing_ the duchess.
                 strings[0] = getCardRevealedHeader(extras);
                 strings[1] = getString(R.string.duchess_play_option_one);
-                strings[2] = getString(R.string.discard);
+                strings[2] = "Banish"; //getString(R.string.discard);
             }
         } else if (cardName.equals(getCardName(Cards.explorer))) {
             strings[1] = getString(R.string.explorer_reveal);
@@ -1259,6 +1260,9 @@ public class Strings {
         } else if (cardName.equals(getCardName(Cards.avanto))) {
             strings[1] = getString(R.string.avanto_play_sauna);
             strings[2] = getString(R.string.pass);
+        } else if (cardName.equals(getCardName(Cards.silkenSnare))) {
+            strings[2] = "Banish Foe";
+            strings[1] = "Attack Range with Might 2";
         }
         if (strings[1] != null) {
             return strings;

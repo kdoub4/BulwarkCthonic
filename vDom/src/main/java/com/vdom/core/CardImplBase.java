@@ -49,6 +49,13 @@ public class CardImplBase extends CardImpl {
     @Override
     protected void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
+            case SanctusCharm:
+                game.SanctusCharmManoeuvre(context, currentPlayer, this);
+                break;
+            case Sneak:
+                game.addToPile(currentPlayer.hand.removeCard(this, true), true);
+                context.invincible = true;
+                break;
             case RalliedMilitia:
                 currentPlayer.discard(currentPlayer.hand.removeCard(this), this, context);
                 context.addMightModifier(+1);
@@ -1302,21 +1309,21 @@ public class CardImplBase extends CardImpl {
     private void callAction(MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
             case SilkenSnare:
-                if (context.countCardsInPlayByIdentifier("snare")>1 ||
+                if (context.countCardsInPlayByIdentifier("snare")>1 &&
                         ((IndirectPlayer)currentPlayer).selectBoolean(context, this)) {
                     context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
-                    SelectCardOptions sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
-                            .fromBlackMarket().setCount(1).setCardResponsible(this);
+                    actionPhaseAttack(context, currentPlayer, false, true, 2);
+                }
+                else {
+                    context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
+                    SelectCardOptions sco = new SelectCardOptions().isNonCrown()
+                            .setCardResponsible(this)
+                            .setCount(1).fromBlackMarket().setActionType(SelectCardOptions.ActionType.DISCARD);
                     int[] toBanish = currentPlayer.doSelectFoe(context, sco, 1, GameEvent.EventType.SelectFoe);
                     if (toBanish.length == 1) {
                         context.game.addToPile(context.game.blackMarketPile.remove(toBanish[0]), true);
                     }
                 }
-                else {
-                    context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
-                    actionPhaseAttack(context, currentPlayer, false, true, 2);
-                }
-
                 break;
             case TownSquare:
                 callTownSquare(context, context.game, currentPlayer);

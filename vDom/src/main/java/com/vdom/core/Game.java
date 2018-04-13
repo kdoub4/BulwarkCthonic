@@ -586,7 +586,7 @@ public class Game {
                 if (currentPlayer.tavern.contains(Cards.vantagePoint) && context.game.blackMarketPile.size() < 10) {
                     defended = true;
                 }
-                if (!defended || !context.invincible) {
+                if (!defended && !context.invincible) {
                     Card defendCard = currentPlayer.cardToPlay(context,
                             Util.canReact(context, p, CardType.Defend), attacker,
                             true, IndirectPlayer.OPTION_DEFEND);
@@ -621,7 +621,7 @@ public class Game {
             }
             if (context.sanctusCharm && context.woundsTaken>=1)
                 defended=true;
-            if (!defended) {
+            if (!defended && !context.invincible) {
                 Card gained = currentPlayer.gainNewCard(Cards.virtualWound, attacker, context); //.add(takeFromPile(Cards.virtualWound));
                 if (attacker.getKind() == Cards.Kind.FlameBallista) {
                     currentPlayer.discard.remove(gained);
@@ -666,7 +666,7 @@ public class Game {
         }
 
     }
-    private void SanctusCharmManoeuvre(MoveContext context, Player p, Card defendCard) {
+    public void SanctusCharmManoeuvre(MoveContext context, Player p, Card defendCard) {
         p.discard(defendCard,defendCard,context);
         p.hand.remove(defendCard);
         context.sanctusCharm = true;
@@ -702,272 +702,277 @@ public class Game {
 
     private int activateEnemy(Card enemyCard, Player currentPlayer, MoveContext context, int i) {
         int wounds = 0;
-        switch (enemyCard.getKind()) {
-            case BrokenCorpse:
-                if (context.woundsTaken>0) {
-                    takeWounds(currentPlayer,1,context,enemyCard,false);
-                }
-                break;
-            case FreshCorpse:
-                if (enemyCount("corpse")>=3) {
-                    takeWounds(currentPlayer,1,context,enemyCard,false);
-                }
-                break;
-            case StaleCorpse:
-                if (enemyCount("corpse")>=5) {
-                    takeWounds(currentPlayer,1,context,enemyCard,false);
-                    CardImpl tempCard = (CardImpl) enemyCard;
-                    tempCard.discardMultiple(context,currentPlayer,1);
-                    tempCard =null;
-                }
-
-                break;
-            case EmbalmedAcolyte:
-                Card[] cardsToDiscard = currentPlayer.controlPlayer.selectFromHand(context,enemyCard,
-                        1, true, true,
-                        SelectCardOptions.ActionType.DISCARD, SelectCardOptions.PickType.DISCARD);
-                if (cardsToDiscard == null) {
-                    takeWounds(currentPlayer,1, context, enemyCard, false);
-                }
-                else {
-                    currentPlayer.discard(currentPlayer.hand.removeCard(cardsToDiscard[0]),enemyCard,context);
-                }
-                break;
-            case TheLeftHandGoblin:
-                takeWounds(getNextPlayer(), 1, context, enemyCard, false);
-                break;
-            case TheRightHandHuman:
-                takeWounds(getPreviousPlayer(),1, context, enemyCard, false);
-                break;
-            case TheCatacombite:
-                takeWounds(currentPlayer,2, context, enemyCard, false);
-                break;
-            case HorrorOfFlesh:
-                if (killACorpse(enemyCard, currentPlayer, context)) {
-                    takeWounds    (currentPlayer,2, context, enemyCard, false);
-                }
-                break;
-            case KangaxxTheLich:
-                takeWounds(currentPlayer,1, context, enemyCard, false);
-                drawFoe(currentPlayer,context);
-                break;
-            case XaphanDemon:
-                enemyCard.selectAndTrashFromHand(context, currentPlayer, 1);
-                break;
-            case VeporDemon:
-                currentPlayer.vepor_activation(context, currentPlayer);
-                break;
-            case TaneElf:
-                try {
-                    blackMarketPile.get(i-1);
-                    blackMarketPile.get(i+1);
-                    takeWounds(currentPlayer,2,context,enemyCard, false);
-                }
-                catch (IndexOutOfBoundsException e) {}
-                break;
-            case KiriElf:
-                takeWounds(currentPlayer, enemyCount("corpse"), context,enemyCard, false);
-                //TODO Bulwark for now just add Kiri in manually, ie +1
-                break;
-            case ElfDruid:
-                for (int j=2; j>0; j--) {
-                    Card revealed = draw(context, enemyCard, j);
-                    if (revealed.is(CardType.Location))
-                        takeWounds(currentPlayer, 1, context, enemyCard, false);
-                    currentPlayer.discard(revealed,enemyCard,context);
-                }
-                break;
-            case FlameBallista:
-                for (Card c : currentPlayer.tavern) {
-                    if (c.is(CardType.Remains))
-                        wounds++;
-                }
-                takeWounds(currentPlayer,wounds,context,enemyCard, true);
-                break;
-            case ElfArcher:
-                if (archers >= 2) {
-                    int elves = enemyCount("elf");
-                    takeWounds(currentPlayer, elves>3 ? 3 : elves, context, enemyCard, false);
-                }
-                else {
-                    archers =0;
-                    for (Card isArcher : context.game.blackMarketPile) {
-                        if (isArcher.is("Archer")) {
-                            archers += 1;
-                            if (archers >= 2) {
-                                int elves = enemyCount("elf");
-                                takeWounds(currentPlayer, elves > 3 ? 3 : elves , context,enemyCard, false);
-                                break;
-                            }
-                        }
-                    }
-                }
-                break;
-            case ElfTroop:
-                if (enemyCount("elf")>=4){
-                    takeWounds(currentPlayer,1,context,enemyCard, false);
-                }
-                break;
-            case LizardHeavy:
-                try {
-                    if (context.game.blackMarketPile.get(i-1).is("Troop"))
-                        wounds++;
-                }
-                catch (IndexOutOfBoundsException e) {}
-                try {
-                    if (context.game.blackMarketPile.get(i+1).is("Troop"))
-                        wounds++;
-                }
-                catch (IndexOutOfBoundsException e) {}
-                takeWounds(currentPlayer,wounds, context, enemyCard, false);
-                break;
-            case YoonIseulLizard:
-                try {
-                    i=activateEnemy(context.game.blackMarketPile.get(i-1), currentPlayer, context, i-1)+1;
-                }
-                catch (IndexOutOfBoundsException e) {}
-                try {
-                    i=activateEnemy(context.game.blackMarketPile.get(i+1), currentPlayer, context, i+1)-1;
-                }
-                catch (IndexOutOfBoundsException e) {}
-
-                break;
-            case HyeonLizard:
-                if (!context.attackMade) {
-                    takeWounds(currentPlayer,2, context, enemyCard, false);
-                }
-                break;
-            case LizardBombardier:
-                List<Card> remaining = new ArrayList<>();
-                ArrayList<Card> under = new ArrayList<>();
-                for (int j = 0; j < currentPlayer.tavern.a.size(); j++) {//  Card enemyCard : currentPlayer.tavern.a){
-                    Card aCard = currentPlayer.tavern.get(j);
-                    for (Card c : ((CardImplBase) aCard).cardsUnder) {
-                        under.add(c);
-                    }
-                    if (!aCard.is(CardType.Enemy) && !under.contains(aCard))
-                        remaining.add(aCard);
-                    under.remove(aCard);
-                }
-                if (remaining.size()>0) {
-                    Card toDiscard = (currentPlayer.cardToPlay(context, remaining, enemyCard, false, ""));
-                    if (toDiscard != null) {
-                        for (Card c : ((CardImplBase) toDiscard).cardsUnder) {
-                            currentPlayer.discard(currentPlayer.tavern.removeCard(c), enemyCard, context );
-                        }
-                        ((CardImplBase) toDiscard).cardsUnder.clear();
-                        currentPlayer.discard(currentPlayer.tavern.removeCard(toDiscard), enemyCard, context);
-                    }
-                }
-                break;
-            case LizardRabble:
-                currentPlayer.trash(enemyCard, enemyCard,context);
-                context.game.blackMarketPile.remove(enemyCard);
-                context.game.blackMarketPile.add(context.game.blackMarketPile.size(),takeFromPile(Cards.virtualEnemy));
+        if (currentPlayer.preventActivation(context, enemyCard))
+            if (enemyCard.getId() != context.game.blackMarketPile.get(i).getId()) {
+                //must have been killed roll back i
                 i--;
-                break;
-            case FireCatapult:
-                if (currentPlayer.inHand(Cards.Kind.SeriousWound) ||
-                        currentPlayer.inHand(Cards.Kind.StaggeringWound) ||
-                        currentPlayer.inHand(Cards.Kind.OldWound) ||
-                        currentPlayer.inHand(Cards.Kind.GlancingWound) ||
-                        currentPlayer.inHand(Cards.Kind.WeakeningWound) ||
-                        currentPlayer.inHand(Cards.Kind.FleshWound))
+            }
+            else {}
+        else {
+            switch (enemyCard.getKind()) {
+                case BrokenCorpse:
+                    if (context.woundsTaken > 0) {
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                    }
+                    break;
+                case FreshCorpse:
+                    if (enemyCount("corpse") >= 3) {
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                    }
+                    break;
+                case StaleCorpse:
+                    if (enemyCount("corpse") >= 5) {
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                        CardImpl tempCard = (CardImpl) enemyCard;
+                        tempCard.discardMultiple(context, currentPlayer, 1);
+                        tempCard = null;
+                    }
+
+                    break;
+                case EmbalmedAcolyte:
+                    Card[] cardsToDiscard = currentPlayer.controlPlayer.selectFromHand(context, enemyCard,
+                            1, true, true,
+                            SelectCardOptions.ActionType.DISCARD, SelectCardOptions.PickType.DISCARD);
+                    if (cardsToDiscard == null) {
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                    } else {
+                        currentPlayer.discard(currentPlayer.hand.removeCard(cardsToDiscard[0]), enemyCard, context);
+                    }
+                    break;
+                case TheLeftHandGoblin:
+                    takeWounds(getNextPlayer(), 1, context, enemyCard, false);
+                    break;
+                case TheRightHandHuman:
+                    takeWounds(getPreviousPlayer(), 1, context, enemyCard, false);
+                    break;
+                case TheCatacombite:
+                    takeWounds(currentPlayer, 2, context, enemyCard, false);
+                    break;
+                case HorrorOfFlesh:
+                    if (killACorpse(enemyCard, currentPlayer, context)) {
+                        takeWounds(currentPlayer, 2, context, enemyCard, false);
+                    }
+                    break;
+                case KangaxxTheLich:
                     takeWounds(currentPlayer, 1, context, enemyCard, false);
-                break;
-            case BatteringRam:
-                takeWounds(currentPlayer, context.blastActivations, context, enemyCard, false);
-                break;
-            case GobCatapult:
-                for (Player aPlayer : getPlayersInTurnOrder()) {
-                    MoveContext targetContext = new MoveContext(this, aPlayer);
-                    Card topCard =  draw(targetContext, enemyCard , 1);
-                    if (topCard != null) {
-                        (aPlayer).discard(topCard, enemyCard, context);
+                    drawFoe(currentPlayer, context);
+                    break;
+                case XaphanDemon:
+                    enemyCard.selectAndTrashFromHand(context, currentPlayer, 1);
+                    break;
+                case VeporDemon:
+                    currentPlayer.vepor_activation(context, currentPlayer);
+                    break;
+                case TaneElf:
+                    try {
+                        blackMarketPile.get(i - 1);
+                        blackMarketPile.get(i + 1);
+                        takeWounds(currentPlayer, 2, context, enemyCard, false);
+                    } catch (IndexOutOfBoundsException e) {
                     }
-                    if (topCard.is(CardType.Wound)) {
-                        takeWounds(currentPlayer,1, context, enemyCard, false);
+                    break;
+                case KiriElf:
+                    takeWounds(currentPlayer, enemyCount("corpse"), context, enemyCard, false);
+                    //TODO Bulwark for now just add Kiri in manually, ie +1
+                    break;
+                case ElfDruid:
+                    for (int j = 2; j > 0; j--) {
+                        Card revealed = draw(context, enemyCard, j);
+                        if (revealed.is(CardType.Location))
+                            takeWounds(currentPlayer, 1, context, enemyCard, false);
+                        currentPlayer.discard(revealed, enemyCard, context);
                     }
-                }
-                break;
-            case GoblinHeavy:
-                if (hasTroop)
-                    takeWounds(currentPlayer,1, context, enemyCard, false);
-                else {
-                    for (Card isTroop : context.game.blackMarketPile) {
-                        if (isTroop.is("Troop")) {
-                            hasTroop = true;
-                            takeWounds(currentPlayer,1, context, enemyCard, false);
-                            break;
+                    break;
+                case FlameBallista:
+                    for (Card c : currentPlayer.tavern) {
+                        if (c.is(CardType.Remains))
+                            wounds++;
+                    }
+                    takeWounds(currentPlayer, wounds, context, enemyCard, true);
+                    break;
+                case ElfArcher:
+                    if (archers >= 2) {
+                        int elves = enemyCount("elf");
+                        takeWounds(currentPlayer, elves > 3 ? 3 : elves, context, enemyCard, false);
+                    } else {
+                        archers = 0;
+                        for (Card isArcher : context.game.blackMarketPile) {
+                            if (isArcher.is("Archer")) {
+                                archers += 1;
+                                if (archers >= 2) {
+                                    int elves = enemyCount("elf");
+                                    takeWounds(currentPlayer, elves > 3 ? 3 : elves, context, enemyCard, false);
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                break;
-            case GoblinArcher:
-                if (archers >= 2)
-                    takeWounds(currentPlayer,1, context,enemyCard, false);
-                else {
-                    archers =0;
-                    for (Card isArcher : context.game.blackMarketPile) {
-                        if (isArcher.is("Archer")) {
-                            archers += 1;
-                            if (archers >= 2) {
-                                takeWounds(currentPlayer,1, context,enemyCard, false);
+                    break;
+                case ElfTroop:
+                    if (enemyCount("elf") >= 4) {
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                    }
+                    break;
+                case LizardHeavy:
+                    try {
+                        if (context.game.blackMarketPile.get(i - 1).is("Troop"))
+                            wounds++;
+                    } catch (IndexOutOfBoundsException e) {
+                    }
+                    try {
+                        if (context.game.blackMarketPile.get(i + 1).is("Troop"))
+                            wounds++;
+                    } catch (IndexOutOfBoundsException e) {
+                    }
+                    takeWounds(currentPlayer, wounds, context, enemyCard, false);
+                    break;
+                case YoonIseulLizard:
+                    try {
+                        i = activateEnemy(context.game.blackMarketPile.get(i - 1), currentPlayer, context, i - 1) + 1;
+                    } catch (IndexOutOfBoundsException e) {
+                    }
+                    try {
+                        i = activateEnemy(context.game.blackMarketPile.get(i + 1), currentPlayer, context, i + 1) - 1;
+                    } catch (IndexOutOfBoundsException e) {
+                    }
+
+                    break;
+                case HyeonLizard:
+                    if (!context.attackMade) {
+                        takeWounds(currentPlayer, 2, context, enemyCard, false);
+                    }
+                    break;
+                case LizardBombardier:
+                    List<Card> remaining = new ArrayList<>();
+                    ArrayList<Card> under = new ArrayList<>();
+                    for (int j = 0; j < currentPlayer.tavern.a.size(); j++) {//  Card enemyCard : currentPlayer.tavern.a){
+                        Card aCard = currentPlayer.tavern.get(j);
+                        for (Card c : ((CardImplBase) aCard).cardsUnder) {
+                            under.add(c);
+                        }
+                        if (!aCard.is(CardType.Enemy) && !under.contains(aCard))
+                            remaining.add(aCard);
+                        under.remove(aCard);
+                    }
+                    if (remaining.size() > 0) {
+                        Card toDiscard = (currentPlayer.cardToPlay(context, remaining, enemyCard, false, ""));
+                        if (toDiscard != null) {
+                            for (Card c : ((CardImplBase) toDiscard).cardsUnder) {
+                                currentPlayer.discard(currentPlayer.tavern.removeCard(c), enemyCard, context);
+                            }
+                            ((CardImplBase) toDiscard).cardsUnder.clear();
+                            currentPlayer.discard(currentPlayer.tavern.removeCard(toDiscard), enemyCard, context);
+                        }
+                    }
+                    break;
+                case LizardRabble:
+                    killFoe(context, enemyCard);
+                    context.game.blackMarketPile.add(context.game.blackMarketPile.size(), takeFromPile(Cards.virtualEnemy));
+                    i--;
+                    break;
+                case FireCatapult:
+                    if (currentPlayer.inHand(Cards.Kind.SeriousWound) ||
+                            currentPlayer.inHand(Cards.Kind.StaggeringWound) ||
+                            currentPlayer.inHand(Cards.Kind.OldWound) ||
+                            currentPlayer.inHand(Cards.Kind.GlancingWound) ||
+                            currentPlayer.inHand(Cards.Kind.WeakeningWound) ||
+                            currentPlayer.inHand(Cards.Kind.FleshWound))
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                    break;
+                case BatteringRam:
+                    takeWounds(currentPlayer, context.blastActivations, context, enemyCard, false);
+                    break;
+                case GobCatapult:
+                    for (Player aPlayer : getPlayersInTurnOrder()) {
+                        MoveContext targetContext = new MoveContext(this, aPlayer);
+                        Card topCard = draw(targetContext, enemyCard, 1);
+                        if (topCard != null) {
+                            (aPlayer).discard(topCard, enemyCard, context);
+                        }
+                        if (topCard.is(CardType.Wound)) {
+                            takeWounds(currentPlayer, 1, context, enemyCard, false);
+                        }
+                    }
+                    break;
+                case GoblinHeavy:
+                    if (hasTroop)
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                    else {
+                        for (Card isTroop : context.game.blackMarketPile) {
+                            if (isTroop.is("Troop")) {
+                                hasTroop = true;
+                                takeWounds(currentPlayer, 1, context, enemyCard, false);
                                 break;
                             }
                         }
                     }
-                }
-                break;
-            case KmbleeGoblin:
-                drawFoe(currentPlayer,context);
-                break;
-            case KmronGoblin:
-            case RuihaElf:
-                takeWounds(currentPlayer,1, context,enemyCard, false);
-                break;
-            case GhutzGoblin:
-                for (Card isGoblin : context.game.blackMarketPile ) {
-                    if (isGoblin.is("Goblin")) {
-                        takeWounds(currentPlayer,1, context,enemyCard, false);
+                    break;
+                case GoblinArcher:
+                    if (archers >= 2)
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                    else {
+                        archers = 0;
+                        for (Card isArcher : context.game.blackMarketPile) {
+                            if (isArcher.is("Archer")) {
+                                archers += 1;
+                                if (archers >= 2) {
+                                    takeWounds(currentPlayer, 1, context, enemyCard, false);
+                                    break;
+                                }
+                            }
+                        }
                     }
-                }
-                break;
-            case KneenaGoblin:
-                for (Player aPlayer : getPlayersInTurnOrder()) {
-                    MoveContext targetContext = new MoveContext(this, aPlayer);
-                    Card topCard =  draw(targetContext, enemyCard , 1);
-                    if (topCard != null) {
-                        aPlayer.discard(topCard, enemyCard, context);
+                    break;
+                case KmbleeGoblin:
+                    drawFoe(currentPlayer, context);
+                    break;
+                case KmronGoblin:
+                case RuihaElf:
+                    takeWounds(currentPlayer, 1, context, enemyCard, false);
+                    break;
+                case GhutzGoblin:
+                    for (Card isGoblin : context.game.blackMarketPile) {
+                        if (isGoblin.is("Goblin")) {
+                            takeWounds(currentPlayer, 1, context, enemyCard, false);
+                        }
                     }
-                    if (topCard.is(CardType.Location)) {
-                        takeWounds(currentPlayer,1, targetContext, enemyCard, false);
+                    break;
+                case KneenaGoblin:
+                    for (Player aPlayer : getPlayersInTurnOrder()) {
+                        MoveContext targetContext = new MoveContext(this, aPlayer);
+                        Card topCard = draw(targetContext, enemyCard, 1);
+                        if (topCard != null) {
+                            aPlayer.discard(topCard, enemyCard, context);
+                        }
+                        if (topCard.is(CardType.Location)) {
+                            takeWounds(currentPlayer, 1, targetContext, enemyCard, false);
+                        }
                     }
-                }
-                break;
-            case MgzwelGoblin:
-                //put his effect into getcost
-                break;
-            case GoblinAlchemist:
-                Card prevCard= null;
-                Card nextCard = null;
-                boolean takeWound = false;
-                if (i>0) {
-                    prevCard = context.game.blackMarketPile.get(i - 1);
-                    if (prevCard.is("Alchemist", CardType.Blast))
-                        takeWound=true;
-                }
-                if (i< context.game.blackMarketPile.size()-1) {
-                    nextCard = context.game.blackMarketPile.get(i + 1);
-                    if (nextCard.is("Alchemist", CardType.Blast))
-                        takeWound = true;
-                }
-                if (takeWound)
-                    takeWounds(currentPlayer,2, context,enemyCard, false);
-                break;
+                    break;
+                case MgzwelGoblin:
+                    //put his effect into getcost
+                    break;
+                case GoblinAlchemist:
+                    Card prevCard = null;
+                    Card nextCard = null;
+                    boolean takeWound = false;
+                    if (i > 0) {
+                        prevCard = context.game.blackMarketPile.get(i - 1);
+                        if (prevCard.is("Alchemist", CardType.Blast))
+                            takeWound = true;
+                    }
+                    if (i < context.game.blackMarketPile.size() - 1) {
+                        nextCard = context.game.blackMarketPile.get(i + 1);
+                        if (nextCard.is("Alchemist", CardType.Blast))
+                            takeWound = true;
+                    }
+                    if (takeWound)
+                        takeWounds(currentPlayer, 2, context, enemyCard, false);
+                    break;
+            }
+            if (enemyCard.is(CardType.Blast))
+                context.blastActivations++;
         }
-        if (enemyCard.is(CardType.Blast))
-            context.blastActivations++;
         return i;
     }
 
@@ -989,14 +994,7 @@ public class Game {
         for (int i = 0; i < context.game.blackMarketPile.size(); i++) {//  Card enemyCard : currentPlayer.tavern.a){
             Card enemyCard = context.game.blackMarketPile.get(i);
             if (enemyCard.is(CardType.Activate)) {
-                if (!currentPlayer.preventActivation(context, enemyCard))
-                    i=activateEnemy(enemyCard,currentPlayer,context,i);
-                else {
-                    if (enemyCard.getId() != context.game.blackMarketPile.get(i).getId()) {
-                        //must have been killed roll back i
-                        i--;
-                    }
-                }
+                i = activateEnemy(enemyCard, currentPlayer, context, i);
             }
         }
     }
@@ -1035,20 +1033,21 @@ public class Game {
         if (maxCards != -1) selectingCoins = true;// storyteller
         ArrayList<Card> treasures = null;
         //auto play, hold back Two if Three available
-        treasures = player.getTreasuresInHand();
-        if (!getPile(Cards.three).isEmpty()) {
-            treasures.remove(Cards.two);
-        }
-        while (treasures != null && !treasures.isEmpty() && maxCards != 0) {
-            while (!treasures.isEmpty() && maxCards != 0) {
-                Card card = treasures.remove(0);
-                if (player.hand.contains(card)) {// this is needed due to counterfeit which trashes cards during this loop
-                    card.play(context.game, context, true, true);
-                    maxCards--;
+        if (!player.tavern.contains(Cards.theDrop)) {
+            treasures = player.getTreasuresInHand();
+            if (!getPile(Cards.three).isEmpty()) {
+                treasures.remove(Cards.two);
+            }
+            while (treasures != null && !treasures.isEmpty() && maxCards != 0) {
+                while (!treasures.isEmpty() && maxCards != 0) {
+                    Card card = treasures.remove(0);
+                    if (player.hand.contains(card)) {// this is needed due to counterfeit which trashes cards during this loop
+                        card.play(context.game, context, true, true);
+                        maxCards--;
+                    }
                 }
             }
         }
-
         treasures = (selectingCoins) ? player.controlPlayer.treasureCardsToPlayInOrder(context, maxCards, responsible) : player.getTreasuresInHand();
         while (treasures != null && !treasures.isEmpty() && maxCards != 0) {
             while (!treasures.isEmpty() && maxCards != 0) {
