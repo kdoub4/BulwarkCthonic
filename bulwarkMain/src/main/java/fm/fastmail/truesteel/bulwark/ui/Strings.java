@@ -1116,6 +1116,9 @@ public class Strings {
             return getString(R.string.none);
         } else if (option instanceof Integer) {
             return "" + option;
+        } else if (option instanceof  String) {
+            return (String)option;
+            //created for intgers maybe should be integer and translate
         }
         throw new RuntimeException("I got passed an option object that I don't understand!");
     }

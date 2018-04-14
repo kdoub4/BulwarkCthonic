@@ -1883,7 +1883,7 @@ public class CardImpl implements Card, Comparable<Card>{
         for ( int i = 0; i<=(context.actions > 2 ? 2 : context.actions); i--) {
             options.add(Integer.toString(i));
         } //TODO change header
-        return ((IndirectPlayer)currentPlayer).selectOption(context, this, options, null );
+        return ((IndirectPlayer)currentPlayer).selectOption(context, this, options.toArray(), null );
     }
 
     public int compareTo(Card other) {
