@@ -350,7 +350,8 @@ public class Game {
                     // Draw Foe
                     // /////////////////////////////////
                     if ((turnCount > startPhaseLength) &&
-                        pileSize(Cards.virtualEnemy) > 0)
+                        pileSize(Cards.virtualEnemy) > 0 &&
+                            !player.nextTurnCards.contains(Cards.celerity))
                         drawFoe(player, context);
                     //if enemy empty start end phases
                     if (pileSize(Cards.virtualEnemy) == 0) {
@@ -702,6 +703,26 @@ public class Game {
 
     private int activateEnemy(Card enemyCard, Player currentPlayer, MoveContext context, int i) {
         int wounds = 0;
+        if (currentPlayer.nextTurnCards.contains(Cards.celerity)) {
+            return i;
+        }
+        if (currentPlayer.tavern.contains(Cards.petrify)) {
+            for (Card c : Util.copy(currentPlayer.tavern)) {
+                if (c.getKind() == Cards.Kind.Petrify &&
+                        ((CardImpl)c).cardsUnder.get(0).getId() == enemyCard.getId()) {
+                    if (((CardImpl)c).cardsUnder.size()==1) {
+                        ((CardImpl)c).cardsUnder.clear();
+                        addToPile(currentPlayer.tavern.removeCard(c), true);
+                    }
+                    else {
+                        addToPile(currentPlayer.tavern.removeCard(((CardImpl)c).cardsUnder.get(((CardImpl)c).cardsUnder.size()-1)), true);
+                        ((CardImpl)c).cardsUnder.remove(((CardImpl)c).cardsUnder.size()-1);
+                    }
+                    return i;
+                }
+            }
+        }
+
         switch (enemyCard.getKind()) {
             case BrokenCorpse:
                 if (context.woundsTaken>0) {
