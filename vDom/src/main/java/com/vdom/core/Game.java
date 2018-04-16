@@ -349,28 +349,8 @@ public class Game {
                     // /////////////////////////////////
                     if ((turnCount > startPhaseLength) &&
                         pileSize(Cards.virtualEnemy) > 0)
-                        drawFoe(player, context);
-                    //if enemy empty start end phases
-                    if (pileSize(Cards.virtualEnemy) == 0) {
-                        for (int i=0; i < this.trashPile.size(); i++) {
-                            Card c = this.trashPile.get(i);
-                            if (c.is(CardType.Enemy)) {
-                                if (c.is(CardType.Crown)) {
-                                    this.possessedBoughtPile.add(c);
-                                }
-                                else {
-                                    addToPile(c,false);
-                                }
-                                this.trashPile.remove(c);
-                                i--;
-                            }
-                        }
-                        Collections.shuffle(this.possessedBoughtPile);
-                        Collections.shuffle(getPile(Cards.virtualEnemy).cards);
-                        while (!this.possessedBoughtPile.isEmpty()) {
-                            addToPile(this.possessedBoughtPile.remove(0),false);
-                        }
-                    }
+                        drawFoe(player, context, true);
+
 
                 	context.phase = TurnPhase.Action;
                 	context.returnToActionPhase = false;
@@ -568,9 +548,31 @@ public class Game {
         } while (true);
     }
 
-    protected void drawFoe(Player player, MoveContext context) {
+    protected void drawFoe(Player player, MoveContext context, boolean useWhenDrawn) {
         Card cardDrawn = takeFromPile(Cards.virtualEnemy);
         context.game.blackMarketPile.add(context.game.blackMarketPile.size(), cardDrawn);
+
+        if (pileSize(Cards.virtualEnemy) == 0) {
+            for (int i=0; i < this.trashPile.size(); i++) {
+                Card c = this.trashPile.get(i);
+                if (c.is(CardType.Enemy)) {
+                    if (c.is(CardType.Crown)) {
+                        this.possessedBoughtPile.add(c);
+                    }
+                    else {
+                        addToPile(c,false);
+                    }
+                    this.trashPile.remove(c);
+                    i--;
+                }
+            }
+            Collections.shuffle(this.possessedBoughtPile);
+            Collections.shuffle(getPile(Cards.virtualEnemy).cards);
+            while (!this.possessedBoughtPile.isEmpty()) {
+                addToPile(this.possessedBoughtPile.remove(0),false);
+            }
+        }
+
         if (cardDrawn.is(CardType.WhenDrawn)) {
             enemyWhenDrawn(player, context, cardDrawn);
         }
@@ -754,7 +756,7 @@ public class Game {
                     break;
                 case KangaxxTheLich:
                     takeWounds(currentPlayer, 1, context, enemyCard, false);
-                    drawFoe(currentPlayer, context);
+                    drawFoe(currentPlayer, context, true);
                     break;
                 case XaphanDemon:
                     enemyCard.selectAndTrashFromHand(context, currentPlayer, 1);
@@ -866,7 +868,7 @@ public class Game {
                     break;
                 case LizardRabble:
                     killFoe(context, enemyCard);
-                    context.game.blackMarketPile.add(context.game.blackMarketPile.size(), takeFromPile(Cards.virtualEnemy));
+                    drawFoe(currentPlayer, context, true);
                     i--;
                     break;
                 case FireCatapult:
@@ -923,7 +925,7 @@ public class Game {
                     }
                     break;
                 case KmbleeGoblin:
-                    drawFoe(currentPlayer, context);
+                    drawFoe(currentPlayer, context, true);
                     break;
                 case KmronGoblin:
                 case RuihaElf:
@@ -1426,7 +1428,7 @@ public class Game {
         }
         switch (cardPlayed.getKind()) {
             case EnshroudingMist:
-                drawFoe(player,context);
+                drawFoe(player,context, true);
                 break;
             case TheLeftHandGoblin:
                 revealKillPlay(player,context, new String[]{"goblin"} , CardType.Undead);
@@ -1471,12 +1473,8 @@ public class Game {
 
                 context.rabblePlayed = true;
 
-                Card toAdd = takeFromPile(Cards.virtualEnemy);
-                if (toAdd != null)
-                    context.game.blackMarketPile.add(context.game.blackMarketPile.size(), toAdd);
-                toAdd = takeFromPile(Cards.virtualEnemy);
-                if (toAdd != null)
-                    context.game.blackMarketPile.add(context.game.blackMarketPile.size(), toAdd);
+                drawFoe(player, context, true);
+                drawFoe(player, context, true);
                 break;
         }
 
@@ -1496,9 +1494,9 @@ public class Game {
         }
         */
         if (draw) {
-            drawFoe(player,context);
+            drawFoe(player,context, true);
         } else {
-            context.game.blackMarketPile.add(getGamePile(Cards.virtualEnemy).cards.remove(0));
+            drawFoe(player, context, false);
             killFoe(context, context.game.blackMarketPile.get(context.game.blackMarketPile.size()-1) );
         }
     }

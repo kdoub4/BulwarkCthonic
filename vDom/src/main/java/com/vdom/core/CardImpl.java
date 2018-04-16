@@ -1228,27 +1228,8 @@ public class CardImpl implements Card, Comparable<Card>{
             case RuihaElf:
                 for (i=2; i>0; i--) {
                     if (context.game.pileSize(Cards.virtualEnemy) > 0)
-                        context.game.drawFoe(context.getPlayer(), context);
-                    //if enemy empty start end phases
-                    if (context.game.pileSize(Cards.virtualEnemy) == 0) {
-                        for (int j = 0; j < context.game.trashPile.size(); j++) {
-                            Card c = context.game.trashPile.get(j);
-                            if (c.is(CardType.Enemy)) {
-                                if (c.is(CardType.Crown)) {
-                                    context.game.possessedBoughtPile.add(c);
-                                } else {
-                                    context.game.addToPile(c, false);
-                                }
-                                context.game.trashPile.remove(c);
-                                j--;
-                            }
-                        }
-                        Collections.shuffle(context.game.possessedBoughtPile);
-                        Collections.shuffle(context.game.getPile(Cards.virtualEnemy).cards);
-                        while (!context.game.possessedBoughtPile.isEmpty()) {
-                            context.game.addToPile(context.game.possessedBoughtPile.remove(0), false);
-                        }
-                    }
+                        context.game.drawFoe(context.getPlayer(), context, true);
+
                 }
                 break;
         }
