@@ -342,7 +342,9 @@ public class Game {
                     }
 
 //TODO Check for death, if dying force flesh wound play if possible
-
+                    while (player.tavern.contains(Cards.wallOfForce)) {
+                        player.tavern.get(Cards.wallOfForce).callAtStartOfTurn(context);
+                    }
                     playerManoeuvres(player, context);
 
                     context.phase = TurnPhase.DrawFoe;
@@ -621,7 +623,7 @@ public class Game {
                     }
                 }
             }
-            if (context.sanctusCharm && context.woundsTaken>=1)
+            if ((context.sanctusCharm || currentPlayer.tavern.contains(Cards.wallOfForce)) && context.woundsTaken>=1)
                 defended=true;
             if (!defended) {
                 Card gained = currentPlayer.gainNewCard(Cards.virtualWound, attacker, context); //.add(takeFromPile(Cards.virtualWound));

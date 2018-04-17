@@ -21,7 +21,7 @@ public class CardImplArcane extends CardImpl {
     protected void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
             case Augury:
-                int spentActions = spendActions(context, currentPlayer, 3);
+                int spentActions = spendActions(context, currentPlayer, 3, false);
                 if (spentActions==0) return;
                 ArrayList<Card> cardsReveal = new ArrayList<>();
                 for (int i=0; i<spentActions; i++) {
@@ -29,8 +29,6 @@ public class CardImplArcane extends CardImpl {
                 }
                 cardsReveal.add(null);
                 int selection = ((RemotePlayer)currentPlayer).selectOption(context, this, cardsReveal.toArray(), null);
-                Card toTrash = null;
-                Card toReturn = null;
                 if (selection != cardsReveal.size()-1) {
                     currentPlayer.putOnTopOfDeck(cardsReveal.remove(selection), context, true);
                 }
@@ -62,21 +60,23 @@ public class CardImplArcane extends CardImpl {
                 if (enemy.length==1) {
                     Card enemyCard =  game.blackMarketPile.get(enemy[0]);
                     this.cardsUnder.add(enemyCard);
-                    for (int i = 1; i <= spendActions(context, currentPlayer, 2); i++) {
+                    for (int i = 1; i <= spendActions(context, currentPlayer, 2, false); i++) {
                         this.cardsUnder.add(currentPlayer.takeFromPile(Cards.virtualWound));
                         currentPlayer.tavern.add(cardsUnder.get(cardsUnder.size()-1));
                     }
                 }
                 break;
+            case WallOfForce:
+                if (spendActions(context, currentPlayer, 2, true) == 2)
+                    context.invincible = true;
             case CelestialTome:
             case EnchantedStrike:
-            case WallOfForce:
                 putOnTavern(game, context, currentPlayer);
                 break;
             case Fireball:
                 game.addToPile(currentPlayer.playedCards.removeCard(this), true);
                 actionPhaseAttack(context, currentPlayer, true, true,
-                        1 + spendActions(context, currentPlayer, 2));
+                        1 + spendActions(context, currentPlayer, 2, false));
                 break;
             case Celerity:
                 break;
