@@ -1320,7 +1320,7 @@ public class CardImplBase extends CardImpl {
                             .setCardResponsible(this).isSelect()
                             .setCount(1).fromBlackMarket().setActionType(SelectCardOptions.ActionType.DISCARD);
                     int[] toBanish = currentPlayer.doSelectFoe(context, sco, 1, GameEvent.EventType.SelectFoe);
-                    if (toBanish.length == 1) {
+                    if (toBanish!=null && toBanish.length == 1) {
                         context.game.addToPile(context.game.blackMarketPile.remove(toBanish[0]), true);
                     }
                 }

@@ -573,7 +573,7 @@ public class Game {
             }
         }
 
-        if (cardDrawn.is(CardType.WhenDrawn)) {
+        if (cardDrawn.is(CardType.WhenDrawn) && useWhenDrawn) {
             enemyWhenDrawn(player, context, cardDrawn);
         }
     }
@@ -974,7 +974,10 @@ public class Game {
             if (enemyCard.is(CardType.Blast))
                 context.blastActivations++;
         }
-        i = Util.indexOfCardId(enemyCard.getId(), context.game.blackMarketPile);
+
+        int newI = Util.indexOfCardId(enemyCard.getId(), context.game.blackMarketPile);
+        if (newI >=0)
+            return newI;
         return i;
     }
 
