@@ -58,8 +58,25 @@ public class CardImplArcane extends CardImpl {
                         1 + spendActions(context, currentPlayer, 2));
                 break;
             case Celerity:
-                game.addToPile(currentPlayer.playedCards.removeCard(this), true);
-
+                break;
+            case Augury:
+                Card card1 = game.getPile(Cards.virtualEnemy).removeCard();
+                Card card2 = game.getPile(Cards.virtualEnemy).removeCard();
+                Card[] options=new Card[]{card1, card2};
+                int selection = ((RemotePlayer)currentPlayer).selectOption(context, this, options, null);
+                Card toTrash = null;
+                Card toReturn = null;
+                    if (selection == 0) {
+                        toTrash = card1;
+                        toReturn = card2;
+                    } else {
+                        toTrash = card2;
+                        toReturn = card1;
+                    }
+                    if (!toTrash.is(CardType.Crown)) game.addToPile(toTrash, true);
+                    else game.addToPile(toTrash, false);
+                    game.addToPile(toReturn, false);
+                
                 break;
         }
     }

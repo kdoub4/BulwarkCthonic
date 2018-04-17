@@ -359,6 +359,7 @@ public class Game {
                             Card c = this.trashPile.get(i);
                             if (c.is(CardType.Enemy)) {
                                 if (c.is(CardType.Crown)) {
+
                                     this.possessedBoughtPile.add(c);
                                 }
                                 else {
