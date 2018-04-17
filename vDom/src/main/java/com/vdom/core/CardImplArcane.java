@@ -4,6 +4,8 @@ import com.vdom.api.Card;
 import com.vdom.api.GameEvent;
 import com.vdom.comms.SelectCardOptions;
 
+import java.util.ArrayList;
+
 //test git
 public class CardImplArcane extends CardImpl {
     private static final long serialVersionUID = 1L;
@@ -18,6 +20,25 @@ public class CardImplArcane extends CardImpl {
     @Override
     protected void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
+            case Augury:
+                int spentActions = spendActions(context, currentPlayer, 3);
+                if (spentActions==0) return;
+                ArrayList<Card> cardsReveal = new ArrayList<>();
+                for (int i=0; i<spentActions; i++) {
+                    cardsReveal.add(game.draw(context, this, spentActions-i))
+                }
+                cardsReveal.add(null);
+                int selection = ((RemotePlayer)currentPlayer).selectOption(context, this, cardsReveal.toArray(), null);
+                Card toTrash = null;
+                Card toReturn = null;
+                if (selection != cardsReveal.size()-1) {
+                    currentPlayer.putOnTopOfDeck(cardsReveal.remove(selection), context, true);
+                }
+                for (Card c : cardsReveal) {
+                    if (c!=null)
+                        currentPlayer.discard(c, this, context);
+                }
+                break;
         }
     }
     @Override
@@ -76,7 +97,7 @@ public class CardImplArcane extends CardImpl {
                     if (!toTrash.is(CardType.Crown)) game.addToPile(toTrash, true);
                     else game.addToPile(toTrash, false);
                     game.addToPile(toReturn, false);
-                
+
                 break;
         }
     }
