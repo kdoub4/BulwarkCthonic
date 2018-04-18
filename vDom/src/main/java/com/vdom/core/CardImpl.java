@@ -555,7 +555,8 @@ public class CardImpl implements Card, Comparable<Card>{
 	protected void additionalCardActions(Game game, MoveContext context, Player currentPlayer) {}
 
     protected void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {}
-    
+
+    protected void callAction(MoveContext context, Player currentPlayer) {};
 
     public Cards.Kind getKind() {
         return kind;
@@ -631,11 +632,6 @@ public class CardImpl implements Card, Comparable<Card>{
 
     public int getCost(MoveContext context, boolean buyPhase){
         return getCost(context, buyPhase, context.phase == TurnPhase.DrawFoe);
-    }
-
-    @Override
-    public boolean isInvincible(ArrayList<Card> enemyLine, MoveContext context) {
-        return false;
     }
 
     public int getCost(MoveContext context, boolean buyPhase, boolean drawPhase) {
@@ -1264,15 +1260,7 @@ public class CardImpl implements Card, Comparable<Card>{
     @Override
     public void callWhenCardGained(MoveContext context, Card cardToGain) {	
     }
-    
-    @Override
-    public void callWhenActionResolved(MoveContext context, Card resolvedAction) {
-    }
-    
-    @Override
-    public void callAtStartOfTurn(MoveContext context) {
-    }
-    
+
     @Override
     public void isTrashed(MoveContext context) {
         // card left play - stop any impersonations
@@ -1657,7 +1645,176 @@ public class CardImpl implements Card, Comparable<Card>{
         }
     }
 
+    private boolean call(MoveContext context) {
+        Player currentPlayer = context.getPlayer();
+        if (currentPlayer.tavern.removeCard(this.getControlCard())==null) {
+            return false;
+        }
+        currentPlayer.playedCards.add(this.getControlCard());
+        GameEvent event = new GameEvent(GameEvent.EventType.CallingCard, (MoveContext) context);
+        event.card = this.getControlCard();
+        event.newCard = true;
+        context.game.broadcastEvent(event);
+        return true;
+    }
 
+    @Override
+    public void callAtStartOfTurn(MoveContext context) {
+        if (!callableWhenTurnStarts) return;
+        if (!call(context)) return;
+        Player currentPlayer = context.getPlayer();
+        callAction(context, currentPlayer);
+        finishCall(context);
+    }
+
+    @Override
+    public void callWhenActionResolved(MoveContext context, Card resolvedAction) {
+        if (!callableWhenActionResolved) return;
+        if (!call(context)) return;
+        Player currentPlayer = context.getPlayer();
+        callAction(context, currentPlayer);
+        finishCall(context);
+    }
+
+    protected void finishCall(MoveContext context) {
+        GameEvent event = new GameEvent(GameEvent.EventType.CalledCard, (MoveContext) context);
+        event.card = this.getControlCard();
+        context.game.broadcastEvent(event);
+    }
+
+
+    protected void actionPhaseAttack(MoveContext context, Player currentPlayer, boolean Melee, boolean Range, int Might) {
+        //DoAttack
+        int currentAttacks = context.getAttacks();
+        int currentMight = context.getMight();
+        boolean currentMelee = context.isMelee();
+        boolean currentRange = context.isRange();
+        context.setAttacks(1);
+        context.setMight(Might);
+        context.resetMelee();
+        context.setMelee(Melee);
+        context.resetRange();
+        context.setRange(Range);
+        context.returnToActionPhase = true;
+        context.game.playerAttackFoe(currentPlayer,context);
+        context.resetMight();
+        context.setMight(currentMight);
+        context.resetAttacks();
+        context.setAttacks(currentAttacks);
+        context.resetMelee();
+        context.setMelee(currentMelee);
+        context.resetRange();
+        context.setRange(currentRange);
+        context.returnToActionPhase = false;
+    }
+
+    protected void banishOrDiscard(MoveContext context, Player currentPlayer, Card cardTemplate) {
+        Card topCard = context.game.takeFromPile(cardTemplate);
+
+        if(topCard != null) {
+            boolean discard = currentPlayer.duchess_shouldDiscardCard(context, topCard);
+            context.game.addToPile(topCard, discard);
+        }
+    }
+
+    protected void cardsOrActions(MoveContext context, Player currentPlayer, Game game, int amountCards,
+                                int amountActions, Card theCard) {
+        Player.CardsOrActionsOption option = currentPlayer.controlPlayer.cardsOrActions_choose(context, theCard, amountCards , amountActions );
+        if (option == null) {
+            Util.playerError(currentPlayer, "Cards/Action option error, ignoring.");
+        } else {
+            if (option == Player.CardsOrActionsOption.AddActions) {
+                context.actions += 2;
+            } else if (option == Player.CardsOrActionsOption.AddCards) {
+                while (amountCards > 0) {
+                    game.drawToHand(context, this, amountCards);
+                    amountCards--;
+                }
+            }
+        }
+    }
+
+    protected void putOnTavern(Game game, MoveContext context, Player currentPlayer) {
+        // Move to tavern mat
+        if (this.getControlCard().numberTimesAlreadyPlayed == 0) {
+            currentPlayer.playedCards.remove(currentPlayer.playedCards.lastIndexOf((Card) this.getControlCard()));
+            currentPlayer.tavern.add(this.getControlCard());
+            this.getControlCard().stopImpersonatingCard();
+            this.setPlayedThisTurn(true);
+
+            GameEvent event = new GameEvent(GameEvent.EventType.CardSetAsideOnTavernMat, (MoveContext) context);
+            event.card = this.getControlCard();
+            game.broadcastEvent(event);
+        } else {
+            // reset clone count
+            this.getControlCard().cloneCount = 1;
+        }
+    }
+
+    protected void hunt(Game game, MoveContext context, Player currentPlayer, CardType... types) {
+        ArrayList<Card> toDiscard = new ArrayList<Card>();
+        int idCardsRevealed = 0;
+        Card revealed = game.draw(context, this, 1);
+
+        if (revealed.is(types)) {
+            currentPlayer.hand.add(revealed);
+        }
+        else {
+            if (currentPlayer.reveal_shouldDiscard(context, currentPlayer, revealed, this)) {
+                currentPlayer.discard(revealed,this,context);
+            }
+            else {
+                currentPlayer.putOnTopOfDeck(revealed, context, true);
+            }
+        }
+
+    }
+
+    protected void hunt(Game game, MoveContext context, Player currentPlayer, String... identifier) {
+        ArrayList<Card> toDiscard = new ArrayList<Card>();
+        int idCardsRevealed = 0;
+        Card revealed = game.draw(context, this, 1);
+
+        if (revealed.is(identifier)) {
+            currentPlayer.hand.add(revealed);
+        }
+        else {
+            if (currentPlayer.reveal_shouldDiscard(context, currentPlayer, revealed, this)) {
+                currentPlayer.discard(revealed,this,context);
+            }
+            else {
+                currentPlayer.putOnTopOfDeck(revealed, context, true);
+            }
+        }
+
+    }
+
+    @Override
+    public boolean isInvincible(ArrayList<Card> enemyLine, MoveContext context) {
+        if (this.getKind() == Cards.Kind.KangaxxTheLich) {
+            if (context.game.enemyCount(CardType.Necromancer)>0) {
+                return true;
+            }
+        }
+
+        boolean neighborRuiha = false;
+        if (this.is("elf", "demon")) {
+            try {
+                neighborRuiha = (enemyLine.get(Util.indexOfCardId(this.getId() - 1, enemyLine)).getKind() == Cards.Kind.RuihaElf);
+            } catch (IndexOutOfBoundsException e) {
+
+            }
+            if (!neighborRuiha) {
+                try {
+                    neighborRuiha = (enemyLine.get(Util.indexOfCardId(this.getId() + 1, enemyLine)).getKind() == Cards.Kind.RuihaElf);
+                } catch (IndexOutOfBoundsException e) {
+
+                }
+            }
+            return neighborRuiha;
+        }
+        return false;
+    }
     public PileCreator getPileCreator() {
         if (pileCreator == null) {
             return new DefaultPileCreator();

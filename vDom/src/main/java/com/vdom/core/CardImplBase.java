@@ -20,33 +20,6 @@ public class CardImplBase extends CardImpl {
     }
 
     @Override
-    public boolean isInvincible(ArrayList<Card> enemyLine, MoveContext context) {
-        if (this.getKind() == Cards.Kind.KangaxxTheLich) {
-            if (context.game.enemyCount(CardType.Necromancer)>0) {
-                return true;
-            }
-        }
-
-        boolean neighborRuiha = false;
-        if (this.is("elf", "demon")) {
-            try {
-                neighborRuiha = (enemyLine.get(Util.indexOfCardId(this.getId() - 1, enemyLine)).getKind() == Cards.Kind.RuihaElf);
-            } catch (IndexOutOfBoundsException e) {
-
-            }
-            if (!neighborRuiha) {
-                try {
-                    neighborRuiha = (enemyLine.get(Util.indexOfCardId(this.getId() + 1, enemyLine)).getKind() == Cards.Kind.RuihaElf);
-                } catch (IndexOutOfBoundsException e) {
-
-                }
-            }
-            return neighborRuiha;
-        }
-        return false;
-    }
-
-    @Override
     protected void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
             case SanctusCharm:
@@ -305,12 +278,6 @@ public class CardImplBase extends CardImpl {
                 towershield(context, currentPlayer);
                 putOnTavern(game, context, currentPlayer);
                 break;
-            case BloodstainedBlade:
-                bloodstained(context, currentPlayer);
-                break;
-            case HundredScimitar:
-                hunderscimitar(context, currentPlayer);
-                break;
             case Charge:
                 charge(context, currentPlayer);
                 break;
@@ -389,33 +356,6 @@ public class CardImplBase extends CardImpl {
             default:
                 break;
         }
-    }
-
-    private boolean call(MoveContext context) {
-        Player currentPlayer = context.getPlayer();
-        if (currentPlayer.tavern.removeCard(this.getControlCard())==null) {
-            return false;
-        }
-        currentPlayer.playedCards.add(this.getControlCard());
-        GameEvent event = new GameEvent(GameEvent.EventType.CallingCard, (MoveContext) context);
-        event.card = this.getControlCard();
-        event.newCard = true;
-        context.game.broadcastEvent(event);
-        return true;
-    }
-
-    private void finishCall(MoveContext context) {
-        GameEvent event = new GameEvent(GameEvent.EventType.CalledCard, (MoveContext) context);
-        event.card = this.getControlCard();
-        context.game.broadcastEvent(event);
-    }
-
-    public void callWhenActionResolved(MoveContext context, Card resolvedAction) {
-        if (!callableWhenActionResolved) return;
-        if (!call(context)) return;
-        Player currentPlayer = context.getPlayer();
-        callAction(context, currentPlayer);
-        finishCall(context);
     }
 
     private void callTownSquare(MoveContext context, Game game, Player player) {
@@ -522,11 +462,6 @@ public class CardImplBase extends CardImpl {
 
     }
 
-    private void hunt(Game game, MoveContext context, Player currentPlayer, String... identifier) {
-        ArrayList<Card> toDiscard = new ArrayList<Card>();
-        int idCardsRevealed = 0;
-        Card revealed = game.draw(context, this, 1);
-
         if (revealed.is(identifier)) {
             currentPlayer.hand.add(revealed);
         }
@@ -547,19 +482,6 @@ public class CardImplBase extends CardImpl {
         Card revealed = game.draw(context, this, 1);
 
         if (revealed.is(types)) {
-            currentPlayer.hand.add(revealed);
-        }
-        else {
-            if (currentPlayer.reveal_shouldDiscard(context, currentPlayer, revealed, this)) {
-                currentPlayer.discard(revealed,this,context);
-            }
-            else {
-                currentPlayer.putOnTopOfDeck(revealed, context, true);
-            }
-        }
-
-    }
-
     private void adventurer(Game game, MoveContext context, Player currentPlayer) {
         ArrayList<Card> toDiscard = new ArrayList<Card>();
         int treasureCardsRevealed = 0;
@@ -584,23 +506,6 @@ public class CardImplBase extends CardImpl {
         }
     }
 
-    private void putOnTavern(Game game, MoveContext context, Player currentPlayer) {
-        // Move to tavern mat
-        if (this.getControlCard().numberTimesAlreadyPlayed == 0) {
-            currentPlayer.playedCards.remove(currentPlayer.playedCards.lastIndexOf((Card) this.getControlCard()));
-            currentPlayer.tavern.add(this.getControlCard());
-            this.getControlCard().stopImpersonatingCard();
-            this.setPlayedThisTurn(true);
-
-            GameEvent event = new GameEvent(GameEvent.EventType.CardSetAsideOnTavernMat, (MoveContext) context);
-            event.card = this.getControlCard();
-            game.broadcastEvent(event);
-        } else {
-            // reset clone count
-            this.getControlCard().cloneCount = 1;
-        }
-    }
-	
 	private void artisan(Game game, MoveContext context, Player currentPlayer) {
 		Card card = currentPlayer.controlPlayer.artisan_cardToObtain(context);
         if (card != null) {
@@ -748,20 +653,6 @@ public class CardImplBase extends CardImpl {
         }
     }
 
-    private void attack(MoveContext context, Player currentPlayer) {
-        // TODO do this.getControlCard() check at the top of the block for EVERY Util...
-        if (currentPlayer.getHand().size() > 0) {
-            Card card = currentPlayer.controlPlayer.action_cardToPutBackOnDeck(context, Cards.attack );
-
-            if (card == null || !currentPlayer.hand.contains(card)) {
-                Util.playerError(currentPlayer, "Courtyard error, just putting back a random card.");
-                card = Util.randomCard(currentPlayer.hand);
-            }
-
-            currentPlayer.putOnTopOfDeck(currentPlayer.hand.remove(currentPlayer.hand.indexOf(card)), context, true);
-        }
-    }
-
     private void shield(MoveContext context, Player currentPlayer) {
         if (currentPlayer.getHand().size() > 0) {
             Card card = currentPlayer.controlPlayer.action_cardToPutBackOnDeck(context, this.getControlCard() );
@@ -821,65 +712,6 @@ public class CardImplBase extends CardImpl {
                 }
             }
         }
-    }
-
-    private void cardsOrActions(MoveContext context, Player currentPlayer, Game game, int amountCards,
-                                int amountActions, Card theCard) {
-        Player.CardsOrActionsOption option = currentPlayer.controlPlayer.cardsOrActions_choose(context, theCard, amountCards , amountActions );
-        if (option == null) {
-            Util.playerError(currentPlayer, "Cards/Action option error, ignoring.");
-        } else {
-            if (option == Player.CardsOrActionsOption.AddActions) {
-                context.actions += 2;
-            } else if (option == Player.CardsOrActionsOption.AddCards) {
-                while (amountCards > 0) {
-                    game.drawToHand(context, this, amountCards);
-                    amountCards--;
-                }
-            }
-        }
-    }
-
-    private void banishOrReplace(MoveContext context, Player currentPlayer, Card cardTemplate) {
-        Card topCard = context.game.takeFromPile(cardTemplate);
-
-        if(topCard != null) {
-            boolean discard = currentPlayer.shouldDiscardCard(context, topCard, this );
-            context.game.addToPile(topCard, discard);
-        }
-    }
-
-    private void actionPhaseAttack(MoveContext context, Player currentPlayer, boolean Melee, boolean Range, int Might) {
-	    //DoAttack
-        int currentAttacks = context.getAttacks();
-        int currentMight = context.getMight();
-        boolean currentMelee = context.isMelee();
-        boolean currentRange = context.isRange();
-        context.setAttacks(1);
-        context.setMight(Might);
-        context.resetMelee();
-        context.setMelee(Melee);
-        context.resetRange();
-        context.setRange(Range);
-        context.returnToActionPhase = true;
-        context.game.playerAttackFoe(currentPlayer,context);
-        context.resetMight();
-        context.setMight(currentMight);
-        context.resetAttacks();
-        context.setAttacks(currentAttacks);
-        context.resetMelee();
-        context.setMelee(currentMelee);
-        context.resetRange();
-        context.setRange(currentRange);
-        context.returnToActionPhase = false;
-    }
-
-    private void bloodstained(MoveContext context, Player currentPlayer) {
-
-    }
-
-    private void hunderscimitar(MoveContext context, Player currentPlayer) {
-
     }
 
     private void charge(MoveContext context, Player currentPlayer) {
@@ -1298,32 +1130,26 @@ public class CardImplBase extends CardImpl {
         }
     }
 
-    public void callAtStartOfTurn(MoveContext context) {
-        if (!callableWhenTurnStarts) return;
-        if (!call(context)) return;
-        Player currentPlayer = context.getPlayer();
-        callAction(context, currentPlayer);
-        finishCall(context);
-    }
 
-    private void callAction(MoveContext context, Player currentPlayer) {
+    @Override
+    protected void callAction(MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
             case SilkenSnare:
-                if (Util.getCardCount(currentPlayer.getTavern(), "snare") > 0 &&
+                if (context.countCardsInPlayByIdentifier("snare")>1 ||
                         ((IndirectPlayer)currentPlayer).selectBoolean(context, this)) {
                     context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
-                    actionPhaseAttack(context, currentPlayer, false, true, 2);
-                }
-                else {
-                    context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
-                    SelectCardOptions sco = new SelectCardOptions().isNonCrown()
-                            .setCardResponsible(this).isSelect()
-                            .setCount(1).fromBlackMarket().setActionType(SelectCardOptions.ActionType.DISCARD);
+                    SelectCardOptions sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
+                            .fromBlackMarket().setCount(1).setCardResponsible(this);
                     int[] toBanish = currentPlayer.doSelectFoe(context, sco, 1, GameEvent.EventType.SelectFoe);
-                    if (toBanish!=null && toBanish.length == 1) {
+                    if (toBanish.length == 1) {
                         context.game.addToPile(context.game.blackMarketPile.remove(toBanish[0]), true);
                     }
                 }
+                else {
+                    context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
+                    actionPhaseAttack(context, currentPlayer, false, true, 2);
+                }
+
                 break;
             case TownSquare:
                 callTownSquare(context, context.game, currentPlayer);

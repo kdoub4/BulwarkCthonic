@@ -31,7 +31,7 @@ public class CardImplAdventures extends CardImpl {
         	bridgeTroll(game, context, currentPlayer);
             break;
         case CoinOfTheRealm:
-        	putOnTavern(game, context, currentPlayer);
+        	putOnTavernAdventures(game, context, currentPlayer);
         	break;
         case Disciple:
         	disciple(game, context, currentPlayer);
@@ -44,7 +44,7 @@ public class CardImplAdventures extends CardImpl {
         case Teacher:
         case Transmogrify:
         case WineMerchant:
-        	putOnTavern(game, context, currentPlayer);
+        	putOnTavernAdventures(game, context, currentPlayer);
             break;
         case Dungeon:
             discardMultiple(context, currentPlayer, 2);
@@ -209,7 +209,7 @@ public class CardImplAdventures extends CardImpl {
         return true;
 	}
     
-    private void finishCall(MoveContext context) {
+    private void finishCallAdventures(MoveContext context) {
     	GameEvent event = new GameEvent(GameEvent.EventType.CalledCard, (MoveContext) context);
         event.card = this.getControlCard();
         context.game.broadcastEvent(event);
@@ -227,7 +227,7 @@ public class CardImplAdventures extends CardImpl {
     	default:
     		break;
     	}
-    	finishCall(context);
+    	finishCallAdventures(context);
     }
     
 	public void callWhenActionResolved(MoveContext context, Card resolvedAction) {
@@ -244,7 +244,7 @@ public class CardImplAdventures extends CardImpl {
     	default:
     		break;
     	}
-    	finishCall(context);
+    	finishCallAdventures(context);
     }
 	    
 	public void callAtStartOfTurn(MoveContext context) {
@@ -268,7 +268,7 @@ public class CardImplAdventures extends CardImpl {
     	default:
     		break;
     	}
-    	finishCall(context);
+    	finishCallAdventures(context);
     }
 	
 	
@@ -778,7 +778,7 @@ public class CardImplAdventures extends CardImpl {
     	}
     }
     
-    private void putOnTavern(Game game, MoveContext context, Player currentPlayer) {
+    private void putOnTavernAdventures(Game game, MoveContext context, Player currentPlayer) {
         // throneroom has here no effect since card is already put on tavern
         // Move to tavern mat
         if (this.getControlCard().numberTimesAlreadyPlayed == 0) {

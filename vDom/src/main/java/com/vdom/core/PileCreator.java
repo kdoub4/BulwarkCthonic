@@ -66,6 +66,18 @@ class MilitiaPileCreator extends PileCreator {
     }
 }
 
+class ChorusPileCreator extends PileCreator {
+    public CardPile create(Card template, int count) {
+        List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
+
+        for (Card c : Cards.locationCardsSylvanChorus)
+            cards.add(new CardPile.CardMultiplicity(c,    4));
+
+        return (new CardPile(template, cards, true, true));
+    }
+}
+
+
 class LizardPileCreator extends PileCreator {
     public CardPile create(Card template, int count) {
         List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
@@ -175,6 +187,42 @@ class ZsuzsaDaggerPileCreator extends PileCreator {
     }
 }
 
+class JakobTomePileCreator extends PileCreator {
+    public CardPile create(Card template, int count) {
+        List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
+
+        cards.add(new CardPile.CardMultiplicity(Cards.celestialTome,    2));
+        cards.add(new CardPile.CardMultiplicity(Cards.celestialGrimoire, 2));
+
+        return new CardPile(template, cards, true, true);
+    }
+}
+
+class JakobSpellPileCreator extends PileCreator {
+    public CardPile create(Card template, int count) {
+        List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
+
+        cards.add(new CardPile.CardMultiplicity(Cards.fireball,    3));
+        cards.add(new CardPile.CardMultiplicity(Cards.wallOfForce, 3));
+        cards.add(new CardPile.CardMultiplicity(Cards.celerity, 3));
+        cards.add(new CardPile.CardMultiplicity(Cards.petrify,    3));
+        cards.add(new CardPile.CardMultiplicity(Cards.augury, 3));
+        cards.add(new CardPile.CardMultiplicity(Cards.enchangedStrike, 3));
+
+        return new CardPile(template, cards, false, true);
+    }
+}
+
+class JakobStaffPileCreator extends PileCreator {
+    public CardPile create(Card template, int count) {
+        List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
+        for (Card c : Cards.staffCardsJakob) {
+            cards.add(new CardPile.CardMultiplicity(c,    3));
+        }
+
+        return new CardPile(template, cards, true, true);
+    }
+}
 class WiolaBowPileCreator extends PileCreator {
     public CardPile create(Card template, int count) {
         List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();

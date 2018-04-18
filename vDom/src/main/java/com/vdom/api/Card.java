@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.vdom.core.CardImpl;
+import com.vdom.core.CardType;
 import com.vdom.core.Expansion;
 import com.vdom.core.Game;
 import com.vdom.core.Cards.Kind;

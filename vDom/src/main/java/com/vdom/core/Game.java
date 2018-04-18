@@ -1000,6 +1000,12 @@ public class Game {
             Card enemyCard = context.game.blackMarketPile.get(i);
             if (enemyCard.is(CardType.Activate)) {
                 i = activateEnemy(enemyCard, currentPlayer, context, i);
+                else {
+                    if (enemyCard.getId() != context.game.blackMarketPile.get(i).getId()) {
+                        //must have been killed roll back i
+                        i--;
+                    }
+                }
             }
         }
     }
@@ -1443,7 +1449,7 @@ public class Game {
                 takeWounds(player,1, context, cardPlayed, false);
                 break;
             case KangaxxTheLich:
-                revealKillPlay(player, context, null , CardType.Undead);
+                revealKillPlay(player, context, new String[]{""}, CardType.Undead);
                 break;
             case ElfRabble:
                 SelectCardOptions sco = new SelectCardOptions().isNonCrown().isNonRabble()

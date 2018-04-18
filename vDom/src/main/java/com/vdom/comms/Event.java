@@ -10,7 +10,7 @@ import com.vdom.api.GameEvent;
  * Event class: This object makes up the communication protocol between RemotePlayer, running in vdom, and the game activity. <br>
  * The content is:
  * <ul>
- * <li><b>t</b>: Type of the event, determines meaning of other class members.</li>
+ * <li><b>t</b>: CardType of the event, determines meaning of other class members.</li>
  * <li><b>s</b>: String</li>
  * <li><b>b</b>: boolean</li>
  * <li><b>i</b>: int</li>

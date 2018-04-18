@@ -1,12 +1,19 @@
 package com.vdom.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.vdom.api.Card;
 
 public enum Expansion {
-	Base(Cards.heroCardsSandor),
+	Base(Cards.heroCardsArpad),
+/*			Arrays.asList(Cards.heroCardsSandor, Cards.heroCardsArpad, Cards.heroCardsWiola, Cards.heroCardsZsuzsa,
+			Cards.locationCardsSylvanHeights, Cards.locationCardsCitadelXajorkith, Cards.locationCardsFortBriggs,
+			Cards.locationCardsHoltvaros,
+			Cards.cardsElf, Cards.cardsGoblin, Cards.cardsLizard, Cards.cardsWinter)),
+*/
+	Arcane(Cards.heroCardsJakob),
 	Base2E(Cards.actionCardsBaseGame2E),
 	BaseAll(Cards.actionCardsBaseGameAll, true),
 	Intrigue(Cards.actionCardsIntrigue),
@@ -22,6 +29,7 @@ public enum Expansion {
 	Adventures(Cards.actionCardsAdventures, Cards.eventCardsAdventures),
 	Empires(Cards.actionCardsEmpires, Cards.eventCardsEmpires, Cards.landmarkCardsEmpires),
 	Promo(Cards.actionCardsPromo, Cards.eventCardsPromo);
+
 	
 	private final List<Card> kingdomCards;
 	private final List<Card> eventCards;

@@ -17,6 +17,7 @@ public class MoveContext {
     public int woundsTaken = 0;
     public boolean sanctusCharm = false;
     public boolean invincible = false;
+    public int techniqueBuys = 0;
 
     public int getMightTotal() {
         return (might + mightModifier);
