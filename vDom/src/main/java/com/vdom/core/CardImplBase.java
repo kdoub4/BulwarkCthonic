@@ -180,24 +180,10 @@ public class CardImplBase extends CardImpl {
                 break;
             case SacredVault:
                 this.putOnTavern(game, context, currentPlayer);
-                Card[] underCards = currentPlayer.selectFromHand(context, this, 1, true, true, SelectCardOptions.ActionType.UNDER, SelectCardOptions.PickType.SELECT);
-                if (underCards != null) {
-                    Card under = underCards[0];
-                    // Move to tavern mat
-                    if (under.getControlCard().numberTimesAlreadyPlayed == 0) {
-                        currentPlayer.hand.remove(under.getControlCard());
-                        currentPlayer.tavern.add(under);
-                        under.getControlCard().stopImpersonatingCard();
-
-                        GameEvent event = new GameEvent(GameEvent.EventType.CardSetAsideOnTavernMat, context);
-                        event.card = under.getControlCard();
-                        game.broadcastEvent(event);
-                    } else {
-                        // reset clone count
-                        this.getControlCard().cloneCount = 1;
-                    }
-                    this.cardsUnder.add(under);
-                }
+                sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
+                        .setActionType(SelectCardOptions.ActionType.UNDER)
+                        .setCardResponsible(this).setCount(1).setPassable().exactCount();
+                putCardUnderFromHand(game, context, currentPlayer, sco);
                 break;
             case OracularTurret:
                 oracularTurret(currentPlayer, context, game);
@@ -357,6 +343,7 @@ public class CardImplBase extends CardImpl {
                 break;
         }
     }
+
 
     private void callTownSquare(MoveContext context, Game game, Player player) {
         int numBanished = 1;

@@ -112,7 +112,7 @@ public class Cards {
         FlankAttack, Sneak, TheDrop, VirtualDaggers,
 
         //Jakob Startouched
-        MagicMissile, CrystalObr, CelestialTome, CelestialGrimoire, Fireball, EnchangedStrike,
+        MagicMissile, CrystalOrb, CelestialTome, CelestialGrimoire, Fireball, EnchangedStrike,
         Petrify, Celerity, Augury, WallOfForce, CedarStaff, AshStaff, RunicStaff, AstrologersRitual,
         VirtualTome, VirtualSpell, VirtualStaffJakob,
 
@@ -834,8 +834,8 @@ public class Cards {
         heroCardsSandor.add(one);
 
         //Jakob
-        heroCardsJakob.add(magicMissile = new CardImpl.Builder(Kind.MagicMissile, 0, CardType.Hero, CardType.Action, CardType.Spell, CardType.Range).addAttacks(1).setPileSize(2).addCards(1).expansion(Expansion.Arcane).build());
-        heroCardsJakob.add(crystalOrb = new CardImpl.Builder(Kind.CrystalObr, 0, CardType.Hero, CardType.Action).addActions(1).description("reveal the top card of your deck - Discard it or return it, +1 Card.").expansion(Expansion.Arcane).build()); //TODO Bulwark multiplayer
+        heroCardsJakob.add(magicMissile = new CardImpl.Builder(Kind.MagicMissile, 0, CardType.Hero, CardType.Action, CardType.Spell, CardType.Range).setAttacks(1).setPileSize(2).addCards(1).expansion(Expansion.Arcane).build());
+        heroCardsJakob.add(crystalOrb = new CardImpl.Builder(Kind.CrystalOrb, 0, CardType.Hero, CardType.Action).addActions(1).description("reveal the top card of your deck - Discard it or return it, +1 Card.").expansion(Expansion.Arcane).build()); //TODO Bulwark multiplayer
         tomeCardsJakob.add(celestialTome = new CardImpl.Builder(Kind.CelestialTome, 2, CardType.Hero, CardType.Action, CardType.Remains, CardType.RemainsManoeuvre, CardType.Equipment).addActions(1).addCards(1).description("While Remaining: Manoeuvre - Banish this for +1 Action.").expansion(Expansion.Arcane).build()); //TODO Bulwark multiplayer
         tomeCardsJakob.add(celestialGrimoire = new CardImpl.Builder(Kind.CelestialGrimoire, 2, CardType.Hero, CardType.Action, CardType.Remains, CardType.RemainsManoeuvre, CardType.Equipment).addActions(2).addCards(1).upgradeCard(Kind.CelestialTome).description("You may put a spell from your hand underneath this.  While Remaining: Manoeuvre - Discard this for +1 Action and take any cards underneath into your hand.").expansion(Expansion.Arcane).build());
         spellCardsJakob.add(fireball = new CardImpl.Builder(Kind.Fireball, 3, CardType.Hero, CardType.Action, CardType.Spell).description("YBanish this. Make a Might 1 Range or Melee attack  Spellcasting: When you cast this spell, spend up to 2 extra Actions, each Action spent increases the Might of the attack by 1.").expansion(Expansion.Arcane).build());
