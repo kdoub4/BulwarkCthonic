@@ -454,7 +454,7 @@ public class Game {
                 if (player.tavern.contains(Cards.vantagePoint) && context.meleeMade) {
                     //Card[] options = new Card[]{player.tavern.get(Cards.vantagePoint),null};
                     //if (player.call_whenTurnStartCardToCall(context, options)!=null){
-                        player.discard(player.tavern.removeCard(Cards.vantagePoint), Cards.vantagePoint, context);
+                        player.discard(player.tavern.removeCard(player.tavern.get(Cards.vantagePoint)), Cards.vantagePoint, context);
                     //}
                 }
 
