@@ -3299,7 +3299,7 @@ public class Game {
                         player.discard(takeFromPile(Cards.sidestep), null, null);
                         player.discard(takeFromPile(Cards.sidestep), null, null);
                         break;
-                    case Jakob:
+                    case Jakab:
                         player.discard(takeFromPile(Cards.magicMissile), null, null);
                         player.discard(takeFromPile(Cards.magicMissile), null, null);
                         player.discard(takeFromPile(Cards.crystalOrb), null, null);
@@ -3617,8 +3617,8 @@ public class Game {
                         added++;
                     }
                     break;
-                case Jakob:
-                    for (Card c : Cards.heroCardsJakob) {
+                case Jakab:
+                    for (Card c : Cards.heroCardsJakab) {
                         addPile(c);
                         added++;
                     }

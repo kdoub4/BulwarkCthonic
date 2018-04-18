@@ -42,10 +42,10 @@ public class Cards {
     public static ArrayList<Card> woundCards = new ArrayList<Card>();
     public static ArrayList<Card> woundPile = new ArrayList<Card>();
 
-    public static ArrayList<Card> heroCardsJakob = new ArrayList<Card>();
-    public static ArrayList<Card> tomeCardsJakob = new ArrayList<Card>();
-    public static ArrayList<Card> staffCardsJakob = new ArrayList<Card>();
-    public static ArrayList<Card> spellCardsJakob = new ArrayList<>();
+    public static ArrayList<Card> heroCardsJakab = new ArrayList<Card>();
+    public static ArrayList<Card> tomeCardsJakab = new ArrayList<Card>();
+    public static ArrayList<Card> staffCardsJakab = new ArrayList<Card>();
+    public static ArrayList<Card> spellCardsJakab = new ArrayList<>();
 
     public static ArrayList<Card> actionCardsBaseGame = new ArrayList<Card>();
     public static ArrayList<Card> actionCardsBaseGame2E = new ArrayList<Card>();
@@ -111,10 +111,10 @@ public class Cards {
         Sidestep, KnifeInTheBack, Shortbow, Crossbow, DualDaggers, NightDaggers, BurialDaggers,
         FlankAttack, Sneak, TheDrop, VirtualDaggers,
 
-        //Jakob Startouched
+        //Jakab Startouched
         MagicMissile, CrystalOrb, CelestialTome, CelestialGrimoire, Fireball, EnchantedStrike,
         Petrify, Celerity, Augury, WallOfForce, CedarStaff, AshStaff, RunicStaff, AstrologersRitual,
-        VirtualTome, VirtualSpell, VirtualStaffJakob,
+        VirtualTome, VirtualSpell, VirtualStaffJakab,
 
 
         //Goblin Horde
@@ -395,7 +395,7 @@ public class Cards {
     public static final Card astrologersRitual;
     public static final Card virtualTome;
     public static final Card virtualSpell;
-    public static final Card virtualStaffJakob;
+    public static final Card virtualStaffJakab;
 
     public static final Card platinum;
     public static final Card gold;
@@ -923,26 +923,26 @@ public class Cards {
         heroCardsSandor.add(orison = new CardImpl.Builder(Kind.Orison, 0, CardType.Hero, CardType.Action, CardType.Remains, CardType.RemainsReaction).callWhenTurnStarts().setPileSize(2).description("While Remaining: Reaction: At the start of your turn, you may Discard this for +1 Card.").expansion(Expansion.Base).build());
         heroCardsSandor.add(one);
 
-        //Jakob
-        heroCardsJakob.add(magicMissile = new CardImpl.Builder(Kind.MagicMissile, 0, CardType.Hero, CardType.Action, CardType.Spell, CardType.Range).setAttacks(1).setPileSize(2).addCards(1).expansion(Expansion.Arcane).build());
-        heroCardsJakob.add(crystalOrb = new CardImpl.Builder(Kind.CrystalOrb, 0, CardType.Hero, CardType.Action).addActions(1).setPileSize(1).description("reveal the top card of your deck - Discard it or return it, +1 Card.").expansion(Expansion.Arcane).build()); //TODO Bulwark multiplayer
-        tomeCardsJakob.add(celestialTome = new CardImpl.Builder(Kind.CelestialTome, 2, CardType.Hero, CardType.Action, CardType.Remains, CardType.RemainsManoeuvre, CardType.Equipment).addActions(1).addCards(1).description("While Remaining: Manoeuvre - Banish this for +1 Action.").expansion(Expansion.Arcane).build()); //TODO Bulwark multiplayer
-        tomeCardsJakob.add(celestialGrimoire = new CardImpl.Builder(Kind.CelestialGrimoire, 2, CardType.Hero, CardType.Action, CardType.Remains, CardType.RemainsManoeuvre, CardType.Equipment).addActions(2).addCards(1).upgradeCard(Kind.CelestialTome).description("You may put a spell from your hand underneath this.  While Remaining: Manoeuvre - Discard this for +1 Action and take any cards underneath into your hand.").expansion(Expansion.Arcane).build());
-        spellCardsJakob.add(fireball = new CardImpl.Builder(Kind.Fireball, 3, CardType.Hero, CardType.Action, CardType.Spell).description("YBanish this. Make a Might 1 Range or Melee attack  Spellcasting: When you cast this spell, spend up to 2 extra Actions, each Action spent increases the Might of the attack by 1.").expansion(Expansion.Arcane).build());
-        spellCardsJakob.add(enchangedStrike= new CardImpl.Builder(Kind.EnchantedStrike, 3, CardType.Hero, CardType.Action, CardType.Attack, CardType.Equipment, CardType.Remains, CardType.RemainsReaction, CardType.OnAttack).description("Remains in front of any player.  While Remaining: Reaction - When this player attacks, they may Banish this for +1 Might.").expansion(Expansion.Arcane).build());
-        spellCardsJakob.add(petrify = new CardImpl.Builder(Kind.Petrify, 3, CardType.Hero, CardType.Action, CardType.Spell, CardType.Remains).description("Remains on top of a Foe in play.  Spellcasting: You may spend up to 2 extra Actions to put Wound cards under this from the deck, 1 per Action spent.  While Remaining: This Foe is not in play. Banish this or a Wound underneath this whenever it would activate.").expansion(Expansion.Arcane).build());
-        spellCardsJakob.add(celerity= new CardImpl.Builder(Kind.Celerity, 3, CardType.Hero, CardType.Action, CardType.Spell, CardType.Duration).takeAnotherTurn(5).description("Banish this. You may not buy any cards this turn. Do not activate any Foes this turn. Take another turn after this one. Do not draw a Foe at the start of that turn.").expansion(Expansion.Arcane).build());
-        spellCardsJakob.add(augury = new CardImpl.Builder(Kind.Augury, 3, CardType.Hero, CardType.Action, CardType.Spell, CardType.InHandManoeuvre).description("Banish this. Reveal the top 2, Banish one and return the other.  When in Hand: Manoeuvre - Spend up to 3 actions and Banish this. Pick a player. That player reveals cards from tehir deck equal to the Actions spent. They put at most 1 those cards on their deck and Discard the others.").expansion(Expansion.Arcane).build());
-        spellCardsJakob.add(wallOfForce= new CardImpl.Builder(Kind.WallOfForce, 3, CardType.Hero, CardType.Action, CardType.Spell, CardType.Remains).description("While Remaining: Each player can take at most one Wound each turn. Banish this at the start of your turn.  Spellcasting: When you cast this spell, you may spend 2 extra Actions to become Invincible until this is Banished.").expansion(Expansion.Arcane).build());
-        heroCardsJakob.add(virtualTome = new CardImpl.Builder(Kind.VirtualTome, 2, CardType.Hero, CardType.Action, CardType.Equipment).pileCreator(new JakobTomePileCreator()).expansion(Expansion.Arcane).build());
-        heroCardsJakob.add(virtualSpell = new CardImpl.Builder(Kind.VirtualDaggers, 3, CardType.Hero, CardType.Action, CardType.Equipment).pileCreator(new JakobSpellPileCreator()).expansion(Expansion.Arcane).build());
-        heroCardsJakob.add(virtualStaffJakob = new CardImpl.Builder(Kind.VirtualStaffJakob, 4, CardType.Hero, CardType.Action, CardType.Attack, CardType.Equipment).pileCreator(new JakobStaffPileCreator()).expansion(Expansion.Arcane).build());
-        staffCardsJakob.add(cedarStaff = new CardImpl.Builder(Kind.CedarStaff, 4, CardType.Hero, CardType.Action, CardType.Attack, CardType.Equipment).addActions(1).addCards(1).setPileSize(4).description("+1 Buy only if you buy a Spell.").expansion(Expansion.Arcane).build());
-        staffCardsJakob.add(ashStaff = new CardImpl.Builder(Kind.AshStaff, 2, CardType.Hero, CardType.Action, CardType.Attack, CardType.Equipment).upgradeCard(Kind.CedarStaff).addActions(2).addCards(1).setPileSize(4).description("+1 Buy only if you buy a Spell.").expansion(Expansion.Arcane).build());
-        staffCardsJakob.add(runicStaff = new CardImpl.Builder(Kind.RunicStaff, 2, CardType.Hero, CardType.Action, CardType.Attack, CardType.Equipment, CardType.Range).upgradeCard(Kind.AshStaff).addActions(2).addCards(1).setPileSize(4).description("+1 Buy only if you buy a Spell. Spells cost one less Heroism than their printed cost.").expansion(Expansion.Arcane).build());
-        heroCardsJakob.add(astrologersRitual = new CardImpl.Builder(Kind.AstrologersRitual, 5, CardType.Hero, CardType.Action, CardType.Technique, CardType.RemainsReaction, CardType.Remains).addActions(2).description("While Remaining: Reaction - Discard 2 rituals from play for +1 Might. Reaction - Dsicard 3 rituals from play for +2 Might.").expansion(Expansion.Arcane).build());
-        heroCardsJakob.add(virtualHeroism = new CardImpl.Builder(Kind.VirtualHeroism, 2, CardType.Hero, CardType.Treasure).pileCreator(new HeroismPileCreator()).expansion(Expansion.Base).build());
-        heroCardsJakob.add(one);
+        //Jakab
+        heroCardsJakab.add(magicMissile = new CardImpl.Builder(Kind.MagicMissile, 0, CardType.Hero, CardType.Action, CardType.Spell, CardType.Range).setAttacks(1).setPileSize(2).addCards(1).expansion(Expansion.Arcane).build());
+        heroCardsJakab.add(crystalOrb = new CardImpl.Builder(Kind.CrystalOrb, 0, CardType.Hero, CardType.Action).addActions(1).setPileSize(1).description("reveal the top card of your deck - Discard it or return it, +1 Card.").expansion(Expansion.Arcane).build()); //TODO Bulwark multiplayer
+        tomeCardsJakab.add(celestialTome = new CardImpl.Builder(Kind.CelestialTome, 2, CardType.Hero, CardType.Action, CardType.Remains, CardType.RemainsManoeuvre, CardType.Equipment).addActions(1).addCards(1).description("While Remaining: Manoeuvre - Banish this for +1 Action.").expansion(Expansion.Arcane).build()); //TODO Bulwark multiplayer
+        tomeCardsJakab.add(celestialGrimoire = new CardImpl.Builder(Kind.CelestialGrimoire, 2, CardType.Hero, CardType.Action, CardType.Remains, CardType.RemainsManoeuvre, CardType.Equipment).addActions(2).addCards(1).upgradeCard(Kind.CelestialTome).description("You may put a spell from your hand underneath this.  While Remaining: Manoeuvre - Discard this for +1 Action and take any cards underneath into your hand.").expansion(Expansion.Arcane).build());
+        spellCardsJakab.add(fireball = new CardImpl.Builder(Kind.Fireball, 3, CardType.Hero, CardType.Action, CardType.Spell).description("YBanish this. Make a Might 1 Range or Melee attack  Spellcasting: When you cast this spell, spend up to 2 extra Actions, each Action spent increases the Might of the attack by 1.").expansion(Expansion.Arcane).build());
+        spellCardsJakab.add(enchangedStrike= new CardImpl.Builder(Kind.EnchantedStrike, 3, CardType.Hero, CardType.Action, CardType.Attack, CardType.Equipment, CardType.Remains, CardType.RemainsReaction, CardType.OnAttack).description("Remains in front of any player.  While Remaining: Reaction - When this player attacks, they may Banish this for +1 Might.").expansion(Expansion.Arcane).build());
+        spellCardsJakab.add(petrify = new CardImpl.Builder(Kind.Petrify, 3, CardType.Hero, CardType.Action, CardType.Spell, CardType.Remains).description("Remains on top of a Foe in play.  Spellcasting: You may spend up to 2 extra Actions to put Wound cards under this from the deck, 1 per Action spent.  While Remaining: This Foe is not in play. Banish this or a Wound underneath this whenever it would activate.").expansion(Expansion.Arcane).build());
+        spellCardsJakab.add(celerity= new CardImpl.Builder(Kind.Celerity, 3, CardType.Hero, CardType.Action, CardType.Spell, CardType.Duration).takeAnotherTurn(5).description("Banish this. You may not buy any cards this turn. Do not activate any Foes this turn. Take another turn after this one. Do not draw a Foe at the start of that turn.").expansion(Expansion.Arcane).build());
+        spellCardsJakab.add(augury = new CardImpl.Builder(Kind.Augury, 3, CardType.Hero, CardType.Action, CardType.Spell, CardType.InHandManoeuvre).description("Banish this. Reveal the top 2, Banish one and return the other.  When in Hand: Manoeuvre - Spend up to 3 actions and Banish this. Pick a player. That player reveals cards from tehir deck equal to the Actions spent. They put at most 1 those cards on their deck and Discard the others.").expansion(Expansion.Arcane).build());
+        spellCardsJakab.add(wallOfForce= new CardImpl.Builder(Kind.WallOfForce, 3, CardType.Hero, CardType.Action, CardType.Spell, CardType.Remains).description("While Remaining: Each player can take at most one Wound each turn. Banish this at the start of your turn.  Spellcasting: When you cast this spell, you may spend 2 extra Actions to become Invincible until this is Banished.").expansion(Expansion.Arcane).build());
+        heroCardsJakab.add(virtualTome = new CardImpl.Builder(Kind.VirtualTome, 2, CardType.Hero, CardType.Action, CardType.Equipment).pileCreator(new JakabTomePileCreator()).expansion(Expansion.Arcane).build());
+        heroCardsJakab.add(virtualSpell = new CardImpl.Builder(Kind.VirtualDaggers, 3, CardType.Hero, CardType.Action, CardType.Equipment).pileCreator(new JakabSpellPileCreator()).expansion(Expansion.Arcane).build());
+        heroCardsJakab.add(virtualStaffJakab = new CardImpl.Builder(Kind.VirtualStaffJakab, 4, CardType.Hero, CardType.Action, CardType.Attack, CardType.Equipment).pileCreator(new JakabStaffPileCreator()).expansion(Expansion.Arcane).build());
+        staffCardsJakab.add(cedarStaff = new CardImpl.Builder(Kind.CedarStaff, 4, CardType.Hero, CardType.Action, CardType.Attack, CardType.Equipment).addActions(1).addCards(1).setPileSize(4).description("+1 Buy only if you buy a Spell.").expansion(Expansion.Arcane).build());
+        staffCardsJakab.add(ashStaff = new CardImpl.Builder(Kind.AshStaff, 2, CardType.Hero, CardType.Action, CardType.Attack, CardType.Equipment).upgradeCard(Kind.CedarStaff).addActions(2).addCards(1).setPileSize(4).description("+1 Buy only if you buy a Spell.").expansion(Expansion.Arcane).build());
+        staffCardsJakab.add(runicStaff = new CardImpl.Builder(Kind.RunicStaff, 2, CardType.Hero, CardType.Action, CardType.Attack, CardType.Equipment, CardType.Range).upgradeCard(Kind.AshStaff).addActions(2).addCards(1).setPileSize(4).description("+1 Buy only if you buy a Spell. Spells cost one less Heroism than their printed cost.").expansion(Expansion.Arcane).build());
+        heroCardsJakab.add(astrologersRitual = new CardImpl.Builder(Kind.AstrologersRitual, 5, CardType.Hero, CardType.Action, CardType.Technique, CardType.RemainsReaction, CardType.Remains).addActions(2).description("While Remaining: Reaction - Discard 2 rituals from play for +1 Might. Reaction - Dsicard 3 rituals from play for +2 Might.").expansion(Expansion.Arcane).build());
+        heroCardsJakab.add(virtualHeroism = new CardImpl.Builder(Kind.VirtualHeroism, 2, CardType.Hero, CardType.Treasure).pileCreator(new HeroismPileCreator()).expansion(Expansion.Base).build());
+        heroCardsJakab.add(one);
 
 
         cardsGoblin.add(goblinTroop = new CardImpl.Builder(Kind.GoblinTroop, 1, CardType.Enemy).build());
@@ -1494,7 +1494,7 @@ public class Cards {
         eventCardsPromo.add(summon         = new CardImpl.Builder(Cards.Kind.Summon, 5, CardType.Event).description("Gain an Action card costing up to 4 Coins. Set it aside. If you do, then at the start of your next turn, play it.").expansion(Expansion.Promo).build());
 
         // Create map for from variable pile card to randomizer
-        for (Card card : spellCardsJakob) { variablePileCardToRandomizer.put(card, virtualSpell); }
+        for (Card card : spellCardsJakab) { variablePileCardToRandomizer.put(card, virtualSpell); }
 
         for (Card card : knightsCards) { variablePileCardToRandomizer.put(card, virtualKnight); }
         for (Card card : castleCards) { variablePileCardToRandomizer.put(card, virtualCastle); }
@@ -1528,10 +1528,10 @@ public class Cards {
         for (Card card : daggerCardsZsuzsa)  { actionCards.add(card); }
         for (Card card : bowCardsZsuzsa)  { actionCards.add(card); }
 
-        for (Card card : heroCardsJakob)  { actionCards.add(card); }
-        for (Card card : staffCardsJakob)  { actionCards.add(card); }
-        for (Card card : spellCardsJakob)  { actionCards.add(card); }
-        for (Card card : tomeCardsJakob)  { actionCards.add(card); }
+        for (Card card : heroCardsJakab)  { actionCards.add(card); }
+        for (Card card : staffCardsJakab)  { actionCards.add(card); }
+        for (Card card : spellCardsJakab)  { actionCards.add(card); }
+        for (Card card : tomeCardsJakab)  { actionCards.add(card); }
 
         for (Card card : actionCardsBaseGameAll) { actionCards.add(card); }
         for (Card card : actionCardsIntrigueAll) { actionCards.add(card); }
