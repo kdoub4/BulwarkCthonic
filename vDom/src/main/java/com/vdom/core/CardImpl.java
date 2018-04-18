@@ -413,6 +413,8 @@ public class CardImpl implements Card, Comparable<Card>{
         		return new CardImpl(this);
         	}
         	switch (expansion) {
+            case Arcane:
+                return new CardImplArcane(this);
         	case Base:
         		return new CardImplBase(this);
         	case Intrigue:
@@ -475,6 +477,8 @@ public class CardImpl implements Card, Comparable<Card>{
     		c = new CardImpl();
     	} else {
 	    	switch (expansion) {
+            case Arcane:
+                c = new CardImplArcane();
 	    	case Base:
 	    		c = new CardImplBase();
 	    		break;
@@ -677,6 +681,7 @@ public class CardImpl implements Card, Comparable<Card>{
         //costModifier -= (context.game.isPlayerSupplyTokenOnPile(this.getControlCard().equals(Cards.estate) ? this.getControlCard() : this,
         //		context.game.getCurrentPlayer(), PlayerSupplyToken.MinusTwoCost)) ? 2 : 0;
         costModifier -= this.is(CardType.Location, null) ? (context.countCardsInPlay(Cards.oracularTurrent)) : 0;
+        costModifier -= this.is(CardType.Spell, null) && currentPlayerContext.getPlayedCards().contains(Cards.runicStaff) ? 1 : 0;
 
         if (this.is(CardType.Enemy) && !drawPhase && currentPlayerContext.game.blackMarketPile.size()>0 && this.getId()!=null)
             costModifier += isArmoured(Util.indexOfCardId(this.getId(), currentPlayerContext.game.blackMarketPile), currentPlayerContext.game.blackMarketPile);

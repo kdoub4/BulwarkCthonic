@@ -866,7 +866,7 @@ public class Game {
                 ArrayList<Card> under = new ArrayList<>();
                 for (int j = 0; j < currentPlayer.tavern.a.size(); j++) {//  Card enemyCard : currentPlayer.tavern.a){
                     Card aCard = currentPlayer.tavern.get(j);
-                    for (Card c : ((CardImplBase) aCard).cardsUnder) {
+                    for (Card c : ((CardImpl) aCard).cardsUnder) {
                         under.add(c);
                     }
                     if (!aCard.is(CardType.Enemy) && !under.contains(aCard))
@@ -876,10 +876,10 @@ public class Game {
                 if (remaining.size()>0) {
                     Card toDiscard = (currentPlayer.cardToPlay(context, remaining, enemyCard, false, ""));
                     if (toDiscard != null) {
-                        for (Card c : ((CardImplBase) toDiscard).cardsUnder) {
+                        for (Card c : ((CardImpl) toDiscard).cardsUnder) {
                             currentPlayer.discard(currentPlayer.tavern.removeCard(c), enemyCard, context );
                         }
-                        ((CardImplBase) toDiscard).cardsUnder.clear();
+                        ((CardImpl) toDiscard).cardsUnder.clear();
                         currentPlayer.discard(currentPlayer.tavern.removeCard(toDiscard), enemyCard, context);
                     }
                 }

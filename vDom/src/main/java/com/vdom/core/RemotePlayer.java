@@ -1055,6 +1055,18 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
 //                                    player.discard(bolsterCard, bolsterCard, context);
 //                                    player.hand.removeCard(bolsterCard);
 //                                    context.setMight(2);
+                        case AstrologersRitual:
+                            if (Util.getCardCount(options, Cards.astrologersRitual) > 1 && (selectBoolean(context, bolsterCard))) {
+                                    discard(tavern.remove(Cards.Kind.AstrologersRitual), bolsterCard, context);
+                                    context.addMightModifier(2);
+                                }
+                            else {
+                                context.addMightModifier(1);
+                            }
+                            tavern.a.remove(bolsterCard);
+                            discard(bolsterCard, bolsterCard, context);
+                            discard(tavern.remove(Cards.Kind.AstrologersRitual), bolsterCard, context);
+                            break;
                         case EnchantedStrike:
                             tavern.a.remove(bolsterCard);
                             context.game.addToPile(bolsterCard, true);

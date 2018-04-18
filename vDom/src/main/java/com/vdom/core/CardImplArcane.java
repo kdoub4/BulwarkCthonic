@@ -25,7 +25,7 @@ public class CardImplArcane extends CardImpl {
                 if (spentActions==0) return;
                 ArrayList<Card> cardsReveal = new ArrayList<>();
                 for (int i=0; i<spentActions; i++) {
-                    cardsReveal.add(game.draw(context, this, spentActions-i))
+                    cardsReveal.add(game.draw(context, this, spentActions-i));
                 }
                 cardsReveal.add(null);
                 int selection = ((RemotePlayer)currentPlayer).selectOption(context, this, cardsReveal.toArray(), null);
@@ -42,6 +42,10 @@ public class CardImplArcane extends CardImpl {
     @Override
     protected void additionalCardActions(Game game, MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
+            case RunicStaff:
+            case CedarStaff:
+                context.spellBuys++;
+                break;
             case CrystalOrb:
                 spyAndScryingPool(game, context, currentPlayer);
                 game.drawToHand(context, this, 1);
@@ -69,6 +73,7 @@ public class CardImplArcane extends CardImpl {
             case WallOfForce:
                 if (spendActions(context, currentPlayer, 2, true) == 2)
                     context.invincible = true;
+            case AstrologersRitual:
             case CelestialTome:
             case EnchantedStrike:
                 putOnTavern(game, context, currentPlayer);

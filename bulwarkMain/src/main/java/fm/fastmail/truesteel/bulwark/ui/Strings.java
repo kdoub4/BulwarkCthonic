@@ -1139,6 +1139,10 @@ public class Strings {
 
         String[] strings = new String[3];
         strings[0] = cardName;  // common enough to set this as a default; override if necessary.
+        if (cardName.equals(getCardName(Cards.astrologersRitual))) {
+            strings[1] = "+2 Might";
+            strings[2] = "+1 Might";
+        }
         if (cardResponsible.is(CardType.InHandManoeuvre)) {
             strings[1] = "Play";
             strings[2] = "Manoeuvre";
