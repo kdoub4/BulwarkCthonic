@@ -448,27 +448,6 @@ public class CardImplBase extends CardImpl {
         }
 
     }
-
-        if (revealed.is(identifier)) {
-            currentPlayer.hand.add(revealed);
-        }
-        else {
-            if (currentPlayer.reveal_shouldDiscard(context, currentPlayer, revealed, this)) {
-                currentPlayer.discard(revealed,this,context);
-            }
-            else {
-                currentPlayer.putOnTopOfDeck(revealed, context, true);
-            }
-        }
-
-    }
-
-    private void hunt(Game game, MoveContext context, Player currentPlayer, CardType... types) {
-        ArrayList<Card> toDiscard = new ArrayList<Card>();
-        int idCardsRevealed = 0;
-        Card revealed = game.draw(context, this, 1);
-
-        if (revealed.is(types)) {
     private void adventurer(Game game, MoveContext context, Player currentPlayer) {
         ArrayList<Card> toDiscard = new ArrayList<Card>();
         int treasureCardsRevealed = 0;

@@ -1714,12 +1714,12 @@ public class CardImpl implements Card, Comparable<Card>{
         context.returnToActionPhase = false;
     }
 
-    protected void banishOrDiscard(MoveContext context, Player currentPlayer, Card cardTemplate) {
+    protected void banishOrReplace(MoveContext context, Player currentPlayer, Card cardTemplate) {
         Card topCard = context.game.takeFromPile(cardTemplate);
 
         if(topCard != null) {
-            boolean discard = currentPlayer.duchess_shouldDiscardCard(context, topCard);
-            context.game.addToPile(topCard, discard);
+            boolean banish = currentPlayer.shouldDiscardCard(context, topCard, this);
+            context.game.addToPile(topCard, banish);
         }
     }
 
