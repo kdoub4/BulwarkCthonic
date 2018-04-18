@@ -187,7 +187,7 @@ class ZsuzsaDaggerPileCreator extends PileCreator {
     }
 }
 
-class JakobTomePileCreator extends PileCreator {
+class JakabTomePileCreator extends PileCreator {
     public CardPile create(Card template, int count) {
         List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
 
@@ -198,7 +198,7 @@ class JakobTomePileCreator extends PileCreator {
     }
 }
 
-class JakobSpellPileCreator extends PileCreator {
+class JakabSpellPileCreator extends PileCreator {
     public CardPile create(Card template, int count) {
         List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
 
@@ -213,10 +213,10 @@ class JakobSpellPileCreator extends PileCreator {
     }
 }
 
-class JakobStaffPileCreator extends PileCreator {
+class JakabStaffPileCreator extends PileCreator {
     public CardPile create(Card template, int count) {
         List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
-        for (Card c : Cards.staffCardsJakob) {
+        for (Card c : Cards.staffCardsJakab) {
             cards.add(new CardPile.CardMultiplicity(c,    3));
         }
 

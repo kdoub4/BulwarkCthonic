@@ -4,6 +4,8 @@ import com.vdom.api.Card;
 import com.vdom.api.GameEvent;
 import com.vdom.comms.SelectCardOptions;
 
+import java.util.ArrayList;
+
 //test git
 public class CardImplArcane extends CardImpl {
     private static final long serialVersionUID = 1L;
@@ -18,11 +20,32 @@ public class CardImplArcane extends CardImpl {
     @Override
     protected void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
+            case Augury:
+                int spentActions = spendActions(context, currentPlayer, 3, false);
+                if (spentActions==0) return;
+                ArrayList<Card> cardsReveal = new ArrayList<>();
+                for (int i=0; i<spentActions; i++) {
+                    cardsReveal.add(game.draw(context, this, spentActions-i));
+                }
+                cardsReveal.add(null);
+                int selection = ((RemotePlayer)currentPlayer).selectOption(context, this, cardsReveal.toArray(), null);
+                if (selection != cardsReveal.size()-1) {
+                    currentPlayer.putOnTopOfDeck(cardsReveal.remove(selection), context, true);
+                }
+                for (Card c : cardsReveal) {
+                    if (c!=null)
+                        currentPlayer.discard(c, this, context);
+                }
+                break;
         }
     }
     @Override
     protected void additionalCardActions(Game game, MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
+            case RunicStaff:
+            case CedarStaff:
+                context.spellBuys++;
+                break;
             case CrystalOrb:
                 spyAndScryingPool(game, context, currentPlayer);
                 game.drawToHand(context, this, 1);
@@ -41,21 +64,24 @@ public class CardImplArcane extends CardImpl {
                 if (enemy.length==1) {
                     Card enemyCard =  game.blackMarketPile.get(enemy[0]);
                     this.cardsUnder.add(enemyCard);
-                    for (int i = 1; i <= spendActions(context, currentPlayer, 2); i++) {
+                    for (int i = 1; i <= spendActions(context, currentPlayer, 2, false); i++) {
                         this.cardsUnder.add(currentPlayer.takeFromPile(Cards.virtualWound));
                         currentPlayer.tavern.add(cardsUnder.get(cardsUnder.size()-1));
                     }
                 }
                 break;
+            case WallOfForce:
+                if (spendActions(context, currentPlayer, 2, true) == 2)
+                    context.invincible = true;
+            case AstrologersRitual:
             case CelestialTome:
             case EnchantedStrike:
-            case WallOfForce:
                 putOnTavern(game, context, currentPlayer);
                 break;
             case Fireball:
                 game.addToPile(currentPlayer.playedCards.removeCard(this), true);
                 actionPhaseAttack(context, currentPlayer, true, true,
-                        1 + spendActions(context, currentPlayer, 2));
+                        1 + spendActions(context, currentPlayer, 2, false));
                 break;
             case Celerity:
                 break;
@@ -76,7 +102,7 @@ public class CardImplArcane extends CardImpl {
                     if (!toTrash.is(CardType.Crown)) game.addToPile(toTrash, true);
                     else game.addToPile(toTrash, false);
                     game.addToPile(toReturn, false);
-                
+
                 break;
         }
     }

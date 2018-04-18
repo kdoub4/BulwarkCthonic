@@ -340,7 +340,9 @@ public class Game {
                     }
 
 //TODO Check for death, if dying force flesh wound play if possible
-
+                    while (player.tavern.contains(Cards.wallOfForce)) {
+                        player.tavern.get(Cards.wallOfForce).callAtStartOfTurn(context);
+                    }
                     playerManoeuvres(player, context);
 
                     context.phase = TurnPhase.DrawFoe;
@@ -348,8 +350,9 @@ public class Game {
                     // Draw Foe
                     // /////////////////////////////////
                     if ((turnCount > startPhaseLength) &&
-                        pileSize(Cards.virtualEnemy) > 0)
-                        drawFoe(player, context, true);
+                        pileSize(Cards.virtualEnemy) > 0 &&
+                            !player.nextTurnCards.contains(Cards.celerity))
+
 
 
                 	context.phase = TurnPhase.Action;
@@ -619,7 +622,7 @@ public class Game {
                     }
                 }
             }
-            if (context.sanctusCharm && context.woundsTaken>=1)
+            if ((context.sanctusCharm || currentPlayer.tavern.contains(Cards.wallOfForce)) && context.woundsTaken>=1)
                 defended=true;
             if (!defended && !context.invincible) {
                 Card gained = currentPlayer.gainNewCard(Cards.virtualWound, attacker, context); //.add(takeFromPile(Cards.virtualWound));
@@ -710,6 +713,26 @@ public class Game {
             }
             else {}
         else {
+        if (currentPlayer.nextTurnCards.contains(Cards.celerity)) {
+            return i;
+        }
+        if (currentPlayer.tavern.contains(Cards.petrify)) {
+            for (Card c : Util.copy(currentPlayer.tavern)) {
+                if (c.getKind() == Cards.Kind.Petrify &&
+                        ((CardImpl)c).cardsUnder.get(0).getId() == enemyCard.getId()) {
+                    if (((CardImpl)c).cardsUnder.size()==1) {
+                        ((CardImpl)c).cardsUnder.clear();
+                        addToPile(currentPlayer.tavern.removeCard(c), true);
+                    }
+                    else {
+                        addToPile(currentPlayer.tavern.removeCard(((CardImpl)c).cardsUnder.get(((CardImpl)c).cardsUnder.size()-1)), true);
+                        ((CardImpl)c).cardsUnder.remove(((CardImpl)c).cardsUnder.size()-1);
+                    }
+                    return i;
+                }
+            }
+        }
+
             switch (enemyCard.getKind()) {
                 case BrokenCorpse:
                     if (context.woundsTaken > 0) {
@@ -848,7 +871,7 @@ public class Game {
                     ArrayList<Card> under = new ArrayList<>();
                     for (int j = 0; j < currentPlayer.tavern.a.size(); j++) {//  Card enemyCard : currentPlayer.tavern.a){
                         Card aCard = currentPlayer.tavern.get(j);
-                        for (Card c : ((CardImplBase) aCard).cardsUnder) {
+                    for (Card c : ((CardImpl) aCard).cardsUnder) {
                             under.add(c);
                         }
                         if (!aCard.is(CardType.Enemy) && !under.contains(aCard))
@@ -858,10 +881,10 @@ public class Game {
                     if (remaining.size() > 0) {
                         Card toDiscard = (currentPlayer.cardToPlay(context, remaining, enemyCard, false, ""));
                         if (toDiscard != null) {
-                            for (Card c : ((CardImplBase) toDiscard).cardsUnder) {
+                        for (Card c : ((CardImpl) toDiscard).cardsUnder) {
                                 currentPlayer.discard(currentPlayer.tavern.removeCard(c), enemyCard, context);
                             }
-                            ((CardImplBase) toDiscard).cardsUnder.clear();
+                        ((CardImpl) toDiscard).cardsUnder.clear();
                             currentPlayer.discard(currentPlayer.tavern.removeCard(toDiscard), enemyCard, context);
                         }
                     }
@@ -3243,7 +3266,7 @@ public class Game {
                         player.discard(takeFromPile(Cards.sidestep), null, null);
                         player.discard(takeFromPile(Cards.sidestep), null, null);
                         break;
-                    case Jakob:
+                    case Jakab:
                         player.discard(takeFromPile(Cards.magicMissile), null, null);
                         player.discard(takeFromPile(Cards.magicMissile), null, null);
                         player.discard(takeFromPile(Cards.crystalOrb), null, null);
@@ -3551,8 +3574,8 @@ public class Game {
                         added++;
                     }
                     break;
-                case Jakob:
-                    for (Card c : Cards.heroCardsJakob) {
+                case Jakab:
+                    for (Card c : Cards.heroCardsJakab) {
                         addPile(c);
                         added++;
                     }

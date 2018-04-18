@@ -13,7 +13,7 @@ public enum Expansion {
 			Cards.locationCardsHoltvaros,
 			Cards.cardsElf, Cards.cardsGoblin, Cards.cardsLizard, Cards.cardsWinter)),
 */
-	Arcane(Cards.heroCardsJakob),
+	Arcane(Cards.heroCardsJakab),
 	Base2E(Cards.actionCardsBaseGame2E),
 	BaseAll(Cards.actionCardsBaseGameAll, true),
 	Intrigue(Cards.actionCardsIntrigue),

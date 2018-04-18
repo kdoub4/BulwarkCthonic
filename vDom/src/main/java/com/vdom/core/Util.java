@@ -257,6 +257,7 @@ public class Util {
 
     static List<Card> canReact(MoveContext context, Player player, CardType actionType) {
         //TODO return all possible cards
+        int AstrologerCount = 0;
         ArrayList<Card> toReturn = new ArrayList<Card>();
         for (Card c : player.hand) {
             if ((c.is(CardType.InHandManoeuvre) || c.is(CardType.InHandReaction)) &&
@@ -268,14 +269,22 @@ public class Util {
 
         CardList underCards = new CardList(player,"under");
         for (Card t : player.tavern) {
-            if (t instanceof CardImplBase)
-            for (Card c :((CardImplBase) t).cardsUnder){
+            if (t instanceof CardImpl)
+            for (Card c :((CardImpl) t).cardsUnder){
                 underCards.add(c);
             }
             if ((t.is(CardType.RemainsReaction) || t.is(CardType.RemainsManoeuvre)) && t.is(actionType) &&
                     !underCards.contains(t) && !t.isPlayedThisTurn()) {
-                if (!toReturn.contains(t))
-                    toReturn.add(t);
+                if (!toReturn.contains(t)) {
+                    if (t.getKind() == Kind.AstrologersRitual) {
+                        AstrologerCount++;
+                        if (AstrologerCount > 1)
+                            toReturn.add(t);
+                    }
+                    else {
+                        toReturn.add(t);
+                    }
+                }
             }
             underCards.remove(t);
         }
