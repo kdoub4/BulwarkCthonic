@@ -36,7 +36,8 @@ public class CardImpArcane extends CardImpl {
                 break;
             case Fireball:
                 game.addToPile(currentPlayer.playedCards.removeCard(this), true);
-                //TODO selectoption actions to spend
+                actionPhaseAttack(context, currentPlayer, true, true,
+                        1 + spendActions(context, currentPlayer, 2));
                 break;
         }
     }

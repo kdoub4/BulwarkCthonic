@@ -16,7 +16,8 @@ public enum HeroType {
     Arpad("Arpad", Expansion.Base),
     Sandor("Sandor", Expansion.Base),
     ZsuZsa("ZsuZsa", Expansion.Base),
-    Wiola("Wiola", Expansion.Base);
+    Wiola("Wiola", Expansion.Base),
+    Jakob("Jakob Startouched", Expansion.Arcane);
 
 
 

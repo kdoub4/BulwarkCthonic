@@ -1844,6 +1844,15 @@ public class CardImpl implements Card, Comparable<Card>{
         }
     }
 
+    protected int spendActions(MoveContext context, Player currentPlayer, Integer max) {
+        if (context.actions == 0) return 0;
+        ArrayList<String> options = new ArrayList<>();
+        for ( int i = 0; i<=(context.actions > 2 ? 2 : context.actions); i--) {
+            options.add(Integer.toString(i));
+        } //TODO change header
+        return ((IndirectPlayer)currentPlayer).selectOption(context, this, options.toArray(), null );
+    }
+
     public int compareTo(Card other) {
         return getName().compareTo(other.getName());
     }

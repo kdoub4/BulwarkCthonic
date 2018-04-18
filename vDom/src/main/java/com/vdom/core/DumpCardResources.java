@@ -20,6 +20,7 @@ public class DumpCardResources {
         cards.add(Cards.duchy);
         cards.add(Cards.province);
         cards.add(Cards.colony);
+        cards.addAll(Cards.heroCardsJakob);
         cards.addAll(Cards.heroCardsArpad);
         cards.addAll(Cards.heroCardsWiola);
         cards.addAll(Cards.heroCardsSandor);
