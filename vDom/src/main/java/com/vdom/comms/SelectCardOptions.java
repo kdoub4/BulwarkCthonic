@@ -105,6 +105,8 @@ public class SelectCardOptions implements Serializable {
     public boolean isCorpse = false;
     public boolean isManoeuvre = false;
     public boolean isSelect = false;
+    public boolean isTechnique = false;
+    public boolean isSpell = false;
 
     public boolean applyOptionsToPile = false;
     
@@ -172,6 +174,9 @@ public class SelectCardOptions implements Serializable {
     public SelectCardOptions isCorpse() {isCorpse = true; return this;}
     public SelectCardOptions isManoeuvre() {isManoeuvre = true; return this;}
     public SelectCardOptions isSelect() {isSelect = true; return this;}
+    public SelectCardOptions isTechnique() {isTechnique = true; return this;}
+    public SelectCardOptions isSpell() {isSpell = true; return this;}
+
 
     public SelectCardOptions applyOptionsToPile() {applyOptionsToPile = true; return this;}
     
@@ -266,6 +271,9 @@ public class SelectCardOptions implements Serializable {
         if (isNonBlast && c.is(CardType.Blast, p)) return false;
         if (isCorpse && !c.is("corpse")) return false;
         if (isManoeuvre && !c.is(CardType.InHandManoeuvre)) return false;
+        if (isTechnique && !c.is(CardType.Technique)) return false;
+        if (isSpell && !c.is(CardType.Spell)) return false;
+
         if (p != null && (isManoeuvre || isAction)) {
             if (c.getKind() == Cards.Kind.OldWound && p.getCardCount(CardType.Wound, p.getHand().toArrayList()) <= 1)
                 return false;

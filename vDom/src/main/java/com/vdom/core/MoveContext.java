@@ -41,7 +41,7 @@ public class MoveContext {
     public int blastActivations = 0;
     public boolean attackMeleeMade = false;
     public int techniqueBuys = 0;
-
+    public int spellBuys = 0;
 
     public void cannotAttack() {
         this.canAttack = false;

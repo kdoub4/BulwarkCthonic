@@ -388,6 +388,14 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
                 .maxPotionCost(context.getPotions())
                 .setPassable()
                 .setPickType(PickType.BUY);
+        if (context.buys==0) {
+            if (context.techniqueBuys>0) {
+                sco = sco.isTechnique();
+            }
+            if (context.spellBuys > 0) {
+                sco = sco.isSpell();
+            }
+        }
         if (context.game.blackMarketPile.contains(Cards.kyung)) {
             sco = sco.isNonHero();
         }
