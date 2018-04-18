@@ -307,9 +307,9 @@ public class Game {
             while (tempList.size()!=4)
             for (int i=0;i<enemyPile.cards.size();i++) {
                 Card c = enemyPile.cards.get(i);
-                if (c.getKind() == Cards.Kind.GoblinHeavy && (tempList.size()==1 || tempList.size()==3))
+                if (c.getKind() == Cards.Kind.HeavyGoblin && (tempList.size()==1 || tempList.size()==3))
                     tempList.add(enemyPile.cards.remove(i));
-                else if (c.getKind() == Cards.Kind.GoblinRabble && (tempList.size()==0))
+                else if (c.getKind() == Cards.Kind.RabbleGoblin && (tempList.size()==0))
                     tempList.add(enemyPile.cards.remove(i));
                 else if (c.getKind() == Cards.Kind.KneenaGoblin && (tempList.size()==2))
                     tempList.add(enemyPile.cards.remove(i));
@@ -351,7 +351,8 @@ public class Game {
                     // /////////////////////////////////
                     if ((turnCount > startPhaseLength) &&
                         pileSize(Cards.virtualEnemy) > 0 &&
-                            !player.nextTurnCards.contains(Cards.celerity))
+                        !player.nextTurnCards.contains(Cards.celerity))
+                            drawFoe(player, context, true);
 
 
 
@@ -684,7 +685,7 @@ public class Game {
 
         for (Card c : this.blackMarketPile) {
             if (c.is(identifier) || identifier=="") {
-                if (c.getKind() == Cards.Kind.ElfRabble){
+                if (c.getKind() == Cards.Kind.RabbleElf){
                     count++;}
                 count++;
             }
@@ -705,15 +706,14 @@ public class Game {
 
     private int activateEnemy(Card enemyCard, Player currentPlayer, MoveContext context, int i) {
         int wounds = 0;
-        if (currentPlayer.preventActivation(context, enemyCard))
-            if (i >= this.blackMarketPile.size() ||
-                    enemyCard.getId() != context.game.blackMarketPile.get(i).getId()) {
+        if (currentPlayer.nextTurnCards.contains(Cards.celerity)) {
+            return i;
+        }
+        if (currentPlayer.preventActivation(context, enemyCard)) {
+            if (i < this.blackMarketPile.size() && (enemyCard.getId() != context.game.blackMarketPile.get(i).getId())) {
                 //must have been killed roll back i
                 i--;
             }
-            else {}
-        else {
-        if (currentPlayer.nextTurnCards.contains(Cards.celerity)) {
             return i;
         }
         if (currentPlayer.tavern.contains(Cards.petrify)) {
@@ -749,7 +749,6 @@ public class Game {
                         takeWounds(currentPlayer, 1, context, enemyCard, false);
                         CardImpl tempCard = (CardImpl) enemyCard;
                         tempCard.discardMultiple(context, currentPlayer, 1);
-                        tempCard = null;
                     }
 
                     break;
@@ -799,7 +798,7 @@ public class Game {
                     takeWounds(currentPlayer, enemyCount("corpse"), context, enemyCard, false);
                     //TODO Bulwark for now just add Kiri in manually, ie +1
                     break;
-                case ElfDruid:
+                case DruidElf:
                     for (int j = 2; j > 0; j--) {
                         Card revealed = draw(context, enemyCard, j);
                         if (revealed.is(CardType.Location))
@@ -814,7 +813,7 @@ public class Game {
                     }
                     takeWounds(currentPlayer, wounds, context, enemyCard, true);
                     break;
-                case ElfArcher:
+                case ArcherElf:
                     if (archers >= 2) {
                         int elves = enemyCount("elf");
                         takeWounds(currentPlayer, elves > 3 ? 3 : elves, context, enemyCard, false);
@@ -832,12 +831,12 @@ public class Game {
                         }
                     }
                     break;
-                case ElfTroop:
+                case TroopElf:
                     if (enemyCount("elf") >= 4) {
                         takeWounds(currentPlayer, 1, context, enemyCard, false);
                     }
                     break;
-                case LizardHeavy:
+                case HeavyLizard:
                     try {
                         if (context.game.blackMarketPile.get(i - 1).is("Troop"))
                             wounds++;
@@ -866,12 +865,12 @@ public class Game {
                         takeWounds(currentPlayer, 2, context, enemyCard, false);
                     }
                     break;
-                case LizardBombardier:
+                case BombardierLizard:
                     List<Card> remaining = new ArrayList<>();
                     ArrayList<Card> under = new ArrayList<>();
                     for (int j = 0; j < currentPlayer.tavern.a.size(); j++) {//  Card enemyCard : currentPlayer.tavern.a){
                         Card aCard = currentPlayer.tavern.get(j);
-                    for (Card c : ((CardImpl) aCard).cardsUnder) {
+                        for (Card c : ((CardImpl) aCard).cardsUnder) {
                             under.add(c);
                         }
                         if (!aCard.is(CardType.Enemy) && !under.contains(aCard))
@@ -881,15 +880,15 @@ public class Game {
                     if (remaining.size() > 0) {
                         Card toDiscard = (currentPlayer.cardToPlay(context, remaining, enemyCard, false, ""));
                         if (toDiscard != null) {
-                        for (Card c : ((CardImpl) toDiscard).cardsUnder) {
+                            for (Card c : ((CardImpl) toDiscard).cardsUnder) {
                                 currentPlayer.discard(currentPlayer.tavern.removeCard(c), enemyCard, context);
                             }
-                        ((CardImpl) toDiscard).cardsUnder.clear();
+                            ((CardImpl) toDiscard).cardsUnder.clear();
                             currentPlayer.discard(currentPlayer.tavern.removeCard(toDiscard), enemyCard, context);
                         }
                     }
                     break;
-                case LizardRabble:
+                case RabbleLizard:
                     killFoe(context, enemyCard);
                     drawFoe(currentPlayer, context, true);
                     i--;
@@ -906,7 +905,7 @@ public class Game {
                 case BatteringRam:
                     takeWounds(currentPlayer, context.blastActivations, context, enemyCard, false);
                     break;
-                case GobCatapult:
+                case CatapultGob:
                     for (Player aPlayer : getPlayersInTurnOrder()) {
                         MoveContext targetContext = new MoveContext(this, aPlayer);
                         Card topCard = draw(targetContext, enemyCard, 1);
@@ -918,7 +917,7 @@ public class Game {
                         }
                     }
                     break;
-                case GoblinHeavy:
+                case HeavyGoblin:
                     if (hasTroop)
                         takeWounds(currentPlayer, 1, context, enemyCard, false);
                     else {
@@ -931,7 +930,7 @@ public class Game {
                         }
                     }
                     break;
-                case GoblinArcher:
+                case ArcherGoblin:
                     if (archers >= 2)
                         takeWounds(currentPlayer, 1, context, enemyCard, false);
                     else {
@@ -976,7 +975,7 @@ public class Game {
                 case MgzwelGoblin:
                     //put his effect into getcost
                     break;
-                case GoblinAlchemist:
+                case AlchemistGoblin:
                     Card prevCard = null;
                     Card nextCard = null;
                     boolean takeWound = false;
@@ -996,8 +995,8 @@ public class Game {
             }
             if (enemyCard.is(CardType.Blast))
                 context.blastActivations++;
-        }
 
+        //If the card still exists use its index, otherwise just i
         int newI = Util.indexOfCardId(enemyCard.getId(), context.game.blackMarketPile);
         if (newI >=0)
             return newI;
@@ -1023,10 +1022,6 @@ public class Game {
             Card enemyCard = context.game.blackMarketPile.get(i);
             if (enemyCard.is(CardType.Activate)) {
                 i = activateEnemy(enemyCard, currentPlayer, context, i);
-                    if (enemyCard.getId() != context.game.blackMarketPile.get(i).getId()) {
-                        //must have been killed roll back i
-                        i--;
-                    }
             }
         }
     }
@@ -1439,6 +1434,8 @@ public class Game {
 
 
     protected void enemyWhenDrawn(Player player, MoveContext context, Card cardPlayed) {
+        if (context.rabblePlayed && cardPlayed.is("rabble"))
+            return;
         List<Card> availableCards = Util.canReact(context,player, CardType.WhenDrawn);
         Card selectedCard = null;
         if (availableCards.size() > 0)
@@ -1472,7 +1469,7 @@ public class Game {
             case KangaxxTheLich:
                 revealKillPlay(player, context, new String[]{""}, CardType.Undead);
                 break;
-            case ElfRabble:
+            case RabbleElf:
                 SelectCardOptions sco = new SelectCardOptions().isNonCrown().isNonRabble()
                         .setCardResponsible(cardPlayed)
                         .setCount(1).fromBlackMarket().setActionType(SelectCardOptions.ActionType.DISCARD);
@@ -1483,9 +1480,8 @@ public class Game {
                         addToPile(context.game.blackMarketPile.remove(i), true);
                     }
                 }
-                context.rabblePlayed = true;
                 break;
-            case GoblinRabble:
+            case RabbleGoblin:
 
                 sco = new SelectCardOptions().isNonCrown().setCardResponsible(cardPlayed)
                         .setCount(2).fromBlackMarket()
@@ -1505,6 +1501,7 @@ public class Game {
 
                 drawFoe(player, context, true);
                 drawFoe(player, context, true);
+                context.rabblePlayed = false;
                 break;
         }
 

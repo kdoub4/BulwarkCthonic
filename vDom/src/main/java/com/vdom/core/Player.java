@@ -1433,7 +1433,7 @@ public abstract class Player {
             }
             Card selectedCard = cardToPlay(context, Util.canReact(context, this, CardType.OnTrash), card, true, "");
             if (selectedCard != null && selectedCard.getKind() == Cards.Kind.Belltower) {
-                discard(selectedCard, selectedCard, context);
+                discard(hand.removeCard(selectedCard), selectedCard, context);
                 context.game.drawToHand(context, card, 3, true);
                 context.game.drawToHand(context, card, 2, true);
                 context.game.drawToHand(context, card, 1, true);

@@ -118,17 +118,17 @@ public class Cards {
 
 
         //Goblin Horde
-        GoblinTroop, GoblinAlchemist, GoblinRabble, GobCatapult, GoblinHeavy, GoblinArcher,
+        TroopGoblin, AlchemistGoblin, RabbleGoblin, CatapultGob, HeavyGoblin, ArcherGoblin,
         KneenaGoblin, KmbleeGoblin, GhutzGoblin, KmronGoblin, MgzwelGoblin,
         //TODO add in subtitle to card and remove Goblin from Crown foe names
         
         //Fire Lizard Crusade
-        FireCatapult, LizardTroop, YoonIseulLizard, KyungLizard,SangLizard, LizardRabble,
-        LizardBombardier, LizardHeavy, BatteringRam, HyeonLizard, GiantCorpseHound,
+        FireCatapult, TroopLizard, YoonIseulLizard, KyungLizard,SangLizard, RabbleLizard,
+        BombardierLizard, HeavyLizard, BatteringRam, HyeonLizard, GiantCorpseHound,
 
         //Fallen Elf Vengenace
-        TaneElf, VeporDemon, XaphanDemon, KiriElf, RuihaElf, ElfDruid, ElfTroop, ElfRabble,
-        ElfArcher, FlameBallista, CorpseVine,
+        TaneElf, VeporDemon, XaphanDemon, KiriElf, RuihaElf, DruidElf, TroopElf, RabbleElf,
+        ArcherElf, FlameBallista, CorpseVine,
 
         //Winter of Death
         BrokenCorpse, StaleCorpse, FreshCorpse, EnshroudingMist, Spectre, EmbalmedAcolyte,
@@ -855,12 +855,12 @@ public class Cards {
         heroCardsJakab.add(one);
 
 
-        cardsGoblin.add(goblinTroop = new CardImpl.Builder(Kind.GoblinTroop, 1, CardType.Enemy).build());
-        cardsGoblin.add(goblinAlchemist = new CardImpl.Builder(Kind.GoblinAlchemist, 2, CardType.Enemy, CardType.Activate).description("Activate: If adjacent to an alchemist of a blast, take 2 Wounds.").build());
-        cardsGoblin.add(goblinRabble = new CardImpl.Builder(Kind.GoblinRabble, 1, CardType.Enemy, CardType.WhenDrawn).description("When Drawn: Banish 2 Foes, draw 2 Foes, ignore the 'When Drawn' text of any Rabbles thus drawn.").build());
-        cardsGoblin.add(catapultBulwark= new CardImpl.Builder(Kind.GobCatapult, 2, CardType.Enemy, CardType.Activate, CardType.Range, CardType.Blast).description("Activate: Each player discards the top card of their deck. If it was a Wound, they take a Wound.").build());
-        cardsGoblin.add(goblinHeavy = new CardImpl.Builder(Kind.GoblinHeavy, 2, CardType.Enemy, CardType.Activate).description("Activate: Take a Wound if a troop is in play.").build());
-        cardsGoblin.add(goblinArcher = new CardImpl.Builder(Kind.GoblinArcher, 1, CardType.Enemy, CardType.Activate, CardType.Range).description("Activate: If there are 2 or more archers in play, take a Wound.").build());
+        cardsGoblin.add(goblinTroop = new CardImpl.Builder(Kind.TroopGoblin, 1, CardType.Enemy).build());
+        cardsGoblin.add(goblinAlchemist = new CardImpl.Builder(Kind.AlchemistGoblin, 2, CardType.Enemy, CardType.Activate).description("Activate: If adjacent to an alchemist of a blast, take 2 Wounds.").build());
+        cardsGoblin.add(goblinRabble = new CardImpl.Builder(Kind.RabbleGoblin, 1, CardType.Enemy, CardType.WhenDrawn).description("When Drawn: Banish 2 Foes, draw 2 Foes, ignore the 'When Drawn' text of any Rabbles thus drawn.").build());
+        cardsGoblin.add(catapultBulwark= new CardImpl.Builder(Kind.CatapultGob, 2, CardType.Enemy, CardType.Activate, CardType.Range, CardType.Blast).description("Activate: Each player discards the top card of their deck. If it was a Wound, they take a Wound.").build());
+        cardsGoblin.add(goblinHeavy = new CardImpl.Builder(Kind.HeavyGoblin, 2, CardType.Enemy, CardType.Activate).description("Activate: Take a Wound if a troop is in play.").build());
+        cardsGoblin.add(goblinArcher = new CardImpl.Builder(Kind.ArcherGoblin, 1, CardType.Enemy, CardType.Activate, CardType.Range).description("Activate: If there are 2 or more archers in play, take a Wound.").build());
         cardsGoblin.add(kneena = new CardImpl.Builder(Kind.KneenaGoblin, 2, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.Range).description("The Goblin Druid - Activate: Each player discards the top card of their deck. If it was a Location card, they take a Wound.").build());
         cardsGoblin.add(kmblee = new CardImpl.Builder(Kind.KmbleeGoblin, 2, CardType.Enemy, CardType.Crown, CardType.Activate).description("The Goblin Scout - Activate: Draw a foe.").build());
         cardsGoblin.add(kmron = new CardImpl.Builder(Kind.KmronGoblin, 3, CardType.Enemy, CardType.Crown, CardType.Activate).description("The Goblin Chief - Activate: Take a Wound.").build());
@@ -868,12 +868,12 @@ public class Cards {
         cardsGoblin.add(mgzwel = new CardImpl.Builder(Kind.MgzwelGoblin, 2, CardType.Enemy, CardType.Crown).description("The Goblin Armourer - While in Play: Goblins up to 2 spaces away get +1 Armour. MgzwelGoblin does not increase his own Armour.").build());
         //cardsGoblinHorde.add(virtualEnemy = new CardImpl.Builder(Kind.VirtualEnemy, 3, CardType.Enemy).pileCreator(new GoblinPileCreator()).expansion(Expansion.Base).build());
 
-        cardsLizard.add(lizardTroop = new CardImpl.Builder(Kind.LizardTroop, 1, CardType.Enemy).description("+1 Armour if adjacent to a Heavy.").build());
+        cardsLizard.add(lizardTroop = new CardImpl.Builder(Kind.TroopLizard, 1, CardType.Enemy).description("+1 Armour if adjacent to a Heavy.").build());
         cardsLizard.add(fireCatapult = new CardImpl.Builder(Kind.FireCatapult, 2, CardType.Enemy, CardType.Activate, CardType.Blast, CardType.Range).description("Activate: Reveal your hand. If a Wound is revealed or you have a Wound underneath a card Remaining in play, take a Wound.").build());
-        cardsLizard.add(lizardRabble = new CardImpl.Builder(Kind.LizardRabble, 1, CardType.Enemy, CardType.Activate).description("Activate: Kill this, draw a Foe.").build());
+        cardsLizard.add(lizardRabble = new CardImpl.Builder(Kind.RabbleLizard, 1, CardType.Enemy, CardType.Activate).description("Activate: Kill this, draw a Foe.").build());
         cardsLizard.add(batteringRam= new CardImpl.Builder(Kind.BatteringRam, 2, CardType.Enemy, CardType.Activate, CardType.Blast).description("Activate: Take a Wound for each Blast activation there has already been this turn..").build());
-        cardsLizard.add(lizardHeavy = new CardImpl.Builder(Kind.LizardHeavy, 2, CardType.Enemy, CardType.Activate).description("Activate: Take a Wound for each adjacent troop.").build());
-        cardsLizard.add(lizardBombardier = new CardImpl.Builder(Kind.LizardBombardier, 1, CardType.Enemy, CardType.Activate).description("Activate: Discard a card you have Remaining in play.").build());
+        cardsLizard.add(lizardHeavy = new CardImpl.Builder(Kind.HeavyLizard, 2, CardType.Enemy, CardType.Activate).description("Activate: Take a Wound for each adjacent troop.").build());
+        cardsLizard.add(lizardBombardier = new CardImpl.Builder(Kind.BombardierLizard, 1, CardType.Enemy, CardType.Activate).description("Activate: Discard a card you have Remaining in play.").build());
         cardsLizard.add(giantCorpseHound= new CardImpl.Builder(Kind.GiantCorpseHound, 2, CardType.Enemy, CardType.Crown, CardType.Undead).description("The current player takes a Wound every time a Foe other than a corpse hound is killed.").build());
         cardsLizard.add(kyung = new CardImpl.Builder(Kind.KyungLizard, 2, CardType.Enemy, CardType.Crown, CardType.Range).description("The Lizard Mystic - You cannot buy Hero cards").build());
         cardsLizard.add(yoonIseul = new CardImpl.Builder(Kind.YoonIseulLizard, 3, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.Horseman).description("The Lizard Queen - Activate: Activate the Foe before her, then activate the Foe after her. She cannot be activated more than once a turn.").build());
@@ -881,12 +881,12 @@ public class Cards {
         cardsLizard.add(hyeon = new CardImpl.Builder(Kind.HyeonLizard, 3, CardType.Enemy, CardType.Crown, CardType.Activate).description("The Lizard Champion - Activate : If you did not kill a Foe this turn, take 2 Wounds").build());
         //cardsLizardCrusade.add(virtualEnemy = new CardImpl.Builder(Kind.VirtualEnemy, 3, CardType.Enemy).pileCreator(new LizardPileCreator()).expansion(Expansion.Base).build());
 
-        cardsElf.add(elfTroop = new CardImpl.Builder(Kind.ElfTroop, 1, CardType.Enemy, CardType.Activate).description("If there are 4 or more Elves in play, take a Wound").build());
+        cardsElf.add(elfTroop = new CardImpl.Builder(Kind.TroopElf, 1, CardType.Enemy, CardType.Activate).description("If there are 4 or more Elves in play, take a Wound").build());
         cardsElf.add(flameBallista = new CardImpl.Builder(Kind.FlameBallista, 1, CardType.Enemy, CardType.Activate, CardType.Blast, CardType.Range).description("Activate: Take a Wound in hand for each card you have Remaining in play.").build());
-        cardsElf.add(elfRabble = new CardImpl.Builder(Kind.ElfRabble, 1, CardType.Enemy, CardType.WhenDrawn).description("When Drawn: Banish a non rabble Foe.  While In Play: Counts of 2 Elves.").build());
-        cardsElf.add(elfDruid = new CardImpl.Builder(Kind.ElfDruid, 2, CardType.Enemy, CardType.Activate, CardType.Range).description("Activate: Discard the top 2 cards of your deck, take a Wound for each Location card revealed.").build());
+        cardsElf.add(elfRabble = new CardImpl.Builder(Kind.RabbleElf, 1, CardType.Enemy, CardType.WhenDrawn).description("When Drawn: Banish a non rabble Foe.  While In Play: Counts of 2 Elves.").build());
+        cardsElf.add(elfDruid = new CardImpl.Builder(Kind.DruidElf, 2, CardType.Enemy, CardType.Activate, CardType.Range).description("Activate: Discard the top 2 cards of your deck, take a Wound for each Location card revealed.").build());
         cardsElf.add(corpseVine = new CardImpl.Builder(Kind.CorpseVine, 1, CardType.Enemy).description("While In Play: You cannot buy Location cards.").build());
-        cardsElf.add(elfArcher = new CardImpl.Builder(Kind.ElfArcher, 1, CardType.Enemy, CardType.Activate, CardType.Range).description("Activate: If there are 2 or more archers in play, take a Wound for each elf in play, up to a maximum of 3.").build());
+        cardsElf.add(elfArcher = new CardImpl.Builder(Kind.ArcherElf, 1, CardType.Enemy, CardType.Activate, CardType.Range).description("Activate: If there are 2 or more archers in play, take a Wound for each elf in play, up to a maximum of 3.").build());
         cardsElf.add(kiri= new CardImpl.Builder(Kind.KiriElf, 2, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.Undead, CardType.Range, CardType.Necromancer).description("The Elf Necromancer - Activate: Take a Wound for each corpse in play.  When Killed: Resurrect 2, elves or corpses.").build());
         cardsElf.add(ruiha = new CardImpl.Builder(Kind.RuihaElf, 4, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.Horseman).description("The Fallen Elf - Activate: Take a Wound.  While In Play: Adjacent elves and demons are invincible.  When Killed: Draw 2 Foes.").build());
         cardsElf.add(tane = new CardImpl.Builder(Kind.TaneElf, 2, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.Horseman).description("The Elf Lancer - Activate: If there is a Foe on both sides of him, take 2 Wounds.").build());

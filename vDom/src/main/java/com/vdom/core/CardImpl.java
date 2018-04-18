@@ -714,7 +714,7 @@ public class CardImpl implements Card, Comparable<Card>{
                 armourValue++;
             }
         }
-        if (this.getKind() == Cards.Kind.LizardTroop && index > -1) {
+        if (this.getKind() == Cards.Kind.TroopLizard && index > -1) {
             try {
                 if (enemyLine.get(index - 1).is("Heavy")) {
                     armourValue++;
