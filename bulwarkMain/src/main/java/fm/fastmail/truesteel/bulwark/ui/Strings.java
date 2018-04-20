@@ -1210,7 +1210,8 @@ public class Strings {
                 cardName.equals(getCardName(Cards.stalk)) ||
                 cardName.equals(getCardName(Cards.patientHunter)) ||
                 cardName.equals(getCardName(Cards.samuGarden)) ||
-                cardName.equals(getCardName(Cards.galleryOfLeaves))) {
+                cardName.equals(getCardName(Cards.galleryOfLeaves)) ||
+                cardName.equals(getCardName(Cards.crystalOrb))) {
             strings[0] = getPlayerRevealedCardHeader(extras);
             strings[1] = getString(R.string.discard);
             strings[2] = getString(R.string.replace);
@@ -1492,6 +1493,7 @@ public class Strings {
     private static void initActionStrings() {
         if (simpleActionStrings != null) return;
         simpleActionStrings = new HashSet<String>(Arrays.asList(
+            getCardName(Cards.petrify),
 
             getCardName(Cards.samuGarden),
             getCardName(Cards.silkenSnare),

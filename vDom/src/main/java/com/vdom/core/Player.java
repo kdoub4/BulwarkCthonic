@@ -1314,6 +1314,9 @@ public abstract class Player {
                     discard.add(card);
                 }
             }
+            else if(cleanup && card.getKind()== Cards.Kind.Celerity && !card.isPlayedThisTurn()) {
+        	    game.addToPile(card,true);
+            }
             else {
                 discard.add(card);
             }

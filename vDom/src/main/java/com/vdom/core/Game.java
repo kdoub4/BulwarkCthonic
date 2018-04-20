@@ -2057,6 +2057,7 @@ public class Game {
 	            ((CardImpl)card).cloneCount = 1;
 	            if (!(behaveAsCard.trashAfterPlay || ((CardImpl)card).trashAfterPlay)) {
 	                player.playedCards.add(card);
+                    ((CardImpl)card).setPlayedThisTurn(false);
 	            } else {
 	                behaveAsCard.trashAfterPlay = false;
 	                ((CardImpl)card).trashAfterPlay = false;
@@ -2668,7 +2669,9 @@ public class Game {
             if (context.techniqueBuys > 0 && buy.is(CardType.Technique)) {
                 context.techniqueBuys--;
             }
-            else {
+            else if (context.spellBuys > 0 && buy.is(CardType.Spell)) {
+                context.spellBuys--;
+            } else {
                 context.buys--;
             }
         }

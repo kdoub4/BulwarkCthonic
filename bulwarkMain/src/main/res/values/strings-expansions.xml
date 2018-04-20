@@ -2,6 +2,7 @@
 <resources>
 
     <string name="Base">Base</string>
+    <string name="Arcane">Travails of the Arcane</string>
     <string name="Base2E">Base 2E</string>
     <string name="BaseSet">Base Set</string>
     <string name="Intrigue">Intrigue</string>

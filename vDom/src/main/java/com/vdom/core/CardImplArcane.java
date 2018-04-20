@@ -84,6 +84,8 @@ public class CardImplArcane extends CardImpl {
                         1 + spendActions(context, currentPlayer, 2, false));
                 break;
             case Celerity:
+                if (context.countCardsInPlay(Cards.celerity) > 1)
+                    game.consecutiveTurnCounter = 0;
                 break;
             case Augury:
                 Card card1 = game.getPile(Cards.virtualEnemy).removeCard();
