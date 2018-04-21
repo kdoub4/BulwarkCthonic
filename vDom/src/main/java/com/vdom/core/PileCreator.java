@@ -4,11 +4,7 @@ import com.vdom.api.Card;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public abstract class PileCreator implements Serializable {
     public abstract CardPile create(Card template, int count);
@@ -207,7 +203,7 @@ class JakabSpellPileCreator extends PileCreator {
         cards.add(new CardPile.CardMultiplicity(Cards.celerity, 3));
         cards.add(new CardPile.CardMultiplicity(Cards.petrify,    3));
         cards.add(new CardPile.CardMultiplicity(Cards.augury, 3));
-        cards.add(new CardPile.CardMultiplicity(Cards.enchangedStrike, 3));
+        cards.add(new CardPile.CardMultiplicity(Cards.enchantedStrike, 3));
 
         return new CardPile(template, cards, false, true);
     }

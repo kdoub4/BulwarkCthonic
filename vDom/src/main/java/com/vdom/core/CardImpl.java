@@ -1857,7 +1857,12 @@ public class CardImpl implements Card, Comparable<Card>{
             if (!exact || i==0 || i==max)
             options.add(Integer.toString(i));
         } //TODO change header
-        return ((IndirectPlayer)currentPlayer).selectOption(context, this, options.toArray(), null );
+        int spentActions = ((IndirectPlayer)currentPlayer).selectOption(context, this, options.toArray(), null );
+        if (exact && spentActions == 1) {
+            spentActions = max;
+        }
+        context.actions -= spentActions;
+        return spentActions;
     }
 
     public int compareTo(Card other) {

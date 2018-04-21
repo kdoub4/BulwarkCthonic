@@ -325,6 +325,9 @@ public class Game {
                 MoveContext context = new MoveContext(this, player, canBuyCards);
                 context.phase = TurnPhase.Action;
                 context.startOfTurn = true;
+                while (player.tavern.contains(Cards.wallOfForce)) {
+                    player.tavern.get(Cards.wallOfForce).callAtStartOfTurn(context);
+                }
                 playerBeginTurn(player, context);
                 context.startOfTurn = false;
 
@@ -340,9 +343,6 @@ public class Game {
                     }
 
 //TODO Check for death, if dying force flesh wound play if possible
-                    while (player.tavern.contains(Cards.wallOfForce)) {
-                        player.tavern.get(Cards.wallOfForce).callAtStartOfTurn(context);
-                    }
                     playerManoeuvres(player, context);
 
                     context.phase = TurnPhase.DrawFoe;
@@ -351,7 +351,7 @@ public class Game {
                     // /////////////////////////////////
                     if ((turnCount > startPhaseLength) &&
                         pileSize(Cards.virtualEnemy) > 0 &&
-                        !player.nextTurnCards.contains(Cards.celerity))
+                        !player.playedCards.contains(Cards.celerity))
                             drawFoe(player, context, true);
 
 

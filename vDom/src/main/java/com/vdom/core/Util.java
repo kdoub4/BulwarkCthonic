@@ -263,7 +263,7 @@ public class Util {
             if ((c.is(CardType.InHandManoeuvre) || c.is(CardType.InHandReaction)) &&
                     (c.getKind()!=Kind.SanctusCharm || (context.woundsTaken >= 1 && !context.sanctusCharm ))
                     && c.is(actionType))
-                if (!toReturn.contains(c))
+                if (!toReturn.contains(c) )
                     toReturn.add(c);
         }
 
@@ -275,7 +275,7 @@ public class Util {
             }
             if ((t.is(CardType.RemainsReaction) || t.is(CardType.RemainsManoeuvre)) && t.is(actionType) &&
                     !underCards.contains(t) && !t.isPlayedThisTurn()) {
-                if (!toReturn.contains(t)) {
+                if (!toReturn.contains(t) || t.getKind() == Kind.AstrologersRitual) {
                     if (t.getKind() == Kind.AstrologersRitual) {
                         AstrologerCount++;
                         if (AstrologerCount > 1)

@@ -1493,7 +1493,8 @@ public class Strings {
     private static void initActionStrings() {
         if (simpleActionStrings != null) return;
         simpleActionStrings = new HashSet<String>(Arrays.asList(
-            getCardName(Cards.petrify),
+
+                getCardName(Cards.celestialGrimoire),
 
             getCardName(Cards.samuGarden),
             getCardName(Cards.silkenSnare),
@@ -1575,6 +1576,9 @@ public class Strings {
             getCardName(Cards.summon)
             
         ));
+        for (Card c :Cards.spellCardsJakab) {
+            simpleActionStrings.add(getCardName(c));
+        }
         for (Card c : Cards.cardsGoblin) {
             simpleActionStrings.add(getCardName(c));
         }

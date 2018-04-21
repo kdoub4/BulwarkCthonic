@@ -36,6 +36,7 @@ public class CardImplArcane extends CardImpl {
                     if (c!=null)
                         currentPlayer.discard(c, this, context);
                 }
+                game.addToPile(currentPlayer.hand.removeCard(this), true);
                 break;
         }
     }
@@ -44,6 +45,7 @@ public class CardImplArcane extends CardImpl {
         switch (this.getKind()) {
             case RunicStaff:
             case CedarStaff:
+            case AshStaff:
                 context.spellBuys++;
                 break;
             case CrystalOrb:
@@ -64,7 +66,8 @@ public class CardImplArcane extends CardImpl {
                 if (enemy.length==1) {
                     Card enemyCard =  game.blackMarketPile.get(enemy[0]);
                     this.cardsUnder.add(enemyCard);
-                    for (int i = 1; i <= spendActions(context, currentPlayer, 2, false); i++) {
+                    int extraTurns = spendActions(context, currentPlayer, 2, false);
+                    for (int i = 1; i <= extraTurns; i++) {
                         this.cardsUnder.add(currentPlayer.takeFromPile(Cards.virtualWound));
                         currentPlayer.tavern.add(cardsUnder.get(cardsUnder.size()-1));
                     }
@@ -104,7 +107,7 @@ public class CardImplArcane extends CardImpl {
                     if (!toTrash.is(CardType.Crown)) game.addToPile(toTrash, true);
                     else game.addToPile(toTrash, false);
                     game.addToPile(toReturn, false);
-
+                game.addToPile(currentPlayer.playedCards.removeCard(this), true);
                 break;
         }
     }
@@ -112,6 +115,19 @@ public class CardImplArcane extends CardImpl {
     @Override
     protected void callAction(MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
+            case WallOfForce:
+                context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
+                break;
+            case CelestialGrimoire:
+                for (Card c : this.cardsUnder) {
+                    currentPlayer.hand.add(c);
+                    currentPlayer.tavern.removeCard(c);
+                }
+                this.cardsUnder.clear();
+            case CelestialTome:
+                context.actions++;
+                context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
+                break;
         }
     }
 }
