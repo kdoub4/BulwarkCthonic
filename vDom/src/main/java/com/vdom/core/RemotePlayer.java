@@ -140,7 +140,8 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
                 || c.equals(Cards.warrior)
                 || c.equals(Cards.hero)
                 || c.equals(Cards.champion)
-
+                || c.equals(Cards.virtualEnemy)
+                || c.equals(Cards.virtualWound)
 
                 )
         {
@@ -247,7 +248,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         int index = 0;
 
         // ensure card #0 is a card not to shade, e.g. Curse. See Rev r581
-        Card curse = Cards.curse;
+        Card curse = Cards.virtualEnemy;
         MyCard mc = makeMyCard(curse, index, false, false, false, true);
         myCardsInPlayList.add(mc);
         cardNamesInPlay.put(curse.getName(), index);
@@ -255,7 +256,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         index++;
 
         for (Card c : context.getCardsInGame(GetCardsInGameOptions.All)) {
-            if (c.getSafeName().equals(Cards.curse.getSafeName()))
+            if (c.getSafeName().equals(Cards.virtualEnemy.getSafeName()))
                 continue;
 
             boolean isBlackMarket = false;

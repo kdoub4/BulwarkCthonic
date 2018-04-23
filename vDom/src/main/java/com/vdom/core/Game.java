@@ -3402,14 +3402,14 @@ public class Game {
             provincePileSize = 1; 
         }
 
-        addPile(Cards.gold, 30 * treasureMultiplier);
-        addPile(Cards.silver, 40 * treasureMultiplier);
-        addPile(Cards.copper, 60 * treasureMultiplier);
-
-        addPile(Cards.curse, curseCount);
-        addPile(Cards.province, provincePileSize);
-        addPile(Cards.duchy, victoryCardPileSize);
-        addPile(Cards.estate, victoryCardPileSize + (3 * numPlayers));
+//        addPile(Cards.gold, 30 * treasureMultiplier);
+//        addPile(Cards.silver, 40 * treasureMultiplier);
+//        addPile(Cards.copper, 60 * treasureMultiplier);
+//
+//        addPile(Cards.curse, curseCount);
+//        addPile(Cards.province, provincePileSize);
+//        addPile(Cards.duchy, victoryCardPileSize);
+//        addPile(Cards.estate, victoryCardPileSize + (3 * numPlayers));
 
         unfoundCards.clear();
         int added = 0;
@@ -3610,7 +3610,8 @@ public class Game {
 
             switch (mEnemy) {
                 case Goblin:
-                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new GoblinPileCreator()).expansion(Expansion.Base).build());
+                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new GoblinPileCreator()).expansion(Expansion.Base).build(),
+                            30, false);
                     break;
                 case Lizard:
                     addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new LizardPileCreator()).expansion(Expansion.Base).build());
@@ -3625,7 +3626,8 @@ public class Game {
 
             added++;
 
-            addPile(Cards.virtualWound);
+            addPile(Cards.virtualWound,30,false);
+
             added++;
         }
             else {

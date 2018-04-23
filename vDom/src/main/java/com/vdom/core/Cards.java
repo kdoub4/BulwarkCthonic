@@ -905,6 +905,7 @@ public class Cards {
         cardsWinter.add(horrorOfFlesh = new CardImpl.Builder(Kind.HorrorOfFlesh, 3, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.Undead).description("Activate: Kill a corpse. If you did, take 2 Wounds.").build());
         cardsWinter.add(kangaxxTheLich = new CardImpl.Builder(Kind.KangaxxTheLich, 3, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.WhenDrawn, CardType.Undead).description("When Drawn: Reveal a Foe.  If Undead put it into play, otherwise kill it.  Activate: Take a Wound, draw a Foe.  While in Player: It is Invincible if a necromancer is in play.  When Killed: Kill all Undead Foes.").build());
 
+        //woundPile.add(virtualWound = new CardImpl.Builder(Kind.VirtualWound, 0, "Wounds", CardType.Wound).pileCreator(new WoundPileCreator()).expansion(Expansion.Base).build());
         woundPile.add(virtualWound = new CardImpl.Builder(Kind.VirtualWound, 0, "Wounds", CardType.Wound).pileCreator(new WoundPileCreator()).expansion(Expansion.Base).build());
         woundCards.add(seriousWound = new CardImpl.Builder(Kind.SeriousWound, 0, CardType.Wound).expansion(Expansion.Base).build());
         woundCards.add(glancingWound = new CardImpl.Builder(Kind.GlancingWound, 0, CardType.Wound, CardType.InHandManoeuvre, CardType.Action).trashOnUse().description("Manoeuvre: You may spend 2 Actions to Banish this.").expansion(Expansion.Base).build());
@@ -1192,7 +1193,7 @@ public class Cards {
         eventCardsAdventures.add(trade             = new CardImpl.Builder(Cards.Kind.Trade           , 5, CardType.Event).description("Trash up to 2 cards from your hand. Gain a Silver per card you trashed.").expansion(Expansion.Adventures).build());
         eventCardsAdventures.add(training          = new CardImpl.Builder(Cards.Kind.Training        , 6, CardType.Event).description("Move your +1 Coin token to an Action Supply pile (when you play a card from that pile, you first get +1 Coin).").expansion(Expansion.Adventures).build());
         eventCardsAdventures.add(travellingFair    = new CardImpl.Builder(Cards.Kind.TravellingFair  , 2, CardType.Event).addBuys(2).description("When you gain a card this turn, you may put it on top of your deck.").expansion(Expansion.Adventures).build());
-        
+
         // Travellers
         nonSupplyCards.add(champion        = new CardImpl.Builder(Cards.Kind.Champion, 6, CardType.Action, CardType.Duration).addActions(1).description("For the rest of the game, when another player plays an Attack, it doesn't affect you, and when you play an Action, +1 Action. (This stays in play. This is not in the Supply.)").expansion(Expansion.Adventures).build());
         nonSupplyCards.add(disciple        = new CardImpl.Builder(Cards.Kind.Disciple        , 5, CardType.Action, CardType.Crown).description("You may play an Action card from your hand twice. Gain a copy of it. ~ When you discard this from play, you may exchange it for a Teacher. (This is not in the Supply.)").expansion(Expansion.Adventures).build());
