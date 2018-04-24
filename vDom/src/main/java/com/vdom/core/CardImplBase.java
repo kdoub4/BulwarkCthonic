@@ -1101,21 +1101,19 @@ public class CardImplBase extends CardImpl {
     protected void callAction(MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
             case SilkenSnare:
-                if (context.countCardsInPlayByIdentifier("snare")>1 ||
+                if (context.countCardsInPlayByIdentifier("snare")>1 &&
                         ((IndirectPlayer)currentPlayer).selectBoolean(context, this)) {
-                    context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
+                    actionPhaseAttack(context, currentPlayer, false, true, 2);
+                }
+                else {
                     SelectCardOptions sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
-                            .fromBlackMarket().setCount(1).setCardResponsible(this);
+                            .fromBlackMarket().setCount(1).isNonCrown().setCardResponsible(this);
                     int[] toBanish = currentPlayer.doSelectFoe(context, sco, 1, GameEvent.EventType.SelectFoe);
                     if (toBanish.length == 1) {
                         context.game.addToPile(context.game.blackMarketPile.remove(toBanish[0]), true);
                     }
                 }
-                else {
-                    context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
-                    actionPhaseAttack(context, currentPlayer, false, true, 2);
-                }
-
+                context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
                 break;
             case TownSquare:
                 callTownSquare(context, context.game, currentPlayer);
