@@ -571,7 +571,16 @@ public class Util {
         }
         return count;
     }
-    
+
+    public static <T extends Card> int getCardCount(Iterable<T> cards, CardType... types) {
+        int count = 0;
+        for (T thisCard : cards) {
+            if (thisCard.is(types)) {
+                count++;
+            }
+        }
+        return count;
+    }
 
 	public static boolean areCardsInHand(Card[] cards, MoveContext context) {
 		return areCardsInList(cards, context.getPlayer().getHand());

@@ -21,7 +21,6 @@ public class CardImpl implements Card, Comparable<Card>{
     int cost;
     int debtCost;
     boolean costPotion = false;
-    public ArrayList<Card> cardsUnder = new ArrayList<>();
 
     Cards.Kind upgradeCard = null;
 
@@ -35,6 +34,11 @@ public class CardImpl implements Card, Comparable<Card>{
     protected int addBuys;
     protected int addCards;
     protected int addGold;
+
+    @Override
+    public ArrayList<Card> getCardsUnder() { return cardsUnder;}
+
+    public ArrayList<Card> cardsUnder = new ArrayList<>();
 
     @Override
     public int getPileSize() {

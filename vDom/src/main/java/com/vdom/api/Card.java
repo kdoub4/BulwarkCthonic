@@ -23,6 +23,8 @@ public interface Card extends Serializable {
     
     public Expansion getExpansion();
 
+    public ArrayList<Card> getCardsUnder();
+
     public boolean is(CardType t, Player player);
     public boolean is(CardType... types);
     public int getNumberOfTypes(Player player);

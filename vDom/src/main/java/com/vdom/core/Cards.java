@@ -1422,6 +1422,7 @@ public class Cards {
         for (Card card : cardsLizard)       { cardNameToCard.put(card.getName(), card); }
         for (Card card : cardsElf)       { cardNameToCard.put(card.getName(), card); }
         for (Card card : cardsWinter)       { cardNameToCard.put(card.getName(), card); }
+        for (Card card : cardsMessianic)       { cardNameToCard.put(card.getName(), card); }
         for (Card card : woundCards)        { cardNameToCard.put(card.getName(), card); }
         for (Card card : woundPile)         { cardNameToCard.put(card.getName(), card); }
         for (Card card : locationCards)     { cardNameToCard.put(card.getName(), card); }

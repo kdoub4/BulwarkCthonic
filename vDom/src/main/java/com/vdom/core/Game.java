@@ -734,6 +734,71 @@ public class Game {
         }
 
             switch (enemyCard.getKind()) {
+                case ArcaneMessiah:
+                    takeWounds(currentPlayer,1,context,enemyCard,false);
+                    for(int j=1; j <=Util.getCardCount(blackMarketPile,CardType.Magical); j++) {
+                        addToCardsUnder(enemyCard, i, blackMarketPile, Cards.virtualWound);
+                    }
+                case TuskedDeathcharger:
+                    try {
+                        blackMarketPile.get(i - 1);
+                        blackMarketPile.get(i + 1);
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                    } catch (IndexOutOfBoundsException e) {
+                    }
+                    break;
+                case RogueHumanMage:
+                    if (((CardImpl)enemyCard).cardsUnder.size()==3) {
+                        takeWounds(currentPlayer, 1, context,
+                                enemyCard, false);
+                    }
+                    else {
+                        addToCardsUnder(enemyCard, i, blackMarketPile, Cards.virtualWound);
+                    }
+                    break;
+                case EnsorcelledZealots:
+                    for (int j=i-1; j<i+1;i++) {
+                        try {
+                            if (j != i) {
+                                for (Card c : blackMarketPile.get(j).getCardsUnder()) {
+                                    if (c.is("Wound")) {
+                                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                                        break;
+                                    }
+                                }
+                            }
+                        } catch (IndexOutOfBoundsException e) {
+
+                        }
+                    }
+                    break;
+
+                case ArcherFootbow:
+                    if (((CardImpl)enemyCard).cardsUnder.size()>0) {
+                        ((CardImpl)enemyCard).cardsUnder.clear();
+                        addToPile(blackMarketPile.remove(i+1),false);
+                        takeWounds(currentPlayer, 1, context,
+                                enemyCard, false);
+                    }
+                    else {
+                        ((CardImpl)enemyCard).cardsUnder.add(takeFromPile(Cards.virtualWound));
+                        blackMarketPile.add(i+1, ((CardImpl)enemyCard).cardsUnder.get(0));
+                    }
+                    break;
+                case TroopBrainwashed:
+                    for (int j=i-2; j<i+2;i++) {
+                        try {
+                            if (j != i) {
+                                if (blackMarketPile.get(j).is("Brainwashed")) {
+                                    takeWounds(currentPlayer, 1, context, enemyCard, false);
+                                    break;
+                                }
+                            }
+                        } catch (IndexOutOfBoundsException e) {
+
+                        }
+                    }
+                    break;
                 case BrokenCorpse:
                     if (context.woundsTaken > 0) {
                         takeWounds(currentPlayer, 1, context, enemyCard, false);
@@ -1001,6 +1066,11 @@ public class Game {
         if (newI >=0)
             return newI;
         return i;
+    }
+
+    private void addToCardsUnder(Card card, int i, ArrayList<Card> listToAddTo, Card fromPile) {
+        listToAddTo.add(i+1, takeFromPile(fromPile));
+        card.getCardsUnder().add(listToAddTo.get(i+1));
     }
 
     public boolean killACorpse(Card enemyCard, Player currentPlayer, MoveContext context) {

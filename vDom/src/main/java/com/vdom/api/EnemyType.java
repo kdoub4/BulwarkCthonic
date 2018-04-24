@@ -14,9 +14,8 @@ public enum EnemyType {
     Goblin("Goblin Horde", Expansion.Base),
     Lizard("Fire Lizard Brigade", Expansion.Base),
     Elf("Fallen Elves", Expansion.Base),
-    Winter("Winter of Death", Expansion.Base);
-
-
+    Winter("Winter of Death", Expansion.Base),
+    Messianic("Messianic Uprising", Expansion.Arcane);
 
     private final String name;
     private final List<Expansion> expansions;
