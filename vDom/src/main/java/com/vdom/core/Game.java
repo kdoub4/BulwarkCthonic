@@ -1524,6 +1524,38 @@ public class Game {
             }
         }
         switch (cardPlayed.getKind()) {
+            case ArcaneMessiah:
+                Card topCard = takeFromPile(Cards.virtualEnemy);
+                addToPile(topCard, false);
+                if (topCard.is("Elemental")) {
+                    drawFoe(player,context,true);
+                }
+                break;
+            case HeraldOfPressueWaterElemental:
+            case HeraldOfScorchingFireElemental:
+            case HeraldOfStarsAirElemental:
+            case HeraldOfGraniteEarthElemental:
+                topCard = takeFromPile(Cards.virtualEnemy);
+                if (topCard.is("elemental")) {
+                    takeWounds(player,2,context,cardPlayed,false);
+                }
+                addToPile(topCard,false);
+                break;
+            case RabbleBrainwashed:
+                context.rabblePlayed = true;
+                int rabbleBanished = 0;
+                ArrayList<Card> copyEnemies = Util.copy(blackMarketPile);
+                for (Card enemy : copyEnemies) {
+                    if (enemy.is("Rabble")) {
+                        rabbleBanished++;
+                        blackMarketPile.remove(enemy);
+                    }
+                }
+                for (int i=1; i<= rabbleBanished; i++) {
+                    drawFoe(player, context, true);
+                }
+                break;
+            case TuskedDeathcharger:
             case EnshroudingMist:
                 drawFoe(player,context, true);
                 break;
