@@ -1190,6 +1190,30 @@ public class CardImpl implements Card, Comparable<Card>{
         }
         int i;
         switch (this.getKind()) {
+            case ArcaneMessiah:
+                for (Card c : this.getCardsUnder()) {
+                    context.game.addToPile(c,false);
+                    context.game.takeWounds(context.player,1,context, this, false);
+                }
+                for (Card c : context.game.blackMarketPile) {
+                    if (c.is("elemental")) {
+                        context.game.killFoe(context, c);
+                    }
+                }
+                break;
+            case HeraldOfGraniteEarthElemental:
+            case HeraldOfPressueWaterElemental:
+            case HeraldOfScorchingFireElemental:
+            case HeraldOfStarsAirElemental:
+                context.game.drawFoe(context.player, context, true);
+                break;
+            case RogueHumanMage:
+            case ArcherFootbow:
+                for (Card c : this.getCardsUnder()) {
+                    context.player.trash(c,this,context);
+                    context.game.blackMarketPile.remove(Util.indexOfCardId(c.getId(), context.game.blackMarketPile));
+                }
+                break;
             case BrokenCorpse:
                 context.game.blackMarketPile.remove( Util.indexOfCardId(getId(), context.game.blackMarketPile));
                 context.game.killACorpse(this,context.getPlayer(),context);
