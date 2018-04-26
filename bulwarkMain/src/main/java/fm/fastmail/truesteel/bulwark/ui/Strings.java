@@ -1133,7 +1133,7 @@ public class Strings {
             strings[1] = "+2 Might";
             strings[2] = "+1 Might";
         }
-        if (cardResponsible.is(CardType.InHandManoeuvre)) {
+        else if (cardResponsible.is(CardType.InHandManoeuvre)) {
             strings[1] = "Play";
             strings[2] = "Manoeuvre";
         } else if (cardName.equals(getCardName(Cards.alchemist))) {
