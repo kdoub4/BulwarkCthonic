@@ -544,7 +544,7 @@ public class Util {
     public static int getCardCount(ArrayList<Card> cards, Card card) {
         int count = 0;
         for (Card thisCard : cards) {
-            if (thisCard.equals(card)) {
+            if (thisCard != null && thisCard.equals(card)) {
                 count++;
             }
         }

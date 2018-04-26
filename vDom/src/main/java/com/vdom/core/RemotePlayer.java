@@ -1064,6 +1064,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
                             tavern.a.remove(bolsterCard);
                             context.game.addToPile(bolsterCard, true);
                             context.addMightModifier(1);
+                            break;
                         case TheDrop:
                             tavern.a.remove(bolsterCard);
                             trash(bolsterCard, bolsterCard, context);
