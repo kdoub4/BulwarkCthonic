@@ -62,6 +62,34 @@
                 android:stretchMode="columnWidth" />
         </LinearLayout>
 
+        <!-- Played -->
+
+        <LinearLayout
+            android:layout_width="@dimen/cardWidth"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="@dimen/margin_hands"
+            android:orientation="vertical">
+
+            <!-- Title -->
+
+            <TextView
+                android:id="@+id/playedHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/played_header" />
+
+            <!-- Cards -->
+
+            <GridView
+                android:id="@+id/playedGV"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="1"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="@dimen/margin_cards" />
+        </LinearLayout>
+
         <!-- Tavern -->
 
         <LinearLayout
@@ -83,34 +111,6 @@
 
             <GridView
                 android:id="@+id/tavernGV"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:listSelector="@android:color/transparent"
-                android:numColumns="1"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="@dimen/margin_cards" />
-        </LinearLayout>
-
-        <!-- Played -->
-
-        <LinearLayout
-            android:layout_width="@dimen/cardWidth"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="@dimen/margin_hands"
-            android:orientation="vertical">
-
-            <!-- Title -->
-
-            <TextView
-                android:id="@+id/playedHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/played_header" />
-
-            <!-- Cards -->
-
-            <GridView
-                android:id="@+id/playedGV"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:listSelector="@android:color/transparent"
