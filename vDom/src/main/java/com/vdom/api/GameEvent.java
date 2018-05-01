@@ -36,6 +36,7 @@ public class GameEvent {
         CardOnTopOfDeck, // Card was placed on top of deck
         CardObtained, // Card was obtained by a player through an effect of an action
         CardTrashed, // Card removed from the game
+        CardBanished, // Card returned to pile
         CardRevealed, // Card revealed by an action
         CardRevealedFromHand, // Card revealed from the hand by an action
         CardNamed, // Card named by player

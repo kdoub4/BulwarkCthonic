@@ -1406,6 +1406,25 @@ public abstract class Player {
         return game.takeFromPile(card);
     }
 
+    public void banish(Card card, Card responsible, MoveContext context) {
+        if (context !=  null) {
+            context.cardsBanishedThisTurn++;
+        }
+
+        GameEvent event = new GameEvent(GameEvent.EventType.CardBanished, context);
+        event.card = card;
+        event.responsible = responsible;
+        context.game.broadcastEvent(event);
+
+        context.game.addToPile(card, true);
+        if (card.getKind() == Cards.Kind.StaggeringWound) {
+            context.game.drawToHand(context, card, 2, true);
+            context.game.drawToHand(context, card, 1, true);
+        }
+
+        card.behaveAsCard().isBanished();
+    }
+
     public void trash(Card card, Card responsible, MoveContext context) {
         if (context != null) {
             // TODO: Track in main game event listener instead

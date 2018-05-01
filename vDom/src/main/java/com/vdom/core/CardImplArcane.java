@@ -36,7 +36,7 @@ public class CardImplArcane extends CardImpl {
                     if (c!=null)
                         currentPlayer.discard(c, this, context);
                 }
-                game.addToPile(currentPlayer.hand.removeCard(this), true);
+                currentPlayer.banish(currentPlayer.hand.removeCard(this), this, context);
                 break;
         }
     }
@@ -82,7 +82,7 @@ public class CardImplArcane extends CardImpl {
                 putOnTavern(game, context, currentPlayer);
                 break;
             case Fireball:
-                game.addToPile(currentPlayer.playedCards.removeCard(this), true);
+                currentPlayer.banish(currentPlayer.playedCards.removeCard(this), this, context);
                 actionPhaseAttack(context, currentPlayer, true, true,
                         1 + spendActions(context, currentPlayer, 2, false));
                 break;
@@ -104,10 +104,10 @@ public class CardImplArcane extends CardImpl {
                         toTrash = card2;
                         toReturn = card1;
                     }
-                    if (!toTrash.is(CardType.Crown)) game.addToPile(toTrash, true);
+                    if (!toTrash.is(CardType.Crown)) currentPlayer.banish(toTrash, this, context);
                     else game.addToPile(toTrash, false);
                     game.addToPile(toReturn, false);
-                game.addToPile(currentPlayer.playedCards.removeCard(this), true);
+                currentPlayer.banish(currentPlayer.playedCards.removeCard(this), this, context);
                 break;
         }
     }
@@ -116,7 +116,7 @@ public class CardImplArcane extends CardImpl {
     protected void callAction(MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
             case WallOfForce:
-                context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
+                currentPlayer.banish(currentPlayer.playedCards.removeCard(this), this, context);
                 break;
             case CelestialGrimoire:
                 for (Card c : this.cardsUnder) {
@@ -126,7 +126,7 @@ public class CardImplArcane extends CardImpl {
                 this.cardsUnder.clear();
             case CelestialTome:
                 context.actions++;
-                context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
+                currentPlayer.banish(currentPlayer.playedCards.removeCard(this), this, context);
                 break;
         }
     }

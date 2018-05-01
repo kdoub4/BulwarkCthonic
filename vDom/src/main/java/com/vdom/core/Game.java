@@ -382,7 +382,7 @@ public class Game {
                     while (player.inHand(Cards.Kind.FleshWound  ) && context.getCoins()>=3) {
                         if (player.vassal_shouldPlayCard(context, Cards.fleshWound)) {
                             Card fleshWoundCard = player.fromHand(Cards.fleshWound);
-                            player.trash(player.hand.removeCard(fleshWoundCard, true), fleshWoundCard ,context);
+                            player.banish(player.hand.removeCard(fleshWoundCard, true), fleshWoundCard ,context);
                             context.spendCoins(3);
                         }
                         else
@@ -392,7 +392,7 @@ public class Game {
 	                while (player.inHand(Cards.Kind.FleshWound  ) && context.getCoins()>=3) {
                         if (player.vassal_shouldPlayCard(context, Cards.fleshWound)) {
                             Card fleshWoundCard = player.fromHand(Cards.fleshWound);
-                            player.trash(player.hand.removeCard(fleshWoundCard, true), fleshWoundCard ,context);
+                            player.banish(player.hand.removeCard(fleshWoundCard, true), fleshWoundCard ,context);
                             context.spendCoins(3);
                         }
                         else
@@ -414,7 +414,7 @@ public class Game {
                                 switch (c.getKind()) {
                                     case WeakeningWound:
                                         player.hand.removeCard(c);
-                                        player.trash(c, c, context);
+                                        player.banish(c, c, context);
                                 }
                             //}
                         }
@@ -545,7 +545,7 @@ public class Game {
                     break;
                 case GlancingWound:
                     context.actions -= 2;
-                    player.trash(player.hand.removeCard(card), card, context);
+                    player.banish(player.hand.removeCard(card), card, context);
                     break;
             }
             sco.allowedCards.clear();
@@ -597,7 +597,7 @@ public class Game {
                     if (defendCard != null) {
                         switch (defendCard.getKind()) {
                             case Sneak:
-                                context.game.addToPile(defendCard,true);
+                                currentPlayer.banish(defendCard, defendCard,context);
                                 p.hand.remove(defendCard);
                                 context.invincible= true;
                                 break;
@@ -644,7 +644,7 @@ public class Game {
                         for (Card c : walls.cardsUnder)
                         {
                             currentPlayer.tavern.remove(c);
-                            currentPlayer.trash(c, walls, context);
+                            currentPlayer.banish(c, walls, context);
                         }
                         walls.cardsUnder.clear();
                         currentPlayer.trash(walls,walls,context);
@@ -666,7 +666,7 @@ public class Game {
             p.hand.add(toTrash);
         } else {
             p.discard(p.hand.removeCard(toDiscard), card, context);
-            p.trash(toTrash, card, context);
+            p.banish(toTrash, card, context);
         }
 
     }
@@ -722,10 +722,10 @@ public class Game {
                         ((CardImpl)c).cardsUnder.get(0).getId() == enemyCard.getId()) {
                     if (((CardImpl)c).cardsUnder.size()==1) {
                         ((CardImpl)c).cardsUnder.clear();
-                        addToPile(currentPlayer.tavern.removeCard(c), true);
+                        currentPlayer.banish(currentPlayer.tavern.removeCard(c), c, context);
                     }
                     else {
-                        addToPile(currentPlayer.tavern.removeCard(((CardImpl)c).cardsUnder.get(((CardImpl)c).cardsUnder.size()-1)), true);
+                        currentPlayer.banish(currentPlayer.tavern.removeCard(((CardImpl)c).cardsUnder.get(((CardImpl)c).cardsUnder.size()-1)), c, context);
                         ((CardImpl)c).cardsUnder.remove(((CardImpl)c).cardsUnder.size()-1);
                     }
                     return i;
