@@ -687,6 +687,15 @@ public class CardImpl implements Card, Comparable<Card>{
         if (index<0) return 0;
         int armourValue = 0;
         Card neighbour = null;
+        if (this.getKind() == Cards.Kind.ArcaneMessiah) {
+            armourValue += Util.getCardCount(enemyLine, "Elemental");
+        }
+        if (!this.is(CardType.Range) && enemyLine.contains(Cards.heraldGranite)) {
+            armourValue += 2;
+        }
+        if (this.is(CardType.Range) && enemyLine.contains(Cards.heraldStars)) {
+            armourValue += 2;
+        }
         if (index >= 1) {
             neighbour = enemyLine.get(index - 1);
             if (neighbour.getKind() == Cards.Kind.MgzwelGoblin){
@@ -695,6 +704,10 @@ public class CardImpl implements Card, Comparable<Card>{
             if (is("rabble", "corpse") && neighbour.getKind() == Cards.Kind.EnshroudingMist) {
                 armourValue += 2;
             }
+            if (neighbour.is(CardType.Range) && this.getKind() == Cards.Kind.EnsorcelledZealots) {
+                armourValue++;
+            }
+
         }
         if (index >= 2) {
             neighbour = enemyLine.get(index - 2);
@@ -710,6 +723,9 @@ public class CardImpl implements Card, Comparable<Card>{
             }
             if (is("rabble", "corpse") && neighbour.getKind() == Cards.Kind.EnshroudingMist) {
                 armourValue += 2;
+            }
+            if (neighbour.is(CardType.Range) && this.getKind() == Cards.Kind.EnsorcelledZealots) {
+                armourValue++;
             }
 
         }
@@ -1164,15 +1180,37 @@ public class CardImpl implements Card, Comparable<Card>{
     }
 
     @Override
-    public void isBanished() {
+    public void isBanished(MoveContext context) {
+        this.isLeavingPlay(context);
         // card left play - stop any impersonations
         this.getControlCard().stopImpersonatingCard();
         this.getControlCard().stopInheritingCardAbilities();
+        switch (this.getKind()) {
+            case ArcherFootbow:
+                for (Card c : this.getCardsUnder()) {
+                    context.player.banish(c,this,context);
+                    context.game.blackMarketPile.remove(Util.indexOfCardId(c.getId(), context.game.blackMarketPile));
+                }
+                break;
+            case RogueHumanMage:
+                for (Card c : this.getCardsUnder()) {
+                    context.game.addToPile(c,false);
+                    context.game.takeWounds(context.getPlayer(),1,context,this,false);
+                }
+                break;
+        }
     }
 
     @Override
-    public void isLeavingPlay() {
-
+    public void isLeavingPlay(MoveContext context) {
+        switch (getKind()) {
+            case HeraldOfScorchingFireElemental:
+                context.woundsInHand = false;
+                break;
+            case HeraldOfPressueWaterElemental:
+                context.preventDefense = true;
+                break;
+        }
     }
 
     @Override
@@ -1181,7 +1219,7 @@ public class CardImpl implements Card, Comparable<Card>{
 
     @Override
     public boolean isDying(MoveContext context) {
-        this.isLeavingPlay();
+        this.isLeavingPlay(context);
         context.attackMade = true;
         if (!this.is(CardType.Range)) {
             context.meleeMade = true;
@@ -1212,7 +1250,7 @@ public class CardImpl implements Card, Comparable<Card>{
             case RogueHumanMage:
             case ArcherFootbow:
                 for (Card c : this.getCardsUnder()) {
-                    context.player.trash(c,this,context);
+                    context.player.banish(c,this,context);
                     context.game.blackMarketPile.remove(Util.indexOfCardId(c.getId(), context.game.blackMarketPile));
                 }
                 break;
@@ -1837,6 +1875,11 @@ public class CardImpl implements Card, Comparable<Card>{
             if (context.game.enemyCount(CardType.Necromancer)>0) {
                 return true;
             }
+        }
+
+        if (this.getKind() == Cards.Kind.TuskedDeathcharger &&
+                context.player.playedCards.get(context.player.playedCards.size()-1).is(CardType.Location)) {
+            return true;
         }
 
         boolean neighborRuiha = false;

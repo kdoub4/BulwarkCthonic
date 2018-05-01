@@ -586,48 +586,50 @@ public class Game {
         boolean defended = false;
         for (int i=1; i <= amount; i++) {
             defended = false;
-            for (Player p : context.game.getPlayersInTurnOrder()) {
-                if (currentPlayer.tavern.contains(Cards.vantagePoint) && context.game.blackMarketPile.size() < 10) {
-                    defended = true;
-                }
-                if (!defended && !context.invincible) {
-                    Card defendCard = currentPlayer.cardToPlay(context,
-                            Util.canReact(context, p, CardType.Defend), attacker,
-                            true, IndirectPlayer.OPTION_DEFEND);
-                    if (defendCard != null) {
-                        switch (defendCard.getKind()) {
-                            case Sneak:
-                                currentPlayer.banish(defendCard, defendCard,context);
-                                p.hand.remove(defendCard);
-                                context.invincible= true;
-                                break;
-                            case SanctusCharm:
-                                SanctusCharmManoeuvre(context, p, defendCard);
-                                break;
-                            case Shield:
-                                p.discard(defendCard, defendCard, context);
-                                p.hand.removeCard(defendCard);
-                                defended = true;
-                                break;
-                            case StoneWalls:
-                                p.tavern.a.remove(defendCard);
-                                p.trash(defendCard, defendCard, context);
-                                defended = true;
-                                break;
-                            case TowerShield:
-                                p.tavern.a.remove(defendCard);
-                                p.discard(defendCard, defendCard, context);
-                                defended = true;
-                                break;
+            if (!context.preventDefense) {
+                for (Player p : context.game.getPlayersInTurnOrder()) {
+                    if (currentPlayer.tavern.contains(Cards.vantagePoint) && context.game.blackMarketPile.size() < 10) {
+                        defended = true;
+                    }
+                    if (!defended && !context.invincible) {
+                        Card defendCard = currentPlayer.cardToPlay(context,
+                                Util.canReact(context, p, CardType.Defend), attacker,
+                                true, IndirectPlayer.OPTION_DEFEND);
+                        if (defendCard != null) {
+                            switch (defendCard.getKind()) {
+                                case Sneak:
+                                    currentPlayer.banish(defendCard, defendCard, context);
+                                    p.hand.remove(defendCard);
+                                    context.invincible = true;
+                                    break;
+                                case SanctusCharm:
+                                    SanctusCharmManoeuvre(context, p, defendCard);
+                                    break;
+                                case Shield:
+                                    p.discard(defendCard, defendCard, context);
+                                    p.hand.removeCard(defendCard);
+                                    defended = true;
+                                    break;
+                                case StoneWalls:
+                                    p.tavern.a.remove(defendCard);
+                                    p.trash(defendCard, defendCard, context);
+                                    defended = true;
+                                    break;
+                                case TowerShield:
+                                    p.tavern.a.remove(defendCard);
+                                    p.discard(defendCard, defendCard, context);
+                                    defended = true;
+                                    break;
+                            }
                         }
                     }
                 }
+                if ((context.sanctusCharm || currentPlayer.tavern.contains(Cards.wallOfForce)) && context.woundsTaken >= 1)
+                    defended = true;
             }
-            if ((context.sanctusCharm || currentPlayer.tavern.contains(Cards.wallOfForce)) && context.woundsTaken>=1)
-                defended=true;
-            if (!defended && !context.invincible) {
+            if (!defended && (!context.invincible || context.preventDefense) ) {
                 Card gained = currentPlayer.gainNewCard(Cards.virtualWound, attacker, context); //.add(takeFromPile(Cards.virtualWound));
-                if (attacker.getKind() == Cards.Kind.FlameBallista) {
+                if (inHand || context.woundsInHand) {
                     currentPlayer.discard.remove(gained);
                     currentPlayer.hand.add(gained);
                 } else if (currentPlayer.tavern.contains(Cards.citadelWalls)){
@@ -734,6 +736,12 @@ public class Game {
         }
 
             switch (enemyCard.getKind()) {
+                case HeraldOfPressueWaterElemental:
+                    context.preventDefense = true;
+                    break;
+                case HeraldOfScorchingFireElemental:
+                    context.woundsInHand = true;
+                    break;
                 case ArcaneMessiah:
                     takeWounds(currentPlayer,1,context,enemyCard,false);
                     for(int j=1; j <=Util.getCardCount(blackMarketPile,CardType.Magical); j++) {
