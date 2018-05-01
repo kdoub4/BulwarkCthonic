@@ -3731,6 +3731,8 @@ public class Game {
                     break;
                 case Winter:
                     addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new winterPileCreator()).expansion(Expansion.Base).build());
+                case Messianic:
+                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new messianicPileCreator()).expansion(Expansion.Base).build());
             }
             Cards.cardNameToCard.put(Cards.virtualEnemy.getName(),Cards.virtualEnemy);
 
