@@ -38,7 +38,7 @@ public class CardImplBase extends CardImpl {
                     break;
             case GlancingWound:
                 context.actions -= 2;
-                currentPlayer.trash(currentPlayer.hand.removeCard(this), this, context);
+                currentPlayer.banish(currentPlayer.hand.removeCard(this), this, context);
                 break;
         }
     }
@@ -103,7 +103,7 @@ public class CardImplBase extends CardImpl {
             case TerrifiedMilitia:
                 if (currentPlayer.vassal_shouldPlayCard(context, this)) {
                     currentPlayer.playedCards.remove(this);
-                    game.addToPile(this,false);
+                    currentPlayer.banish(this,this,context);
                     actionPhaseAttack(context,currentPlayer, true, false, 1 );
                 }
                 break;
@@ -208,7 +208,7 @@ public class CardImplBase extends CardImpl {
                 for (int i = 5; i > 0; i--) {
                     Card c = game.draw(context, this, i);
                     if (c.is(CardType.Wound))
-                        currentPlayer.trash(c, this, context);
+                        currentPlayer.banish(c, this, context);
                     else
                         currentPlayer.discard(c, this, context);
                 }
@@ -388,7 +388,7 @@ public class CardImplBase extends CardImpl {
         if (toTrash != null)
             if (toTrash.length>0) {
             player.hand.remove(toTrash[0]);
-            player.trash(toTrash[0],this,context);
+            player.banish(toTrash[0],this,context);
         }
 
         context.canAttack();
@@ -1101,7 +1101,7 @@ public class CardImplBase extends CardImpl {
     protected void callAction(MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
             case SilkenSnare:
-                if (context.countCardsInPlayByIdentifier("snare")>1 &&
+                if (Util.getCardCount(currentPlayer.getTavern(), "snare")>1 &&
                         ((IndirectPlayer)currentPlayer).selectBoolean(context, this)) {
                     actionPhaseAttack(context, currentPlayer, false, true, 2);
                 }
@@ -1110,10 +1110,10 @@ public class CardImplBase extends CardImpl {
                             .fromBlackMarket().setCount(1).isNonCrown().setCardResponsible(this);
                     int[] toBanish = currentPlayer.doSelectFoe(context, sco, 1, GameEvent.EventType.SelectFoe);
                     if (toBanish.length == 1) {
-                        context.game.addToPile(context.game.blackMarketPile.remove(toBanish[0]), true);
+                        currentPlayer.banish(context.game.blackMarketPile.remove(toBanish[0]), this, context);
                     }
                 }
-                context.game.addToPile(currentPlayer.playedCards.removeCard(this, true), true);
+                currentPlayer.banish(currentPlayer.playedCards.removeCard(this), this, context);
                 break;
             case TownSquare:
                 callTownSquare(context, context.game, currentPlayer);

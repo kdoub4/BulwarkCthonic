@@ -161,6 +161,7 @@ public class MoveContext {
     // For checking Achievements
     public int vpsGainedThisTurn = 0;
     public int cardsTrashedThisTurn = 0;
+    public int cardsBanishedThisTurn = 0;
 
     public String message;
     //    public ArrayList<Card> playedCards = new ArrayList<Card>();

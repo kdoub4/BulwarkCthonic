@@ -1165,7 +1165,9 @@ public class CardImpl implements Card, Comparable<Card>{
 
     @Override
     public void isBanished() {
-
+        // card left play - stop any impersonations
+        this.getControlCard().stopImpersonatingCard();
+        this.getControlCard().stopInheritingCardAbilities();
     }
 
     @Override
@@ -1748,7 +1750,12 @@ public class CardImpl implements Card, Comparable<Card>{
 
         if(topCard != null) {
             boolean banish = currentPlayer.shouldDiscardCard(context, topCard, this);
-            context.game.addToPile(topCard, banish);
+            if (banish) {
+                currentPlayer.banish(topCard,this,context);
+            }
+            else {
+                context.game.addToPile(topCard, banish);
+            }
         }
     }
 

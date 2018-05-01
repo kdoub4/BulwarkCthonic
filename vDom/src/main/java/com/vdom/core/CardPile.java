@@ -19,6 +19,8 @@ public class CardPile  {
 	protected boolean isBlackMarket = false;
 	protected boolean tradeRouteToken = false;
 
+	protected boolean ordered = true;
+
 	public static class CardMultiplicity {
 		public Card card;
 		public int count;
@@ -45,6 +47,7 @@ public class CardPile  {
 		}
 
 		if (!ordered) {
+			this.ordered = ordered;
 			Collections.shuffle(cards);
 		}
 	}
@@ -76,10 +79,20 @@ public class CardPile  {
 
 	public void addCard(Card card, boolean bottom) {
 		if (cardAllowedOnPile(card)) {
-			if (cards.size()>0 && bottom)
-				cards.add(cards.size(), card);
-			else
+			if (cards.size()>0 && bottom) {
+				boolean upgradeFound = false;
+				for (int i = cards.size()-1; i>=0; i--) {
+					if (cards.get(i).upgradeCard() == card.getKind()) {
+						upgradeFound = true;
+					}
+					else if (upgradeFound || cards.get(i).upgradeCard() == null){
+						cards.add(i+1, card);
+					}
+				}
+			}
+			else {
 				cards.add(0, card);
+			}
 		}
 	}
 

@@ -1062,7 +1062,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
                             break;
                         case EnchantedStrike:
                             tavern.a.remove(bolsterCard);
-                            context.game.addToPile(bolsterCard, true);
+                            banish(bolsterCard,bolsterCard,context);
                             context.addMightModifier(1);
                             break;
                         case TheDrop:
@@ -1080,7 +1080,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
                             break;
                         case PinpointShot:
                             tavern.a.remove(bolsterCard);
-                            context.game.addToPile(bolsterCard, false);
+                            banish(bolsterCard,bolsterCard,context);
                             context.addMightModifier(1);
                             bolsterAttack(context);
                             break;
