@@ -582,8 +582,9 @@ public class Game {
         }
     }
     
-    public void takeWounds(Player currentPlayer, int amount, MoveContext context, Card attacker, boolean inHand) {
+    public int takeWounds(Player currentPlayer, int amount, MoveContext context, Card attacker, boolean inHand) {
         boolean defended = false;
+        int woundsTakenHere = 0;
         for (int i=1; i <= amount; i++) {
             defended = false;
             if (!context.preventDefense) {
@@ -654,8 +655,10 @@ public class Game {
 
                 }
                 context.woundsTaken++;
+                woundsTakenHere++;
             }
         }
+        return woundsTakenHere;
     }
 
     public void OldWoundManoeuvre(MoveContext context, Player p, Card card) {
@@ -765,7 +768,7 @@ public class Game {
                     }
                     break;
                 case EnsorcelledZealots:
-                    for (int j=i-1; j<i+1;i++) {
+                    for (int j=i-1; j<i+1;j++) {
                         try {
                             if (j != i) {
                                 for (Card c : blackMarketPile.get(j).getCardsUnder()) {
@@ -783,10 +786,14 @@ public class Game {
 
                 case ArcherFootbow:
                     if (((CardImpl)enemyCard).cardsUnder.size()>0) {
-                        ((CardImpl)enemyCard).cardsUnder.clear();
                         addToPile(blackMarketPile.remove(i+1),false);
-                        takeWounds(currentPlayer, 1, context,
-                                enemyCard, false);
+                        if (takeWounds(currentPlayer, 1, context,
+                                enemyCard, false) == 1) {
+                            ((CardImpl) enemyCard).cardsUnder.clear();
+                        }
+                        else {
+                            blackMarketPile.add(i+1, takeFromPile(Cards.virtualWound));
+                        }
                     }
                     else {
                         ((CardImpl)enemyCard).cardsUnder.add(takeFromPile(Cards.virtualWound));
@@ -794,7 +801,7 @@ public class Game {
                     }
                     break;
                 case TroopBrainwashed:
-                    for (int j=i-2; j<i+2;i++) {
+                    for (int j=i-2; j<i+2;j++) {
                         try {
                             if (j != i) {
                                 if (blackMarketPile.get(j).is("Brainwashed")) {
@@ -1556,7 +1563,7 @@ public class Game {
                 for (Card enemy : copyEnemies) {
                     if (enemy.is("Rabble")) {
                         rabbleBanished++;
-                        blackMarketPile.remove(enemy);
+                        player.banish(blackMarketPile.remove(Util.indexOfCardId(enemy.getId(),blackMarketPile)),cardPlayed,context);
                     }
                 }
                 for (int i=1; i<= rabbleBanished; i++) {
@@ -1585,10 +1592,9 @@ public class Game {
                         .setCount(1).fromBlackMarket().setActionType(SelectCardOptions.ActionType.DISCARD);
                 int[] toBanish = player.doSelectFoe(context, sco, 1, EventType.SelectFoe);
                 if (toBanish != null)
-                for (int i : toBanish) {
-                    {
-                        addToPile(context.game.blackMarketPile.remove(i), true);
-                    }
+                for (int i : toBanish)
+                {
+                    player.banish(context.game.blackMarketPile.remove(i),cardPlayed,context);
                 }
                 break;
             case RabbleGoblin:
@@ -1599,7 +1605,7 @@ public class Game {
                 toBanish = player.doSelectFoe(context, sco, 2, EventType.SelectFoe);
 
                 for (int i : toBanish) {
-                    addToPile(context.game.blackMarketPile.get(i), true);
+                    player.banish(context.game.blackMarketPile.get(i), cardPlayed, context);
                 }
                 Arrays.sort(toBanish);
                 for (int i= toBanish.length-1;i>=0;i--){
