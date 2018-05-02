@@ -1217,6 +1217,10 @@ public class GameTable extends LinearLayout implements OnItemClickListener, OnIt
             supplyPile.updateCardInfo(uci);
         }
 
+        for (GameStatus.UpdateCardInfo uci : gs.enemyUpdates) {
+            blackMarket.updateSpecificCardInfo(uci);
+        }
+
         setSupplySizes(gs.supplySizes, gs.embargos, gs.pileVpTokens, gs.pileDebtTokens, gs.pileTradeRouteTokens, gs.tokens);
         setCardStates(top.findViewById(android.R.id.content));
     }

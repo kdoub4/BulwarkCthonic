@@ -690,10 +690,10 @@ public class CardImpl implements Card, Comparable<Card>{
         if (this.getKind() == Cards.Kind.ArcaneMessiah) {
             armourValue += Util.getCardCount(enemyLine, "Elemental");
         }
-        if (!this.is(CardType.Range) && enemyLine.contains(Cards.heraldGranite)) {
+        if (!this.is(CardType.Range) && enemyLine.contains(Cards.heraldGranite) && this.getKind()!= Cards.Kind.HeraldOfGraniteEarthElemental) {
             armourValue += 2;
         }
-        if (this.is(CardType.Range) && enemyLine.contains(Cards.heraldStars)) {
+        if (this.is(CardType.Range) && enemyLine.contains(Cards.heraldStars) && this.getKind() != Cards.Kind.HeraldOfStarsAirElemental) {
             armourValue += 2;
         }
         if (index >= 1) {
@@ -755,7 +755,10 @@ public class CardImpl implements Card, Comparable<Card>{
     }
 
 
-    
+    public void setDebtCost(int newCost) {
+        debtCost = newCost;
+    }
+
     public int getDebtCost(MoveContext context) {
     	return debtCost;
     }
@@ -1186,17 +1189,15 @@ public class CardImpl implements Card, Comparable<Card>{
         this.getControlCard().stopImpersonatingCard();
         this.getControlCard().stopInheritingCardAbilities();
         switch (this.getKind()) {
-            case ArcherFootbow:
-                for (Card c : this.getCardsUnder()) {
-                    context.player.banish(c,this,context);
-                    context.game.blackMarketPile.remove(Util.indexOfCardId(c.getId(), context.game.blackMarketPile));
-                }
-                break;
             case RogueHumanMage:
                 for (Card c : this.getCardsUnder()) {
                     context.game.addToPile(c,false);
-                    context.game.takeWounds(context.getPlayer(),1,context,this,false);
+                    if (context.game.takeWounds(context.getPlayer(),1,context,this,false) == 0) {
+                        context.game.addToPile(context.game.takeFromPile(c),true);
+                    }
                 }
+                this.getCardsUnder().clear();
+                this.setDebtCost(0);
                 break;
         }
     }
@@ -1207,9 +1208,17 @@ public class CardImpl implements Card, Comparable<Card>{
             case HeraldOfScorchingFireElemental:
                 context.woundsInHand = false;
                 break;
-            case HeraldOfPressueWaterElemental:
-                context.preventDefense = true;
+            case HeraldOfPressureWaterElemental:
+                context.preventDefense = false;
                 break;
+            case ArcherFootbow:
+                for (Card c : this.getCardsUnder()) {
+                    context.player.banish(c,this,context);
+                }
+                this.getCardsUnder().clear();
+                this.setDebtCost(0);
+                break;
+
         }
     }
 
@@ -1232,9 +1241,15 @@ public class CardImpl implements Card, Comparable<Card>{
         switch (this.getKind()) {
             case ArcaneMessiah:
                 for (Card c : this.getCardsUnder()) {
+                    //TODO : refactor take Wound from CardsUnder
                     context.game.addToPile(c,false);
-                    context.game.takeWounds(context.player,1,context, this, false);
+                    if (context.game.takeWounds(context.player,1,context, this, false) == 0) {
+                        context.game.addToPile(context.game.takeFromPile(c), true);
+                    }
                 }
+                this.getCardsUnder().clear();
+                this.setDebtCost(0);
+
                 for (Card c : context.game.blackMarketPile) {
                     if (c.is("elemental")) {
                         context.game.killFoe(context, c);
@@ -1242,17 +1257,17 @@ public class CardImpl implements Card, Comparable<Card>{
                 }
                 break;
             case HeraldOfGraniteEarthElemental:
-            case HeraldOfPressueWaterElemental:
+            case HeraldOfPressureWaterElemental:
             case HeraldOfScorchingFireElemental:
             case HeraldOfStarsAirElemental:
                 context.game.drawFoe(context.player, context, true);
                 break;
             case RogueHumanMage:
-            case ArcherFootbow:
                 for (Card c : this.getCardsUnder()) {
                     context.player.banish(c,this,context);
-                    context.game.blackMarketPile.remove(Util.indexOfCardId(c.getId(), context.game.blackMarketPile));
                 }
+                this.getCardsUnder().clear();
+                this.setDebtCost(0);
                 break;
             case BrokenCorpse:
                 context.game.blackMarketPile.remove( Util.indexOfCardId(getId(), context.game.blackMarketPile));

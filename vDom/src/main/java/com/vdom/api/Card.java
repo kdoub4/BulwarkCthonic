@@ -45,7 +45,9 @@ public interface Card extends Serializable {
     public Kind upgradeCard();
     
     public int getDebtCost(MoveContext context);
-    
+
+    public void setDebtCost(int newCost);
+
     public int getVictoryPoints();
 
     public boolean isOverpay(Player player);

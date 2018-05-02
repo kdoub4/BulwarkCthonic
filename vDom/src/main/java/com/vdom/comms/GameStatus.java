@@ -75,6 +75,7 @@ public class GameStatus implements Serializable {
     public int potions;
 
     public ArrayList<UpdateCardInfo> cardUpdates = new ArrayList<UpdateCardInfo>();
+    public ArrayList<UpdateCardInfo> enemyUpdates = new ArrayList<UpdateCardInfo>();
 
     public GameStatus setFinal(boolean b) {isFinal = b; return this;}
     public GameStatus setPossessed(boolean b) {isPossessed = b; return this;}
@@ -122,6 +123,12 @@ public class GameStatus implements Serializable {
         cardUpdates.add(new UpdateCardInfo(cardId, card, cost, debtCost, count));
         return this;
     }
+
+    public GameStatus addUpdatedLineCard(int cardId, Card card, int cost, int debtCost, int count) {
+        enemyUpdates.add(new UpdateCardInfo(cardId, card, cost, debtCost, count));
+        return this;
+    }
+
     public String toString() {
         String str = name + "(" + whoseTurn + ")";
         return str;

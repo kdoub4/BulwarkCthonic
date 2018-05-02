@@ -739,7 +739,7 @@ public class Game {
         }
 
             switch (enemyCard.getKind()) {
-                case HeraldOfPressueWaterElemental:
+                case HeraldOfPressureWaterElemental:
                     context.preventDefense = true;
                     break;
                 case HeraldOfScorchingFireElemental:
@@ -748,8 +748,10 @@ public class Game {
                 case ArcaneMessiah:
                     takeWounds(currentPlayer,1,context,enemyCard,false);
                     for(int j=1; j <=Util.getCardCount(blackMarketPile,CardType.Magical); j++) {
-                        addToCardsUnder(enemyCard, i, blackMarketPile, Cards.virtualWound);
+                        enemyCard.getCardsUnder().add(takeFromPile(Cards.virtualWound));
+                        enemyCard.setDebtCost(enemyCard.getDebtCost(context)+1);
                     }
+                    break;
                 case TuskedDeathcharger:
                     try {
                         blackMarketPile.get(i - 1);
@@ -760,11 +762,11 @@ public class Game {
                     break;
                 case RogueHumanMage:
                     if (((CardImpl)enemyCard).cardsUnder.size()==3) {
-                        takeWounds(currentPlayer, 1, context,
-                                enemyCard, false);
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
                     }
                     else {
-                        addToCardsUnder(enemyCard, i, blackMarketPile, Cards.virtualWound);
+                        ((CardImpl)enemyCard).cardsUnder.add(takeFromPile(Cards.virtualWound));
+                        enemyCard.setDebtCost(enemyCard.getDebtCost(context)+1);
                     }
                     break;
                 case EnsorcelledZealots:
@@ -786,27 +788,28 @@ public class Game {
 
                 case ArcherFootbow:
                     if (((CardImpl)enemyCard).cardsUnder.size()>0) {
-                        addToPile(blackMarketPile.remove(i+1),false);
+                        addToPile(((CardImpl) enemyCard).cardsUnder.remove(0),false);
                         if (takeWounds(currentPlayer, 1, context,
                                 enemyCard, false) == 1) {
                             ((CardImpl) enemyCard).cardsUnder.clear();
+                            enemyCard.setDebtCost(0);
                         }
                         else {
-                            blackMarketPile.add(i+1, takeFromPile(Cards.virtualWound));
+                            ((CardImpl)enemyCard).cardsUnder.add(takeFromPile(Cards.virtualWound));
                         }
                     }
                     else {
                         ((CardImpl)enemyCard).cardsUnder.add(takeFromPile(Cards.virtualWound));
-                        blackMarketPile.add(i+1, ((CardImpl)enemyCard).cardsUnder.get(0));
+                        enemyCard.setDebtCost(enemyCard.getDebtCost(context)+1);
                     }
                     break;
                 case TroopBrainwashed:
-                    for (int j=i-2; j<i+2;j++) {
+                    for (int j=i-2; j<=i+2;j++) {
                         try {
                             if (j != i) {
                                 if (blackMarketPile.get(j).is("Brainwashed")) {
                                     takeWounds(currentPlayer, 1, context, enemyCard, false);
-                                    break;
+                                    j=i+2;
                                 }
                             }
                         } catch (IndexOutOfBoundsException e) {
@@ -1546,11 +1549,12 @@ public class Game {
                     drawFoe(player,context,true);
                 }
                 break;
-            case HeraldOfPressueWaterElemental:
+            case HeraldOfPressureWaterElemental:
             case HeraldOfScorchingFireElemental:
             case HeraldOfStarsAirElemental:
             case HeraldOfGraniteEarthElemental:
                 topCard = takeFromPile(Cards.virtualEnemy);
+                player.reveal(topCard, cardPlayed, context);
                 if (topCard.is("elemental")) {
                     takeWounds(player,2,context,cardPlayed,false);
                 }
@@ -1561,7 +1565,7 @@ public class Game {
                 int rabbleBanished = 0;
                 ArrayList<Card> copyEnemies = Util.copy(blackMarketPile);
                 for (Card enemy : copyEnemies) {
-                    if (enemy.is("Rabble")) {
+                    if (enemy.is("Rabble") && enemy.getId()!=cardPlayed.getId()) {
                         rabbleBanished++;
                         player.banish(blackMarketPile.remove(Util.indexOfCardId(enemy.getId(),blackMarketPile)),cardPlayed,context);
                     }
@@ -1598,7 +1602,6 @@ public class Game {
                 }
                 break;
             case RabbleGoblin:
-
                 sco = new SelectCardOptions().isNonCrown().setCardResponsible(cardPlayed)
                         .setCount(2).fromBlackMarket()
                         .setPickType(SelectCardOptions.PickType.SELECT_IN_ORDER);
