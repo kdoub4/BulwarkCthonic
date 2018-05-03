@@ -49,6 +49,8 @@ public class MyCard implements Serializable {
 	public boolean isLandmark  = false;
 	public boolean isBlackMarket = false;
 	public boolean isStash    = false;
+
+	public boolean isWound = false;
 	
 	public static final int SUPPLYPILE = 1;
 	public static final int MONEYPILE = 2;

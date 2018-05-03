@@ -197,6 +197,9 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         if (c.equals(Cards.stash)) {
             card.isStash = true;
         }
+        if (c.is(CardType.Wound, null)) {
+            card.isWound = true;
+        }
 
         return card;
     }
@@ -409,6 +412,12 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
             playedArray[i] = (cardToInt(c) * (newcard ? 1 : -1));
         }
 
+        int[] tavernArray = new int[tavern.size()];
+        for (int i = 0; i < tavern.size(); i++) {
+            Card c = tavern.get(i);
+            playedArray[i] = (cardToInt(c) * (c.is(CardType.Wound) ? 1 : -1));
+        }
+
         gs.setTurnStatus(new int[] {context.getActionsLeft(),
             context.getBuysLeft(),
                 context.getCoinForStatus(),
@@ -450,7 +459,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
                 .setEnchantressAttacks(!context.enchantressAlreadyAffected && game.enchantressAttacks(player))
                 .setCardCostModifier(context.cardCostModifier)
                 .setPotions(context.getPotionsForStatus(player))
-                .setTavern(cardArrToIntArr(player.getTavern().toArray()))//.sort(new Util.CardTavernComparator())))
+                .setTavern(tavernArray)//.sort(new Util.CardTavernComparator())))
                 .setPrince(cardArrToIntArr(player.getPrince().toArray()))
                 .setIsland(cardArrToIntArr(player.getIsland().toArray()))
                 .setVillage(player.equals(this) ? cardArrToIntArr(player.getNativeVillage().toArray()) : new int[0]/*show empty Village*/)

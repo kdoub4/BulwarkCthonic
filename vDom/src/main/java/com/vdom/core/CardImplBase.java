@@ -355,7 +355,7 @@ public class CardImplBase extends CardImpl {
             }
         }
         for (int i = numBanished; i>0; i--) {
-            game.drawToHand(context, this, numBanished);
+            game.drawToHand(context, this, i);
         }
     }
     private void callPrayer(MoveContext context, Game game) {
