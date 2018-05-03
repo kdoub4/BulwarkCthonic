@@ -178,15 +178,17 @@ public class CardGroup extends BaseAdapter {
     }
 
     public void updateSpecificCardInfo(GameStatus.UpdateCardInfo uci) {
-        for (int i = 0; i < cards.size(); i++) {
-            CardState cs = cards.get(i);
-            if (i == uci.cardId) {
+        //Updating all enemy cards
+        //for (int i = 0; i < cards.size(); i++) {
+        try  {
+            CardState cs = cards.get(uci.cardId);
+            if (cs != null) {
                 cs.c.name = Strings.getCardName(uci.card);
                 cs.c.originalSafeName = uci.card.getSafeName();
                 cs.c.desc = Strings.getFullCardDescription(uci.card);
                 if (uci.cost >= 0) cs.c.cost = uci.cost;
                 if (uci.debtCost >= 0) cs.c.debtCost = uci.debtCost;
-                if (uci.count >= 0) supplySizes[cs.c.id] = uci.count;
+                //if (uci.count >= 0) supplySizes[cs.c.id] = uci.count;
                 cs.c.gold = uci.card.getAddGold();
                 cs.c.vp = uci.card.getAddVictoryTokens();
                 cs.c.isVictory = uci.card.is(CardType.Victory);
@@ -198,8 +200,9 @@ public class CardGroup extends BaseAdapter {
                 if (uci.card.getExpansion() != null) {
                     cs.c.expansion = uci.card.getExpansion().name();
                 }
-
             }
+        } catch (IndexOutOfBoundsException e) {
+
         }
     }
 

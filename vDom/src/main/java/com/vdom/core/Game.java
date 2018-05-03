@@ -782,6 +782,8 @@ public class Game {
                             }
                         } catch (IndexOutOfBoundsException e) {
 
+                        } catch (NullPointerException e){
+
                         }
                     }
                     break;
@@ -789,8 +791,7 @@ public class Game {
                 case ArcherFootbow:
                     if (((CardImpl)enemyCard).cardsUnder.size()>0) {
                         addToPile(((CardImpl) enemyCard).cardsUnder.remove(0),false);
-                        if (takeWounds(currentPlayer, 1, context,
-                                enemyCard, false) == 1) {
+                        if (takeWounds(currentPlayer, 1, context, enemyCard, false) == 1) {
                             ((CardImpl) enemyCard).cardsUnder.clear();
                             enemyCard.setDebtCost(0);
                         }

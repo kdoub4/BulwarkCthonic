@@ -486,9 +486,8 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         }
         for (int i=0; i< game.blackMarketPile.size(); i++) {
             Card c = game.blackMarketPile.get(i);
-            if (c.getDebtCost(context)!=c.getTemplateCard().debtCost()) {
-                gs.addUpdatedLineCard(i, c, c.getCost(context), c.getDebtCost(context),-99 );
-            }
+            gs.addUpdatedLineCard(i, c, c.getCost(context), c.getDebtCost(context),-99 );
+
         }
 
         Event p = new Event(EType.STATUS)
