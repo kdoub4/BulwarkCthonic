@@ -1206,10 +1206,10 @@ public class CardImpl implements Card, Comparable<Card>{
     public void isLeavingPlay(MoveContext context) {
         switch (getKind()) {
             case HeraldOfScorchingFireElemental:
-                context.woundsInHand = false;
+                context.game.woundsInHand = false;
                 break;
             case HeraldOfPressureWaterElemental:
-                context.preventDefense = false;
+                context.game.preventDefense = false;
                 break;
             case ArcherFootbow:
                 for (Card c : this.getCardsUnder()) {

@@ -58,6 +58,8 @@ public class Game {
     public static LocationType mLocation;
     public static HeroType mPlayer1Hero;
 
+    public boolean woundsInHand = false;
+    public boolean preventDefense = false;
 
 
     /**
@@ -587,7 +589,7 @@ public class Game {
         int woundsTakenHere = 0;
         for (int i=1; i <= amount; i++) {
             defended = false;
-            if (!context.preventDefense) {
+            if (!context.game.preventDefense) {
                 for (Player p : context.game.getPlayersInTurnOrder()) {
                     if (currentPlayer.tavern.contains(Cards.vantagePoint) && context.game.blackMarketPile.size() < 10) {
                         defended = true;
@@ -628,9 +630,9 @@ public class Game {
                 if ((context.sanctusCharm || currentPlayer.tavern.contains(Cards.wallOfForce)) && context.woundsTaken >= 1)
                     defended = true;
             }
-            if (!defended && (!context.invincible || context.preventDefense) ) {
+            if (!defended && (!context.invincible || context.game.preventDefense) ) {
                 Card gained = currentPlayer.gainNewCard(Cards.virtualWound, attacker, context); //.add(takeFromPile(Cards.virtualWound));
-                if (inHand || context.woundsInHand) {
+                if (inHand || context.game.woundsInHand) {
                     currentPlayer.discard.remove(gained);
                     currentPlayer.hand.add(gained);
                 } else if (currentPlayer.tavern.contains(Cards.citadelWalls)){
@@ -740,10 +742,10 @@ public class Game {
 
             switch (enemyCard.getKind()) {
                 case HeraldOfPressureWaterElemental:
-                    context.preventDefense = true;
+                    context.game.preventDefense = true;
                     break;
                 case HeraldOfScorchingFireElemental:
-                    context.woundsInHand = true;
+                    context.game.woundsInHand = true;
                     break;
                 case ArcaneMessiah:
                     takeWounds(currentPlayer,1,context,enemyCard,false);
@@ -1542,6 +1544,7 @@ public class Game {
                     return;
             }
         }
+        int i=0;
         switch (cardPlayed.getKind()) {
             case ArcaneMessiah:
                 Card topCard = takeFromPile(Cards.virtualEnemy);
@@ -1564,14 +1567,14 @@ public class Game {
             case RabbleBrainwashed:
                 context.rabblePlayed = true;
                 int rabbleBanished = 0;
-                ArrayList<Card> copyEnemies = Util.copy(blackMarketPile);
-                for (Card enemy : copyEnemies) {
-                    if (enemy.is("Rabble") && enemy.getId()!=cardPlayed.getId()) {
+                for (i=blackMarketPile.size()-2; i >= 0; i--) {
+                    Card enemy = blackMarketPile.get(i);
+                    if (enemy.is("Rabble")) { //don't need this as we skip the most recent drawn which should be this card && enemy.getId()!=cardPlayed.getId()) {
                         rabbleBanished++;
-                        player.banish(blackMarketPile.remove(Util.indexOfCardId(enemy.getId(),blackMarketPile)),cardPlayed,context);
+                        player.banish(blackMarketPile.remove(i), cardPlayed, context);
                     }
                 }
-                for (int i=1; i<= rabbleBanished; i++) {
+                for (i=1; i<= rabbleBanished; i++) {
                     drawFoe(player, context, true);
                 }
                 break;
@@ -1597,9 +1600,9 @@ public class Game {
                         .setCount(1).fromBlackMarket().setActionType(SelectCardOptions.ActionType.DISCARD);
                 int[] toBanish = player.doSelectFoe(context, sco, 1, EventType.SelectFoe);
                 if (toBanish != null)
-                for (int i : toBanish)
+                for (int b : toBanish)
                 {
-                    player.banish(context.game.blackMarketPile.remove(i),cardPlayed,context);
+                    player.banish(context.game.blackMarketPile.remove(b),cardPlayed,context);
                 }
                 break;
             case RabbleGoblin:
@@ -1608,13 +1611,13 @@ public class Game {
                         .setPickType(SelectCardOptions.PickType.SELECT_IN_ORDER);
                 toBanish = player.doSelectFoe(context, sco, 2, EventType.SelectFoe);
 
-                for (int i : toBanish) {
-                    player.banish(context.game.blackMarketPile.get(i), cardPlayed, context);
+                for (int b : toBanish) {
+                    player.banish(context.game.blackMarketPile.get(b), cardPlayed, context);
                 }
                 Arrays.sort(toBanish);
-                for (int i= toBanish.length-1;i>=0;i--){
+                for (int b= toBanish.length-1;i>=0;i--){
 
-                    context.game.blackMarketPile.remove(toBanish[i]);
+                    context.game.blackMarketPile.remove(toBanish[b]);
                 }
 
                 context.rabblePlayed = true;

@@ -19,8 +19,6 @@ public class MoveContext {
     public boolean invincible = false;
     public int techniqueBuys = 0;
     public int spellBuys = 0;
-    public boolean woundsInHand = false;
-    public boolean preventDefense = false;
 
     public int getMightTotal() {
         return (might + mightModifier);

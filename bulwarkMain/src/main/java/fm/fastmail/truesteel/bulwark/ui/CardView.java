@@ -85,6 +85,13 @@ public class CardView extends FrameLayout implements OnLongClickListener, Checka
 		public int order;
 		public boolean shade;
 
+		public int getDebt() {
+			return debt;
+			//return debt > c.debtCost ? debt : c.debtCost;
+		}
+
+		public int debt;
+
 		public CardState(MyCard c) {
 			this(c, false, "", -1, false);
 		}
@@ -177,7 +184,7 @@ public class CardView extends FrameLayout implements OnLongClickListener, Checka
 			cost.setBackgroundResource(R.drawable.coin);
 		}
 		
-		if (c.debtCost > 0) {
+		if (state.getDebt()>0) {
 			debtCost.setVisibility(VISIBLE);			
 		} else {
 			debtCost.setVisibility(GONE);
@@ -221,8 +228,8 @@ public class CardView extends FrameLayout implements OnLongClickListener, Checka
 
 		name.setText(c.name, TextView.BufferType.SPANNABLE);
 		if (cost != null) {
-			setCost(GameTable.getCardCost(c), c.isOverpay, c.debtCost);
-			int costTextColor = (c.debtCost > 0) ? R.color.cardDebtCostTextColor : R.color.cardCostTextColor;
+			setCost(GameTable.getCardCost(c), c.isOverpay, state.getDebt());
+			int costTextColor = (state.getDebt() > 0) ? R.color.cardDebtCostTextColor : R.color.cardCostTextColor;
 			cost.setTextColor(costTextColor);
 		}
 
