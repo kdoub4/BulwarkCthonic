@@ -741,12 +741,6 @@ public class Game {
         }
 
             switch (enemyCard.getKind()) {
-                case HeraldOfPressureWaterElemental:
-                    context.game.preventDefense = true;
-                    break;
-                case HeraldOfScorchingFireElemental:
-                    context.game.woundsInHand = true;
-                    break;
                 case ArcaneMessiah:
                     takeWounds(currentPlayer,1,context,enemyCard,false);
                     for(int j=1; j <=Util.getCardCount(blackMarketPile,CardType.Magical); j++) {
@@ -1554,15 +1548,16 @@ public class Game {
                 }
                 break;
             case HeraldOfPressureWaterElemental:
+                context.game.preventDefense = true;
+                revealForWounds(player, context, cardPlayed);
+                break;
             case HeraldOfScorchingFireElemental:
+                context.game.woundsInHand = true;
+                revealForWounds(player, context, cardPlayed);
+                break;
             case HeraldOfStarsAirElemental:
             case HeraldOfGraniteEarthElemental:
-                topCard = takeFromPile(Cards.virtualEnemy);
-                player.reveal(topCard, cardPlayed, context);
-                if (topCard.is("elemental")) {
-                    takeWounds(player,2,context,cardPlayed,false);
-                }
-                addToPile(topCard,false);
+                revealForWounds(player, context, cardPlayed);
                 break;
             case RabbleBrainwashed:
                 context.rabblePlayed = true;
@@ -1575,6 +1570,7 @@ public class Game {
                     }
                 }
                 for (i=1; i<= rabbleBanished; i++) {
+                    drawFoe(player, context, true);
                     drawFoe(player, context, true);
                 }
                 break;
@@ -1628,6 +1624,16 @@ public class Game {
                 break;
         }
 
+    }
+
+    private void revealForWounds(Player player, MoveContext context, Card cardPlayed) {
+        Card topCard;
+        topCard = takeFromPile(Cards.virtualEnemy);
+        player.reveal(topCard, cardPlayed, context);
+        if (topCard.is("elemental")) {
+            takeWounds(player,2,context,cardPlayed,false);
+        }
+        addToPile(topCard,false);
     }
 
     private void revealKillPlay(Player player, MoveContext context, String[] identifiers, CardType... types) {
