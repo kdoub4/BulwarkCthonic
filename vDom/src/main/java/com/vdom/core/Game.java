@@ -969,8 +969,10 @@ public class Game {
                     }
                     break;
                 case RabbleLizard:
+                    boolean attackAlreadyMade = context.attackMade;
                     killFoe(context, enemyCard);
-                    drawFoe(currentPlayer, context, true);
+                    context.attackMade = attackAlreadyMade;
+                    drawFoe(currentPlayer, context,true);
                     i--;
                     break;
                 case FireCatapult:

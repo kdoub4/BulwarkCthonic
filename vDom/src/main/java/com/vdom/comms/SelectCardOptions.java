@@ -284,7 +284,6 @@ public class SelectCardOptions implements Serializable {
                    context.phase == MoveContext.TurnPhase.Action)
                 && c.is(CardType.Enemy) &&
                 (!properAttackType(context, c) && !isSelect)) return false;
-        if (isSpell && !c.is(CardType.Spell)) return false;
 
         return true;
     }

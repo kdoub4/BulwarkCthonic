@@ -1101,7 +1101,7 @@ public class CardImplBase extends CardImpl {
     protected void callAction(MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
             case SilkenSnare:
-                if (Util.getCardCount(currentPlayer.getTavern(), "snare")>1 &&
+                if (Util.getCardCount(currentPlayer.getTavern(), "snare")>0 &&
                         ((IndirectPlayer)currentPlayer).selectBoolean(context, this)) {
                     actionPhaseAttack(context, currentPlayer, false, true, 2);
                 }

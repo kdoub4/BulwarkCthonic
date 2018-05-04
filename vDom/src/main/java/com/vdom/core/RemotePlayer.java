@@ -1022,7 +1022,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
             switch (preventCard.getKind()) {
                 case SilkenSnare:
                     preventCard.callWhenActionResolved(context, Enemy);
-                    break;
+                    return false;
                 case ContempuousShot:
                     tavern.a.remove(preventCard);
                     trash(preventCard, preventCard, context);
