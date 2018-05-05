@@ -554,7 +554,7 @@ public class GameTable extends LinearLayout implements OnItemClickListener, OnIt
             if (parent != prizePile) return false;
         }
 
-        return sco.checkValid(c, getCardCost(c));
+        return sco.checkValid(c, cs.getCost());
     }
 
     /**
@@ -1217,7 +1217,8 @@ public class GameTable extends LinearLayout implements OnItemClickListener, OnIt
             supplyPile.updateCardInfo(uci);
         }
 
-        for (GameStatus.UpdateCardInfo uci : gs.enemyUpdates) {
+        for (GameStatus.UpdateCardInfo uci : gs.
+                enemyUpdates) {
             blackMarket.updateSpecificCardInfo(uci);
         }
 

@@ -189,6 +189,7 @@ public class CardGroup extends BaseAdapter {
                 if (uci.cost >= 0) cs.c.cost = uci.cost;
                 if (uci.debtCost >= 0) cs.c.debtCost = uci.debtCost;
                 cs.debt = uci.debtCost;
+                cs.cost = uci.cost;
                 //if (uci.count >= 0) supplySizes[cs.c.id] = uci.count;
                 cs.c.gold = uci.card.getAddGold();
                 cs.c.vp = uci.card.getAddVictoryTokens();

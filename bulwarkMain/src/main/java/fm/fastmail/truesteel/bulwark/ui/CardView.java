@@ -92,6 +92,13 @@ public class CardView extends FrameLayout implements OnLongClickListener, Checka
 
 		public int debt;
 
+		public int getCost() {
+			return cost > GameTable.getCardCost(c) ? cost : GameTable.getCardCost(c);
+			//return cost;
+		}
+
+		public int cost;
+
 		public CardState(MyCard c) {
 			this(c, false, "", -1, false);
 		}
@@ -228,7 +235,7 @@ public class CardView extends FrameLayout implements OnLongClickListener, Checka
 
 		name.setText(c.name, TextView.BufferType.SPANNABLE);
 		if (cost != null) {
-			setCost(GameTable.getCardCost(c), c.isOverpay, state.getDebt());
+			setCost(state.getCost(), c.isOverpay, state.getDebt());
 			int costTextColor = (state.getDebt() > 0) ? R.color.cardDebtCostTextColor : R.color.cardCostTextColor;
 			cost.setTextColor(costTextColor);
 		}
@@ -305,7 +312,7 @@ public class CardView extends FrameLayout implements OnLongClickListener, Checka
 			return R.style.CardView_Treasure_Reserve;
 		} else if (c.isReserve) {
 			return R.style.CardView_Reserve;
-		} else if (c.isRuins) {
+		} else if (c.isRange) {
 			return R.style.CardView_Ruins;
 		} else if (c.isVictory && c.isAttack) { 
 			return R.style.CardView_Attack_Victory;
@@ -840,8 +847,15 @@ public class CardView extends FrameLayout implements OnLongClickListener, Checka
 	public String GetCardTypeString(MyCard c) {
 	    String cardType = "";
 	    Context context = getContext();
-        
-        if (c.isAction) {
+		if (c.isLocation)  {
+			cardType +="Location ";
+			if (c.isDefenders) cardType += "Defenders ";
+		}
+		if (c.isSpell) cardType += "Spell ";
+		if (c.isEquipment) cardType += "Equipment ";
+		if (c.isTechnique) cardType += "Technique ";
+
+		if (c.isAction) {
             cardType += context.getString(R.string.type_action);
             
             if (c.isTreasure) {
@@ -856,7 +870,7 @@ public class CardView extends FrameLayout implements OnLongClickListener, Checka
                 cardType += " - " + context.getString(R.string.type_looter);
             }
             
-            if (c.isRuins) {
+            if (c.isRange) {
                 cardType += " - " + context.getString(R.string.type_ruins);
             }
             
@@ -899,6 +913,8 @@ public class CardView extends FrameLayout implements OnLongClickListener, Checka
             if (c.isGathering) {
                 cardType += " - " + context.getString(R.string.type_gathering);
             }
+
+
         }
         else if (c.isTreasure) {
             cardType += context.getString(R.string.type_treasure);
@@ -954,7 +970,13 @@ public class CardView extends FrameLayout implements OnLongClickListener, Checka
         else if (c.isCurse) {
             cardType += context.getString(R.string.type_curse);
         }
-        
+
+		if (c.isCrown) cardType += " - Crown";
+        if (c.isMagical) cardType += " - Magical";
+        if (c.isSiege) cardType += " - Siege";
+        if (c.isHorseman) cardType += " - Rider";
+        if (c.isUndead) cardType += " - Undead";
+
         return cardType;
     }
 		
