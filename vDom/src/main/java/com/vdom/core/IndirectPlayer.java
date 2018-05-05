@@ -375,7 +375,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
                 .maxCost(context.getMight() + context.getMightModifier())
                 .setPassable().setCount(1);
         if (context.game.blackMarketPile.contains(Cards.sang)) {
-            sco = sco.isNonBlast();
+            sco = sco.isNonSiege();
         }
         return getFromBlackMarket(context, sco);
     }

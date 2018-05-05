@@ -11,7 +11,6 @@ import com.vdom.core.Cards.Kind;
 import com.vdom.core.MoveContext;
 import com.vdom.core.PileCreator;
 import com.vdom.core.Player;
-import com.vdom.core.CardType;
 
 
 public interface Card extends Serializable {
@@ -22,6 +21,8 @@ public interface Card extends Serializable {
     public String getSafeName();
     
     public Expansion getExpansion();
+
+    public ArrayList<Card> getCardsUnder();
 
     public boolean is(CardType t, Player player);
     public boolean is(CardType... types);
@@ -44,7 +45,9 @@ public interface Card extends Serializable {
     public Kind upgradeCard();
     
     public int getDebtCost(MoveContext context);
-    
+
+    public void setDebtCost(int newCost);
+
     public int getVictoryPoints();
 
     public boolean isOverpay(Player player);
@@ -107,8 +110,8 @@ public interface Card extends Serializable {
     public void isBought(MoveContext context);
 
     public boolean isDying(MoveContext context);
-    public void isBanished();
-    public void isLeavingPlay();
+    public void isBanished(MoveContext context);
+    public void isLeavingPlay(MoveContext context);
 
     public void isTrashed(MoveContext context);
     

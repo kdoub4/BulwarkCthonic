@@ -87,6 +87,7 @@ public class CardPile  {
 					}
 					else if (upgradeFound || cards.get(i).upgradeCard() == null){
 						cards.add(i+1, card);
+						return;
 					}
 				}
 			}

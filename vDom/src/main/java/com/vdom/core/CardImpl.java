@@ -21,7 +21,6 @@ public class CardImpl implements Card, Comparable<Card>{
     int cost;
     int debtCost;
     boolean costPotion = false;
-    public ArrayList<Card> cardsUnder = new ArrayList<>();
 
     Cards.Kind upgradeCard = null;
 
@@ -35,6 +34,11 @@ public class CardImpl implements Card, Comparable<Card>{
     protected int addBuys;
     protected int addCards;
     protected int addGold;
+
+    @Override
+    public ArrayList<Card> getCardsUnder() { return cardsUnder;}
+
+    public ArrayList<Card> cardsUnder = new ArrayList<>();
 
     @Override
     public int getPileSize() {
@@ -683,6 +687,15 @@ public class CardImpl implements Card, Comparable<Card>{
         if (index<0) return 0;
         int armourValue = 0;
         Card neighbour = null;
+        if (this.getKind() == Cards.Kind.ArcaneMessiah) {
+            armourValue += Util.getCardCount(enemyLine, "Elemental");
+        }
+        if (!this.is(CardType.Range) && enemyLine.contains(Cards.heraldGranite) && this.getKind()!= Cards.Kind.GraniteHeraldEarthElemental) {
+            armourValue += 2;
+        }
+        if (this.is(CardType.Range) && enemyLine.contains(Cards.heraldStars) && this.getKind() != Cards.Kind.StarsHeraldAirElemental) {
+            armourValue += 2;
+        }
         if (index >= 1) {
             neighbour = enemyLine.get(index - 1);
             if (neighbour.getKind() == Cards.Kind.MgzwelGoblin){
@@ -691,6 +704,10 @@ public class CardImpl implements Card, Comparable<Card>{
             if (is("rabble", "corpse") && neighbour.getKind() == Cards.Kind.EnshroudingMist) {
                 armourValue += 2;
             }
+            if (neighbour.is(CardType.Range) && this.getKind() == Cards.Kind.EnsorcelledZealots) {
+                armourValue++;
+            }
+
         }
         if (index >= 2) {
             neighbour = enemyLine.get(index - 2);
@@ -706,6 +723,9 @@ public class CardImpl implements Card, Comparable<Card>{
             }
             if (is("rabble", "corpse") && neighbour.getKind() == Cards.Kind.EnshroudingMist) {
                 armourValue += 2;
+            }
+            if (neighbour.is(CardType.Range) && this.getKind() == Cards.Kind.EnsorcelledZealots) {
+                armourValue++;
             }
 
         }
@@ -735,7 +755,10 @@ public class CardImpl implements Card, Comparable<Card>{
     }
 
 
-    
+    public void setDebtCost(int newCost) {
+        debtCost = newCost;
+    }
+
     public int getDebtCost(MoveContext context) {
     	return debtCost;
     }
@@ -1160,15 +1183,43 @@ public class CardImpl implements Card, Comparable<Card>{
     }
 
     @Override
-    public void isBanished() {
+    public void isBanished(MoveContext context) {
+        this.isLeavingPlay(context);
         // card left play - stop any impersonations
         this.getControlCard().stopImpersonatingCard();
         this.getControlCard().stopInheritingCardAbilities();
+        switch (this.getKind()) {
+            case RogueHumanMage:
+                for (Card c : this.getCardsUnder()) {
+                    context.game.addToPile(c,false);
+                    if (context.game.takeWounds(context.getPlayer(),1,context,this,false) == 0) {
+                        context.game.addToPile(context.game.takeFromPile(c),true);
+                    }
+                }
+                this.getCardsUnder().clear();
+                this.setDebtCost(0);
+                break;
+        }
     }
 
     @Override
-    public void isLeavingPlay() {
+    public void isLeavingPlay(MoveContext context) {
+        switch (getKind()) {
+            case ScorchingHeraldFireElemental:
+                context.game.woundsInHand = false;
+                break;
+            case PressureHeraldWaterElemental:
+                context.game.preventDefense = false;
+                break;
+            case ArcherFootbow:
+                for (Card c : this.getCardsUnder()) {
+                    context.player.banish(c,this,context);
+                }
+                this.getCardsUnder().clear();
+                this.setDebtCost(0);
+                break;
 
+        }
     }
 
     @Override
@@ -1177,7 +1228,7 @@ public class CardImpl implements Card, Comparable<Card>{
 
     @Override
     public boolean isDying(MoveContext context) {
-        this.isLeavingPlay();
+        this.isLeavingPlay(context);
         context.attackMade = true;
         if (!this.is(CardType.Range)) {
             context.meleeMade = true;
@@ -1188,6 +1239,36 @@ public class CardImpl implements Card, Comparable<Card>{
         }
         int i;
         switch (this.getKind()) {
+            case ArcaneMessiah:
+                for (Card c : this.getCardsUnder()) {
+                    //TODO : refactor take Wound from CardsUnder
+                    context.game.addToPile(c,false);
+                    if (context.game.takeWounds(context.player,1,context, this, false) == 0) {
+                        context.game.addToPile(context.game.takeFromPile(c), true);
+                    }
+                }
+                this.getCardsUnder().clear();
+                this.setDebtCost(0);
+
+                for (Card c : context.game.blackMarketPile) {
+                    if (c.is("elemental")) {
+                        context.game.killFoe(context, c);
+                    }
+                }
+                break;
+            case GraniteHeraldEarthElemental:
+            case PressureHeraldWaterElemental:
+            case ScorchingHeraldFireElemental:
+            case StarsHeraldAirElemental:
+                context.game.drawFoe(context.player, context, true);
+                break;
+            case RogueHumanMage:
+                for (Card c : this.getCardsUnder()) {
+                    context.player.banish(c,this,context);
+                }
+                this.getCardsUnder().clear();
+                this.setDebtCost(0);
+                break;
             case BrokenCorpse:
                 context.game.blackMarketPile.remove( Util.indexOfCardId(getId(), context.game.blackMarketPile));
                 context.game.killACorpse(this,context.getPlayer(),context);
@@ -1809,6 +1890,11 @@ public class CardImpl implements Card, Comparable<Card>{
             if (context.game.enemyCount(CardType.Necromancer)>0) {
                 return true;
             }
+        }
+
+        if (this.getKind() == Cards.Kind.TuskedDeathcharger &&
+                context.player.playedCards.get(context.player.playedCards.size()-1).is(CardType.Location)) {
+            return true;
         }
 
         boolean neighborRuiha = false;

@@ -109,7 +109,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         card.isBane = isBane;
         card.isObeliskCard = isObeliskCard;
         card.isShelter = c.is(CardType.Shelter);
-        card.isLooter = c.is(CardType.Blast);
+        card.isLooter = c.is(CardType.Looter);
         card.isOverpay = c.isOverpay(null);
         card.isEvent = c.is(CardType.Event);
         card.isReserve = c.is(CardType.Remains);
@@ -119,7 +119,19 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         card.isGathering = c.is(CardType.Gathering);
         card.isLandmark = c.is(CardType.Landmark);
         card.isAttack = c.is(CardType.Attack);
-        card.isRuins = c.is(com.vdom.core.CardType.Range, null);
+        card.isRange = c.is(com.vdom.core.CardType.Range, null);
+
+        card.isSpell = c.is(CardType.Spell, null);
+        card.isTechnique = c.is(CardType.Technique, null);
+        card.isMagical = c.is(CardType.Magical, null);
+        card.isSiege = c.is(CardType.Siege, null);
+        card.isCrown = c.is(CardType.Crown, null);
+        card.isHorseman = c.is(CardType.Horseman, null);
+        card.isUndead = c.is(CardType.Undead, null);
+        card.isEquipment = c.is(CardType.Equipment, null);
+        card.isLocation = c.is(CardType.Location, null);
+        card.isFortification= c.is(CardType.Fortification, null);
+        card.isDefenders= c.is(CardType.Defenders, null);
 
         if (uniqueCardPile) {
             card.pile = MyCard.SUPPLYPILE;
@@ -492,6 +504,11 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
                         pile.areAllCardsVisible() ? topCard.getCost(showPlaceHolder ? null : context) : 0,
                         topCard.getDebtCost(showPlaceHolder ? null : context), count); //Don't calculate cost reduction if placeholder card is shown
             }
+        }
+        for (int i=0; i< game.blackMarketPile.size(); i++) {
+            Card c = game.blackMarketPile.get(i);
+            gs.addUpdatedLineCard(i, c, c.getCost(context), c.getDebtCost(context),-99 );
+
         }
 
         Event p = new Event(EType.STATUS)
@@ -1026,7 +1043,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
             switch (preventCard.getKind()) {
                 case SilkenSnare:
                     preventCard.callWhenActionResolved(context, Enemy);
-                    break;
+                    return false;
                 case ContempuousShot:
                     tavern.a.remove(preventCard);
                     trash(preventCard, preventCard, context);

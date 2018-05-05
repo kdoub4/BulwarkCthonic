@@ -177,6 +177,37 @@ public class CardGroup extends BaseAdapter {
         }
     }
 
+    public void updateSpecificCardInfo(GameStatus.UpdateCardInfo uci) {
+        //Updating all enemy cards
+        //for (int i = 0; i < cards.size(); i++) {
+        try  {
+            CardState cs = cards.get(uci.cardId);
+            if (cs != null) {
+                cs.c.name = Strings.getCardName(uci.card);
+                cs.c.originalSafeName = uci.card.getSafeName();
+                cs.c.desc = Strings.getFullCardDescription(uci.card);
+                if (uci.cost >= 0) cs.c.cost = uci.cost;
+                if (uci.debtCost >= 0) cs.c.debtCost = uci.debtCost;
+                cs.debt = uci.debtCost;
+                cs.cost = uci.cost;
+                //if (uci.count >= 0) supplySizes[cs.c.id] = uci.count;
+                cs.c.gold = uci.card.getAddGold();
+                cs.c.vp = uci.card.getAddVictoryTokens();
+                cs.c.isVictory = uci.card.is(CardType.Victory);
+                cs.c.isTreasure = uci.card.is(CardType.Treasure);
+                cs.c.isAction = uci.card.is(CardType.Action);
+                cs.c.isAttack = uci.card.is(CardType.Attack);
+                cs.c.isCastle = uci.card.is(CardType.Castle);
+                cs.c.isKnight = uci.card.is(CardType.Knight);
+                if (uci.card.getExpansion() != null) {
+                    cs.c.expansion = uci.card.getExpansion().name();
+                }
+            }
+        } catch (IndexOutOfBoundsException e) {
+
+        }
+    }
+
     public int getPos(int index) {
         for (int i = 0; i < cards.size(); i++) {
             if (cards.get(i).c.id == index)

@@ -39,6 +39,7 @@ public class Cards {
     public static ArrayList<Card> cardsWinter = new ArrayList<>();
     public static ArrayList<Card> cardsGoblin = new ArrayList<Card>();
     public static ArrayList<Card> cardsLizard = new ArrayList<Card>();
+    public static ArrayList<Card> cardsMessianic = new ArrayList<Card>();
     public static ArrayList<Card> woundCards = new ArrayList<Card>();
     public static ArrayList<Card> woundPile = new ArrayList<Card>();
 
@@ -133,6 +134,11 @@ public class Cards {
         //Winter of Death
         BrokenCorpse, StaleCorpse, FreshCorpse, EnshroudingMist, Spectre, EmbalmedAcolyte,
         TheLeftHandGoblin, TheRightHandHuman, TheCatacombite, HorrorOfFlesh, KangaxxTheLich,
+        
+        //Messianic Uprising
+        RabbleBrainwashed, TroopBrainwashed, ArcherFootbow, EnsorcelledZealots, RogueHumanMage,
+        TuskedDeathcharger, GraniteHeraldEarthElemental, StarsHeraldAirElemental, ScorchingHeraldFireElemental, PressureHeraldWaterElemental,
+        ArcaneMessiah,
         
         //Wound
         SeriousWound, StaggeringWound, WeakeningWound, GlancingWound, OldWound, FleshWound,
@@ -396,6 +402,18 @@ public class Cards {
     public static final Card virtualTome;
     public static final Card virtualSpell;
     public static final Card virtualStaffJakab;
+
+    public static final Card brainwashedRabble;
+    public static final Card brainwashedTroop;
+    public static final Card footbowArcher;
+    public static final Card ensorcelledZealots;
+    public static final Card rogueHumanMage;
+    public static final Card tuskedDeathcharger;
+    public static final Card heraldGranite;
+    public static final Card heraldStars;
+    public static final Card heraldScorching;
+    public static final Card heraldPressure;
+    public static final Card arcaneMeesiah;
 
     public static final Card platinum;
     public static final Card gold;
@@ -853,12 +871,11 @@ public class Cards {
         heroCardsJakab.add(astrologersRitual = new CardImpl.Builder(Kind.AstrologersRitual, 5, CardType.Hero, CardType.Action, CardType.Technique, CardType.RemainsReaction, CardType.Remains, CardType.OnAttack).addActions(2).description("While Remaining: Reaction - Discard 2 rituals from play for +1 Might. Reaction - Discard 3 rituals from play for +2 Might.").expansion(Expansion.Arcane).build());
         heroCardsJakab.add(virtualHeroism = new CardImpl.Builder(Kind.VirtualHeroism, 2, CardType.Hero, CardType.Treasure).pileCreator(new HeroismPileCreator()).expansion(Expansion.Base).build());
         heroCardsJakab.add(one);
-
-
+        
         cardsGoblin.add(goblinTroop = new CardImpl.Builder(Kind.TroopGoblin, 1, CardType.Enemy).build());
-        cardsGoblin.add(goblinAlchemist = new CardImpl.Builder(Kind.AlchemistGoblin, 2, CardType.Enemy, CardType.Activate).description("Activate: If adjacent to an alchemist of a blast, take 2 Wounds.").build());
+        cardsGoblin.add(goblinAlchemist = new CardImpl.Builder(Kind.AlchemistGoblin, 2, CardType.Enemy, CardType.Activate).description("Activate: If adjacent to an alchemist of a Siege, take 2 Wounds.").build());
         cardsGoblin.add(goblinRabble = new CardImpl.Builder(Kind.RabbleGoblin, 1, CardType.Enemy, CardType.WhenDrawn).description("When Drawn: Banish 2 Foes, draw 2 Foes, ignore the 'When Drawn' text of any Rabbles thus drawn.").build());
-        cardsGoblin.add(catapultBulwark= new CardImpl.Builder(Kind.CatapultGob, 2, CardType.Enemy, CardType.Activate, CardType.Range, CardType.Blast).description("Activate: Each player discards the top card of their deck. If it was a Wound, they take a Wound.").build());
+        cardsGoblin.add(catapultBulwark= new CardImpl.Builder(Kind.CatapultGob, 2, CardType.Enemy, CardType.Activate, CardType.Range, CardType.Siege).description("Activate: Each player discards the top card of their deck. If it was a Wound, they take a Wound.").build());
         cardsGoblin.add(goblinHeavy = new CardImpl.Builder(Kind.HeavyGoblin, 2, CardType.Enemy, CardType.Activate).description("Activate: Take a Wound if a troop is in play.").build());
         cardsGoblin.add(goblinArcher = new CardImpl.Builder(Kind.ArcherGoblin, 1, CardType.Enemy, CardType.Activate, CardType.Range).description("Activate: If there are 2 or more archers in play, take a Wound.").build());
         cardsGoblin.add(kneena = new CardImpl.Builder(Kind.KneenaGoblin, 2, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.Range).description("The Goblin Druid - Activate: Each player discards the top card of their deck. If it was a Location card, they take a Wound.").build());
@@ -869,20 +886,20 @@ public class Cards {
         //cardsGoblinHorde.add(virtualEnemy = new CardImpl.Builder(Kind.VirtualEnemy, 3, CardType.Enemy).pileCreator(new GoblinPileCreator()).expansion(Expansion.Base).build());
 
         cardsLizard.add(lizardTroop = new CardImpl.Builder(Kind.TroopLizard, 1, CardType.Enemy).description("+1 Armour if adjacent to a Heavy.").build());
-        cardsLizard.add(fireCatapult = new CardImpl.Builder(Kind.FireCatapult, 2, CardType.Enemy, CardType.Activate, CardType.Blast, CardType.Range).description("Activate: Reveal your hand. If a Wound is revealed or you have a Wound underneath a card Remaining in play, take a Wound.").build());
+        cardsLizard.add(fireCatapult = new CardImpl.Builder(Kind.FireCatapult, 2, CardType.Enemy, CardType.Activate, CardType.Siege, CardType.Range).description("Activate: Reveal your hand. If a Wound is revealed or you have a Wound underneath a card Remaining in play, take a Wound.").build());
         cardsLizard.add(lizardRabble = new CardImpl.Builder(Kind.RabbleLizard, 1, CardType.Enemy, CardType.Activate).description("Activate: Kill this, draw a Foe.").build());
-        cardsLizard.add(batteringRam= new CardImpl.Builder(Kind.BatteringRam, 2, CardType.Enemy, CardType.Activate, CardType.Blast).description("Activate: Take a Wound for each Blast activation there has already been this turn..").build());
+        cardsLizard.add(batteringRam= new CardImpl.Builder(Kind.BatteringRam, 2, CardType.Enemy, CardType.Activate, CardType.Siege).description("Activate: Take a Wound for each Siege activation there has already been this turn..").build());
         cardsLizard.add(lizardHeavy = new CardImpl.Builder(Kind.HeavyLizard, 2, CardType.Enemy, CardType.Activate).description("Activate: Take a Wound for each adjacent troop.").build());
         cardsLizard.add(lizardBombardier = new CardImpl.Builder(Kind.BombardierLizard, 1, CardType.Enemy, CardType.Activate).description("Activate: Discard a card you have Remaining in play.").build());
         cardsLizard.add(giantCorpseHound= new CardImpl.Builder(Kind.GiantCorpseHound, 2, CardType.Enemy, CardType.Crown, CardType.Undead).description("The current player takes a Wound every time a Foe other than a corpse hound is killed.").build());
         cardsLizard.add(kyung = new CardImpl.Builder(Kind.KyungLizard, 2, CardType.Enemy, CardType.Crown, CardType.Range).description("The Lizard Mystic - You cannot buy Hero cards").build());
         cardsLizard.add(yoonIseul = new CardImpl.Builder(Kind.YoonIseulLizard, 3, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.Horseman).description("The Lizard Queen - Activate: Activate the Foe before her, then activate the Foe after her. She cannot be activated more than once a turn.").build());
-        cardsLizard.add(sang = new CardImpl.Builder(Kind.SangLizard, 2, CardType.Enemy, CardType.Crown).description("The Lizard Alchemist - Blast are Invincible.").build());
+        cardsLizard.add(sang = new CardImpl.Builder(Kind.SangLizard, 2, CardType.Enemy, CardType.Crown).description("The Lizard Alchemist - Siege are Invincible.").build());
         cardsLizard.add(hyeon = new CardImpl.Builder(Kind.HyeonLizard, 3, CardType.Enemy, CardType.Crown, CardType.Activate).description("The Lizard Champion - Activate : If you did not kill a Foe this turn, take 2 Wounds").build());
         //cardsLizardCrusade.add(virtualEnemy = new CardImpl.Builder(Kind.VirtualEnemy, 3, CardType.Enemy).pileCreator(new LizardPileCreator()).expansion(Expansion.Base).build());
 
         cardsElf.add(elfTroop = new CardImpl.Builder(Kind.TroopElf, 1, CardType.Enemy, CardType.Activate).description("If there are 4 or more Elves in play, take a Wound").build());
-        cardsElf.add(flameBallista = new CardImpl.Builder(Kind.FlameBallista, 1, CardType.Enemy, CardType.Activate, CardType.Blast, CardType.Range).description("Activate: Take a Wound in hand for each card you have Remaining in play.").build());
+        cardsElf.add(flameBallista = new CardImpl.Builder(Kind.FlameBallista, 1, CardType.Enemy, CardType.Activate, CardType.Siege, CardType.Range).description("Activate: Take a Wound in hand for each card you have Remaining in play.").build());
         cardsElf.add(elfRabble = new CardImpl.Builder(Kind.RabbleElf, 1, CardType.Enemy, CardType.WhenDrawn).description("When Drawn: Banish a non rabble Foe.  While In Play: Counts of 2 Elves.").build());
         cardsElf.add(elfDruid = new CardImpl.Builder(Kind.DruidElf, 2, CardType.Enemy, CardType.Activate, CardType.Range).description("Activate: Discard the top 2 cards of your deck, take a Wound for each Location card revealed.").build());
         cardsElf.add(corpseVine = new CardImpl.Builder(Kind.CorpseVine, 1, CardType.Enemy).description("While In Play: You cannot buy Location cards.").build());
@@ -904,6 +921,18 @@ public class Cards {
         cardsWinter.add(theCatacombite = new CardImpl.Builder(Kind.TheCatacombite, 1, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.WhenDrawn, CardType.Undead).description("When Drawn: Take a Wound.  Activate: Take 2 Wounds.  When Killed: If this was killed by Might 1, put it on top of the Foe deck.").build());
         cardsWinter.add(horrorOfFlesh = new CardImpl.Builder(Kind.HorrorOfFlesh, 3, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.Undead).description("Activate: Kill a corpse. If you did, take 2 Wounds.").build());
         cardsWinter.add(kangaxxTheLich = new CardImpl.Builder(Kind.KangaxxTheLich, 3, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.WhenDrawn, CardType.Undead).description("When Drawn: Reveal a Foe.  If Undead put it into play, otherwise kill it.  Activate: Take a Wound, draw a Foe.  While in Player: It is Invincible if a necromancer is in play.  When Killed: Kill all Undead Foes.").build());
+
+        cardsMessianic.add(brainwashedRabble= new CardImpl.Builder(Kind.RabbleBrainwashed, 1, CardType.Enemy, CardType.WhenDrawn).description("When Drawn: Banish all other rabbles in play, draw 2 Foes for each rabble Banished. Ignore the 'When Drawn' ability of any rabble drawn.").build());
+        cardsMessianic.add(brainwashedTroop = new CardImpl.Builder(Kind.TroopBrainwashed, 1, CardType.Enemy, CardType.Activate).description("If another Brainwashed Foe is within 2 spaces on the Foe line, take a Wound.").build());
+        cardsMessianic.add(footbowArcher= new CardImpl.Builder(Kind.ArcherFootbow, 1, CardType.Enemy, CardType.Activate, CardType.Range).description("Take any Wounds underneath this car. If there aren't any, put one underneath it from the Wound deck. When Killed or Banished: Banish any Wounds underneath this.").build());
+        cardsMessianic.add(rogueHumanMage = new CardImpl.Builder(Kind.RogueHumanMage, 2, CardType.Enemy, CardType.Activate, CardType.Range).description("If there are 3 Wounds underneath this, every player takes a Wound. Otherwise put a Wound underneath this from the Wound deck. When Killed: Banish any Wounds underneath this. When Banished: Take any Wounds underneath this.").build());
+        cardsMessianic.add(ensorcelledZealots = new CardImpl.Builder(Kind.EnsorcelledZealots, 2, CardType.Enemy, CardType.Activate, CardType.Magical).description("If an adjacent Foe has a Wound underneath it, take a Wound. While In Play: +1 Armour for each adjacent Range Foe.").build());
+        cardsMessianic.add(tuskedDeathcharger = new CardImpl.Builder(Kind.TuskedDeathcharger, 2, CardType.Enemy, CardType.Activate, CardType.WhenDrawn, CardType.Siege, CardType.Horseman).description("When Drawn: Draw a Foe.  Activate: If there is a Foe on both sides of this, take a Wound.  While In Play: Invincible against attacks by Location cards.").build());
+        cardsMessianic.add(heraldGranite= new CardImpl.Builder(Kind.GraniteHeraldEarthElemental, 2, CardType.Enemy, CardType.Crown, CardType.Magical, CardType.WhenDrawn).description("When Drawn: Reveal the top card of the Foe deck. If it is an Elemental, take 2 Wounds. Either way, replace the card.  While In Play: All other Foes without Range get +2 Armour.  When Killed: Draw a Foe.").build());
+        cardsMessianic.add(heraldStars= new CardImpl.Builder(Kind.StarsHeraldAirElemental, 2, CardType.Enemy, CardType.Crown, CardType.Magical, CardType.WhenDrawn, CardType.Range).description("When Drawn: Reveal the top card of the Foe deck. If it is an Elemental, take 2 Wounds. Either way, replace the card.  While In Play: All other Foes with Range get +2 Armour.  When Killed: Draw a Foe.").build());
+        cardsMessianic.add(heraldScorching= new CardImpl.Builder(Kind.ScorchingHeraldFireElemental, 2, CardType.Enemy, CardType.Crown, CardType.Magical, CardType.WhenDrawn).description("When Drawn: Reveal the top card of the Foe deck. If it is an Elemental, take 2 Wounds. Either way, replace the card.  While In Play: All Wounds players receive go into their hands.  When Killed: Draw a Foe.").build());
+        cardsMessianic.add(heraldPressure = new CardImpl.Builder(Kind.PressureHeraldWaterElemental, 2, CardType.Enemy, CardType.Crown, CardType.Magical, CardType.Range, CardType.WhenDrawn).description("When Drawn: Reveal the top card of the Foe deck. If it is an Elemental, take 2 Wounds. Either way, replace the card.  While In Play: Players cannot defend against Wounds and player invincibilty is cancelled. When Killed: Draw a Foe.").build());
+        cardsMessianic.add(arcaneMeesiah = new CardImpl.Builder(Kind.ArcaneMessiah, 3, CardType.Enemy, CardType.Crown, CardType.Activate, CardType.WhenDrawn).description("When Drawn: Hunt for an Elemental.  Activate: Take a Wound. Put a Wound underneath this for each Magical in play.  While In Play: +1 Armour for each Elemental in play.  When Killed: Take all Wounds underneath this. Kill all Elementals in play.").build());
 
         //woundPile.add(virtualWound = new CardImpl.Builder(Kind.VirtualWound, 0, "Wounds", CardType.Wound).pileCreator(new WoundPileCreator()).expansion(Expansion.Base).build());
         woundPile.add(virtualWound = new CardImpl.Builder(Kind.VirtualWound, 0, "Wounds", CardType.Wound).pileCreator(new WoundPileCreator()).expansion(Expansion.Base).build());
@@ -1393,6 +1422,7 @@ public class Cards {
         for (Card card : cardsLizard)       { cardNameToCard.put(card.getName(), card); }
         for (Card card : cardsElf)       { cardNameToCard.put(card.getName(), card); }
         for (Card card : cardsWinter)       { cardNameToCard.put(card.getName(), card); }
+        for (Card card : cardsMessianic)       { cardNameToCard.put(card.getName(), card); }
         for (Card card : woundCards)        { cardNameToCard.put(card.getName(), card); }
         for (Card card : woundPile)         { cardNameToCard.put(card.getName(), card); }
         for (Card card : locationCards)     { cardNameToCard.put(card.getName(), card); }

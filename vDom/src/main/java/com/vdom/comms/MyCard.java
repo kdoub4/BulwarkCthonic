@@ -37,7 +37,7 @@ public class MyCard implements Serializable {
 	public boolean isBane     = false;
 	public boolean isObeliskCard  = false;
 	public boolean isShelter  = false;
-	public boolean isRuins    = false;
+	public boolean isRange = false;
 	public boolean isLooter   = false;
 	public boolean isKnight   = false;
 	public boolean isOverpay  = false;
@@ -52,6 +52,10 @@ public class MyCard implements Serializable {
 
 	public boolean isWound = false;
 	
+	public boolean isSpell = false;
+	public boolean isMagical = false;
+	public boolean isTechnique = false;
+
 	public static final int SUPPLYPILE = 1;
 	public static final int MONEYPILE = 2;
 	public static final int VPPILE = 3;
@@ -63,8 +67,16 @@ public class MyCard implements Serializable {
 	public static final int EVENTPILE = 9;
 
 	public int pile;
+	public boolean isSiege;
+	public boolean isCrown;
+	public boolean isHorseman;
+	public boolean isUndead;
+	public boolean isEquipment;
+	public boolean isLocation;
+	public boolean isFortification;
+	public boolean isDefenders;
 
-	 
+
 	public MyCard(int id, String name, String originalSafeName, String originalName) {
 		this.id = id;
 		this.name = name;
@@ -90,10 +102,10 @@ public class MyCard implements Serializable {
             
             if (isLooter)
             {
-                cardType += "- Blast ";
+                cardType += "- Looter ";
             }
             
-            if (isRuins)
+            if (isRange)
             {
                 cardType += "- Range ";
             }

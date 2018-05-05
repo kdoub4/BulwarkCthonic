@@ -58,6 +58,8 @@ public class Game {
     public static LocationType mLocation;
     public static HeroType mPlayer1Hero;
 
+    public boolean woundsInHand = false;
+    public boolean preventDefense = false;
 
 
     /**
@@ -329,7 +331,6 @@ public class Game {
                     player.tavern.get(Cards.wallOfForce).callAtStartOfTurn(context);
                 }
                 playerBeginTurn(player, context);
-                context.startOfTurn = false;
 
                 do {
                     if (godMode && !player.isAi())
@@ -344,6 +345,8 @@ public class Game {
 
 //TODO Check for death, if dying force flesh wound play if possible
                     playerManoeuvres(player, context);
+
+                    context.startOfTurn = false;
 
                     context.phase = TurnPhase.DrawFoe;
                     // /////////////////////////////////
@@ -524,6 +527,7 @@ public class Game {
     private void playerManoeuvres(Player player, MoveContext context) {
         SelectCardOptions sco = new SelectCardOptions().isActionPhase().isManoeuvre().setPassable()
             .setPickType(SelectCardOptions.PickType.MINT);
+        if (context.startOfTurn) sco.except = Cards.sneak;
         Card card;
         do {
             card = player.getCardFromHand(context, sco);
@@ -582,52 +586,55 @@ public class Game {
         }
     }
     
-    public void takeWounds(Player currentPlayer, int amount, MoveContext context, Card attacker, boolean inHand) {
+    public int takeWounds(Player currentPlayer, int amount, MoveContext context, Card attacker, boolean inHand) {
         boolean defended = false;
+        int woundsTakenHere = 0;
         for (int i=1; i <= amount; i++) {
             defended = false;
-            for (Player p : context.game.getPlayersInTurnOrder()) {
-                if (currentPlayer.tavern.contains(Cards.vantagePoint) && context.game.blackMarketPile.size() < 10) {
-                    defended = true;
-                }
-                if (!defended && !context.invincible) {
-                    Card defendCard = currentPlayer.cardToPlay(context,
-                            Util.canReact(context, p, CardType.Defend), attacker,
-                            true, IndirectPlayer.OPTION_DEFEND);
-                    if (defendCard != null) {
-                        switch (defendCard.getKind()) {
-                            case Sneak:
-                                currentPlayer.banish(defendCard, defendCard,context);
-                                p.hand.remove(defendCard);
-                                context.invincible= true;
-                                break;
-                            case SanctusCharm:
-                                SanctusCharmManoeuvre(context, p, defendCard);
-                                break;
-                            case Shield:
-                                p.discard(defendCard, defendCard, context);
-                                p.hand.removeCard(defendCard);
-                                defended = true;
-                                break;
-                            case StoneWalls:
-                                p.tavern.a.remove(defendCard);
-                                p.trash(defendCard, defendCard, context);
-                                defended = true;
-                                break;
-                            case TowerShield:
-                                p.tavern.a.remove(defendCard);
-                                p.discard(defendCard, defendCard, context);
-                                defended = true;
-                                break;
+            if (!context.game.preventDefense) {
+                for (Player p : context.game.getPlayersInTurnOrder()) {
+                    if (currentPlayer.tavern.contains(Cards.vantagePoint) && context.game.blackMarketPile.size() < 10) {
+                        defended = true;
+                    }
+                    if (!defended && !context.invincible) {
+                        Card defendCard = currentPlayer.cardToPlay(context,
+                                Util.canReact(context, p, CardType.Defend), attacker,
+                                true, IndirectPlayer.OPTION_DEFEND);
+                        if (defendCard != null) {
+                            switch (defendCard.getKind()) {
+                                case Sneak:
+                                    currentPlayer.banish(defendCard, defendCard, context);
+                                    p.hand.remove(defendCard);
+                                    context.invincible = true;
+                                    break;
+                                case SanctusCharm:
+                                    SanctusCharmManoeuvre(context, p, defendCard);
+                                    break;
+                                case Shield:
+                                    p.discard(defendCard, defendCard, context);
+                                    p.hand.removeCard(defendCard);
+                                    defended = true;
+                                    break;
+                                case StoneWalls:
+                                    p.tavern.a.remove(defendCard);
+                                    p.trash(defendCard, defendCard, context);
+                                    defended = true;
+                                    break;
+                                case TowerShield:
+                                    p.tavern.a.remove(defendCard);
+                                    p.discard(defendCard, defendCard, context);
+                                    defended = true;
+                                    break;
+                            }
                         }
                     }
                 }
+                if ((context.sanctusCharm || currentPlayer.tavern.contains(Cards.wallOfForce)) && context.woundsTaken >= 1)
+                    defended = true;
             }
-            if ((context.sanctusCharm || currentPlayer.tavern.contains(Cards.wallOfForce)) && context.woundsTaken>=1)
-                defended=true;
-            if (!defended && !context.invincible) {
+            if (!defended && (!context.invincible || context.game.preventDefense) ) {
                 Card gained = currentPlayer.gainNewCard(Cards.virtualWound, attacker, context); //.add(takeFromPile(Cards.virtualWound));
-                if (attacker.getKind() == Cards.Kind.FlameBallista) {
+                if (inHand || context.game.woundsInHand) {
                     currentPlayer.discard.remove(gained);
                     currentPlayer.hand.add(gained);
                 } else if (currentPlayer.tavern.contains(Cards.citadelWalls)){
@@ -652,8 +659,10 @@ public class Game {
 
                 }
                 context.woundsTaken++;
+                woundsTakenHere++;
             }
         }
+        return woundsTakenHere;
     }
 
     public void OldWoundManoeuvre(MoveContext context, Player p, Card card) {
@@ -734,6 +743,79 @@ public class Game {
         }
 
             switch (enemyCard.getKind()) {
+                case ArcaneMessiah:
+                    takeWounds(currentPlayer,1,context,enemyCard,false);
+                    for(int j=1; j <=Util.getCardCount(blackMarketPile,CardType.Magical); j++) {
+                        enemyCard.getCardsUnder().add(takeFromPile(Cards.virtualWound));
+                        enemyCard.setDebtCost(enemyCard.getDebtCost(context)+1);
+                    }
+                    break;
+                case TuskedDeathcharger:
+                    try {
+                        blackMarketPile.get(i - 1);
+                        blackMarketPile.get(i + 1);
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                    } catch (IndexOutOfBoundsException e) {
+                    }
+                    break;
+                case RogueHumanMage:
+                    if (((CardImpl)enemyCard).cardsUnder.size()==3) {
+                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                    }
+                    else {
+                        ((CardImpl)enemyCard).cardsUnder.add(takeFromPile(Cards.virtualWound));
+                        enemyCard.setDebtCost(enemyCard.getDebtCost(context)+1);
+                    }
+                    break;
+                case EnsorcelledZealots:
+                    for (int j=i-1; j<i+1;j++) {
+                        try {
+                            if (j != i) {
+                                for (Card c : blackMarketPile.get(j).getCardsUnder()) {
+                                    if (c.is("Wound")) {
+                                        takeWounds(currentPlayer, 1, context, enemyCard, false);
+                                        break;
+                                    }
+                                }
+                            }
+                        } catch (IndexOutOfBoundsException e) {
+
+                        } catch (NullPointerException e){
+
+                        }
+                    }
+                    break;
+
+                case ArcherFootbow:
+                    if (((CardImpl)enemyCard).cardsUnder.size()>0) {
+                        addToPile(((CardImpl) enemyCard).cardsUnder.remove(0),false);
+                        if (takeWounds(currentPlayer, 1, context, enemyCard, false) == 1) {
+                            ((CardImpl) enemyCard).cardsUnder.clear();
+                            enemyCard.setDebtCost(0);
+                        }
+                        else {
+                            ((CardImpl)enemyCard).cardsUnder.add(takeFromPile(Cards.virtualWound));
+                        }
+                    }
+                    else {
+                        ((CardImpl)enemyCard).cardsUnder.add(takeFromPile(Cards.virtualWound));
+                        enemyCard.setDebtCost(enemyCard.getDebtCost(context)+1);
+                    }
+                    break;
+                case TroopBrainwashed:
+                    for (int j=i-2; j<=i+2;j++) {
+                        try {
+                            if (j != i) {
+                                if (blackMarketPile.get(j).is("Brainwashed")) {
+                                    takeWounds(currentPlayer, 1, context, enemyCard, false);
+                                    j=i+2;
+                                }
+                            }
+                        } catch (IndexOutOfBoundsException e) {
+
+                        }
+                    }
+                    break;
                 case BrokenCorpse:
                     if (context.woundsTaken > 0) {
                         takeWounds(currentPlayer, 1, context, enemyCard, false);
@@ -889,8 +971,10 @@ public class Game {
                     }
                     break;
                 case RabbleLizard:
+                    boolean attackAlreadyMade = context.attackMade;
                     killFoe(context, enemyCard);
-                    drawFoe(currentPlayer, context, true);
+                    context.attackMade = attackAlreadyMade;
+                    drawFoe(currentPlayer, context,true);
                     i--;
                     break;
                 case FireCatapult:
@@ -903,7 +987,7 @@ public class Game {
                         takeWounds(currentPlayer, 1, context, enemyCard, false);
                     break;
                 case BatteringRam:
-                    takeWounds(currentPlayer, context.blastActivations, context, enemyCard, false);
+                    takeWounds(currentPlayer, context.SiegeActivations, context, enemyCard, false);
                     break;
                 case CatapultGob:
                     for (Player aPlayer : getPlayersInTurnOrder()) {
@@ -981,26 +1065,31 @@ public class Game {
                     boolean takeWound = false;
                     if (i > 0) {
                         prevCard = context.game.blackMarketPile.get(i - 1);
-                        if (prevCard.is(new String[]{"Alchemist"}, CardType.Blast))
+                        if (prevCard.is(new String[]{"Alchemist"}, CardType.Siege))
                             takeWound = true;
                     }
                     if (i < context.game.blackMarketPile.size() - 1) {
                         nextCard = context.game.blackMarketPile.get(i + 1);
-                        if (nextCard.is(new String[]{"Alchemist"}, CardType.Blast))
+                        if (nextCard.is(new String[]{"Alchemist"}, CardType.Siege))
                             takeWound = true;
                     }
                     if (takeWound)
                         takeWounds(currentPlayer, 2, context, enemyCard, false);
                     break;
             }
-            if (enemyCard.is(CardType.Blast))
-                context.blastActivations++;
+            if (enemyCard.is(CardType.Siege))
+                context.SiegeActivations++;
 
         //If the card still exists use its index, otherwise just i
         int newI = Util.indexOfCardId(enemyCard.getId(), context.game.blackMarketPile);
         if (newI >=0)
             return newI;
         return i;
+    }
+
+    private void addToCardsUnder(Card card, int i, ArrayList<Card> listToAddTo, Card fromPile) {
+        listToAddTo.add(i+1, takeFromPile(fromPile));
+        card.getCardsUnder().add(listToAddTo.get(i+1));
     }
 
     public boolean killACorpse(Card enemyCard, Player currentPlayer, MoveContext context) {
@@ -1453,7 +1542,44 @@ public class Game {
                     return;
             }
         }
+        int i=0;
         switch (cardPlayed.getKind()) {
+            case ArcaneMessiah:
+                Card topCard = takeFromPile(Cards.virtualEnemy);
+                player.reveal(topCard, cardPlayed, context);
+                addToPile(topCard, false);
+                if (topCard.is("Elemental")) {
+                    drawFoe(player,context,true);
+                }
+                break;
+            case PressureHeraldWaterElemental:
+                context.game.preventDefense = true;
+                revealForWounds(player, context, cardPlayed);
+                break;
+            case ScorchingHeraldFireElemental:
+                context.game.woundsInHand = true;
+                revealForWounds(player, context, cardPlayed);
+                break;
+            case StarsHeraldAirElemental:
+            case GraniteHeraldEarthElemental:
+                revealForWounds(player, context, cardPlayed);
+                break;
+            case RabbleBrainwashed:
+                context.rabblePlayed = true;
+                int rabbleBanished = 0;
+                for (i=blackMarketPile.size()-2; i >= 0; i--) {
+                    Card enemy = blackMarketPile.get(i);
+                    if (enemy.is("Rabble")) { //don't need this as we skip the most recent drawn which should be this card && enemy.getId()!=cardPlayed.getId()) {
+                        rabbleBanished++;
+                        player.banish(blackMarketPile.remove(i), cardPlayed, context);
+                    }
+                }
+                for (i=1; i<= rabbleBanished; i++) {
+                    drawFoe(player, context, true);
+                    drawFoe(player, context, true);
+                }
+                break;
+            case TuskedDeathcharger:
             case EnshroudingMist:
                 drawFoe(player,context, true);
                 break;
@@ -1475,26 +1601,24 @@ public class Game {
                         .setCount(1).fromBlackMarket().setActionType(SelectCardOptions.ActionType.DISCARD);
                 int[] toBanish = player.doSelectFoe(context, sco, 1, EventType.SelectFoe);
                 if (toBanish != null)
-                for (int i : toBanish) {
-                    {
-                        addToPile(context.game.blackMarketPile.remove(i), true);
-                    }
+                for (int b : toBanish)
+                {
+                    player.banish(context.game.blackMarketPile.remove(b),cardPlayed,context);
                 }
                 break;
             case RabbleGoblin:
-
                 sco = new SelectCardOptions().isNonCrown().setCardResponsible(cardPlayed)
                         .setCount(2).fromBlackMarket()
                         .setPickType(SelectCardOptions.PickType.SELECT_IN_ORDER);
                 toBanish = player.doSelectFoe(context, sco, 2, EventType.SelectFoe);
 
-                for (int i : toBanish) {
-                    addToPile(context.game.blackMarketPile.get(i), true);
+                for (int b : toBanish) {
+                    player.banish(context.game.blackMarketPile.get(b), cardPlayed, context);
                 }
                 Arrays.sort(toBanish);
-                for (int i= toBanish.length-1;i>=0;i--){
+                for (int b= toBanish.length-1;i>=0;i--){
 
-                    context.game.blackMarketPile.remove(toBanish[i]);
+                    context.game.blackMarketPile.remove(toBanish[b]);
                 }
 
                 context.rabblePlayed = true;
@@ -1505,6 +1629,16 @@ public class Game {
                 break;
         }
 
+    }
+
+    private void revealForWounds(Player player, MoveContext context, Card cardPlayed) {
+        Card topCard;
+        topCard = takeFromPile(Cards.virtualEnemy);
+        player.reveal(topCard, cardPlayed, context);
+        if (topCard.is("elemental")) {
+            takeWounds(player,2,context,cardPlayed,false);
+        }
+        addToPile(topCard,false);
     }
 
     private void revealKillPlay(Player player, MoveContext context, String[] identifiers, CardType... types) {
@@ -1688,7 +1822,7 @@ public class Game {
                     buy = null;
                 }
             }
-        } while ((context.buys > 0 || context.techniqueBuys > 0) && buy != null );
+        } while ((context.buys > 0 || context.techniqueBuys > 0 || context.spellBuys > 0) && buy != null );
 //TODO also check if technique is available to buy
         //Discard Wine Merchants from Tavern
         if(context.getCoinAvailableForBuy() >= 2) {
@@ -3621,6 +3755,8 @@ public class Game {
                     break;
                 case Winter:
                     addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new winterPileCreator()).expansion(Expansion.Base).build());
+                case Messianic:
+                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new messianicPileCreator()).expansion(Expansion.Base).build());
             }
             Cards.cardNameToCard.put(Cards.virtualEnemy.getName(),Cards.virtualEnemy);
 
@@ -3830,7 +3966,7 @@ public class Game {
         boolean looter = false;
         for (CardPile pile : piles.values()) {
             for (Card cardInPile : pile.getTemplateCards()) {
-                if (cardInPile.is(CardType.Blast, null)) {
+                if (cardInPile.is(CardType.Looter, null)) {
                     looter = true;
                 }
             }

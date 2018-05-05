@@ -133,6 +133,26 @@ class winterPileCreator extends PileCreator {
     }
 }
 
+class messianicPileCreator extends PileCreator {
+    public CardPile create(Card template, int count) {
+        List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
+
+        cards.add(new CardPile.CardMultiplicity(Cards.brainwashedRabble,    5));
+        cards.add(new CardPile.CardMultiplicity(Cards.brainwashedTroop,    5));
+        cards.add(new CardPile.CardMultiplicity(Cards.footbowArcher,    5));
+        cards.add(new CardPile.CardMultiplicity(Cards.ensorcelledZealots,    5));
+        cards.add(new CardPile.CardMultiplicity(Cards.rogueHumanMage, 3));
+        cards.add(new CardPile.CardMultiplicity(Cards.tuskedDeathcharger,    2));
+        cards.add(new CardPile.CardMultiplicity(Cards.heraldGranite,    1));
+        cards.add(new CardPile.CardMultiplicity(Cards.heraldPressure,    1));
+        cards.add(new CardPile.CardMultiplicity(Cards.heraldScorching,    1));
+        cards.add(new CardPile.CardMultiplicity(Cards.heraldStars,    1));
+        cards.add(new CardPile.CardMultiplicity(Cards.arcaneMeesiah,    1));
+
+        return (new CardPile(template, cards, false, false)).notInSupply();
+    }
+}
+
 class WoundPileCreator extends PileCreator {
     public CardPile create(Card template, int count) {
         List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();

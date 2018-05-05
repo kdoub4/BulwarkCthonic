@@ -1422,7 +1422,7 @@ public abstract class Player {
             context.game.drawToHand(context, card, 1, true);
         }
 
-        card.behaveAsCard().isBanished();
+        card.behaveAsCard().isBanished(context);
     }
 
     public void trash(Card card, Card responsible, MoveContext context) {
