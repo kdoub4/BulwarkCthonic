@@ -987,7 +987,7 @@ public class Game {
                         takeWounds(currentPlayer, 1, context, enemyCard, false);
                     break;
                 case BatteringRam:
-                    takeWounds(currentPlayer, context.blastActivations, context, enemyCard, false);
+                    takeWounds(currentPlayer, context.SiegeActivations, context, enemyCard, false);
                     break;
                 case CatapultGob:
                     for (Player aPlayer : getPlayersInTurnOrder()) {
@@ -1065,20 +1065,20 @@ public class Game {
                     boolean takeWound = false;
                     if (i > 0) {
                         prevCard = context.game.blackMarketPile.get(i - 1);
-                        if (prevCard.is(new String[]{"Alchemist"}, CardType.Blast))
+                        if (prevCard.is(new String[]{"Alchemist"}, CardType.Siege))
                             takeWound = true;
                     }
                     if (i < context.game.blackMarketPile.size() - 1) {
                         nextCard = context.game.blackMarketPile.get(i + 1);
-                        if (nextCard.is(new String[]{"Alchemist"}, CardType.Blast))
+                        if (nextCard.is(new String[]{"Alchemist"}, CardType.Siege))
                             takeWound = true;
                     }
                     if (takeWound)
                         takeWounds(currentPlayer, 2, context, enemyCard, false);
                     break;
             }
-            if (enemyCard.is(CardType.Blast))
-                context.blastActivations++;
+            if (enemyCard.is(CardType.Siege))
+                context.SiegeActivations++;
 
         //If the card still exists use its index, otherwise just i
         int newI = Util.indexOfCardId(enemyCard.getId(), context.game.blackMarketPile);
@@ -1822,7 +1822,7 @@ public class Game {
                     buy = null;
                 }
             }
-        } while ((context.buys > 0 || context.techniqueBuys > 0) && buy != null );
+        } while ((context.buys > 0 || context.techniqueBuys > 0 || context.spellBuys > 0) && buy != null );
 //TODO also check if technique is available to buy
         //Discard Wine Merchants from Tavern
         if(context.getCoinAvailableForBuy() >= 2) {
@@ -3966,7 +3966,7 @@ public class Game {
         boolean looter = false;
         for (CardPile pile : piles.values()) {
             for (Card cardInPile : pile.getTemplateCards()) {
-                if (cardInPile.is(CardType.Blast, null)) {
+                if (cardInPile.is(CardType.Looter, null)) {
                     looter = true;
                 }
             }

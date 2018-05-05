@@ -40,7 +40,7 @@ public class MoveContext {
     public boolean rabblePlayed = false;
     private int might =1;
     public boolean attackMade = false;
-    public int blastActivations = 0;
+    public int SiegeActivations = 0;
     public boolean attackMeleeMade = false;
 
     public void cannotAttack() {

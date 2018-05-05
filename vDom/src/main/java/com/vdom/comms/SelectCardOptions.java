@@ -101,7 +101,7 @@ public class SelectCardOptions implements Serializable {
     public boolean isNonRabble = false;
     public boolean isNonHero = false;
     public boolean isNonLocation = false;
-    public boolean isNonBlast = false;
+    public boolean isNonSiege = false;
     public boolean isCorpse = false;
     public boolean isManoeuvre = false;
     public boolean isSelect = false;
@@ -170,7 +170,7 @@ public class SelectCardOptions implements Serializable {
     public SelectCardOptions isNonRabble() {isNonRabble = true; return this;}
     public SelectCardOptions isNonHero() {isNonHero = true;return this;}
     public SelectCardOptions isNonLocation() {isNonLocation = true;return this;}
-    public SelectCardOptions isNonBlast() {isNonBlast = true;return this;}
+    public SelectCardOptions isNonSiege() {isNonSiege = true;return this;}
     public SelectCardOptions isCorpse() {isCorpse = true; return this;}
     public SelectCardOptions isManoeuvre() {isManoeuvre = true; return this;}
     public SelectCardOptions isSelect() {isSelect = true; return this;}
@@ -268,7 +268,7 @@ public class SelectCardOptions implements Serializable {
         if (isNonRabble && c.is("rabble")) return false;
         if (isNonLocation && c.is(CardType.Location,p)) return false;
         if (isNonHero && c.is(CardType.Hero,p)) return false;
-        if (isNonBlast && c.is(CardType.Blast, p)) return false;
+        if (isNonSiege && c.is(CardType.Siege, p)) return false;
         if (isCorpse && !c.is("corpse")) return false;
         if (isManoeuvre && !c.is(CardType.InHandManoeuvre)) return false;
         if (isTechnique && !c.is(CardType.Technique)) return false;

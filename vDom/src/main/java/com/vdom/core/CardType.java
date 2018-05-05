@@ -9,7 +9,7 @@ public enum CardType {
 	Enemy, WhenDrawn, Activate, Horseman, Undead, Necromancer,
     Duration,
 	Prize,
-	Shelter, Range, Blast, Knight,
+	Shelter, Range, Looter, Knight,
 	Remains, AnyTime, Crown,
 	Gathering, Castle,
 	Event, Landmark
