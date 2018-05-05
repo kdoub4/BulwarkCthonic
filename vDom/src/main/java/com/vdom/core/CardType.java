@@ -4,7 +4,7 @@ public enum CardType {
 	Action, Treasure, Victory, Curse, Spell,
 	Attack, InHandReaction, Technique, Defend, OnAttack, InHandManoeuvre, AttackStepEnd, OnActivation,
 	OnTrash,
-	Heroism, Wound, Hero, Magical, Siege, Rider,
+	Heroism, Wound, Hero, Magical, Siege,
 	Location, Equipment, Fortification, RemainsManoeuvre, RemainsReaction, Defenders,
 	Enemy, WhenDrawn, Activate, Horseman, Undead, Necromancer,
     Duration,

@@ -690,10 +690,10 @@ public class CardImpl implements Card, Comparable<Card>{
         if (this.getKind() == Cards.Kind.ArcaneMessiah) {
             armourValue += Util.getCardCount(enemyLine, "Elemental");
         }
-        if (!this.is(CardType.Range) && enemyLine.contains(Cards.heraldGranite) && this.getKind()!= Cards.Kind.HeraldOfGraniteEarthElemental) {
+        if (!this.is(CardType.Range) && enemyLine.contains(Cards.heraldGranite) && this.getKind()!= Cards.Kind.GraniteHeraldEarthElemental) {
             armourValue += 2;
         }
-        if (this.is(CardType.Range) && enemyLine.contains(Cards.heraldStars) && this.getKind() != Cards.Kind.HeraldOfStarsAirElemental) {
+        if (this.is(CardType.Range) && enemyLine.contains(Cards.heraldStars) && this.getKind() != Cards.Kind.StarsHeraldAirElemental) {
             armourValue += 2;
         }
         if (index >= 1) {
@@ -1205,10 +1205,10 @@ public class CardImpl implements Card, Comparable<Card>{
     @Override
     public void isLeavingPlay(MoveContext context) {
         switch (getKind()) {
-            case HeraldOfScorchingFireElemental:
+            case ScorchingHeraldFireElemental:
                 context.game.woundsInHand = false;
                 break;
-            case HeraldOfPressureWaterElemental:
+            case PressureHeraldWaterElemental:
                 context.game.preventDefense = false;
                 break;
             case ArcherFootbow:
@@ -1256,10 +1256,10 @@ public class CardImpl implements Card, Comparable<Card>{
                     }
                 }
                 break;
-            case HeraldOfGraniteEarthElemental:
-            case HeraldOfPressureWaterElemental:
-            case HeraldOfScorchingFireElemental:
-            case HeraldOfStarsAirElemental:
+            case GraniteHeraldEarthElemental:
+            case PressureHeraldWaterElemental:
+            case ScorchingHeraldFireElemental:
+            case StarsHeraldAirElemental:
                 context.game.drawFoe(context.player, context, true);
                 break;
             case RogueHumanMage:

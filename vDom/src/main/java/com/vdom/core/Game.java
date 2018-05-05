@@ -331,7 +331,6 @@ public class Game {
                     player.tavern.get(Cards.wallOfForce).callAtStartOfTurn(context);
                 }
                 playerBeginTurn(player, context);
-                context.startOfTurn = false;
 
                 do {
                     if (godMode && !player.isAi())
@@ -346,6 +345,8 @@ public class Game {
 
 //TODO Check for death, if dying force flesh wound play if possible
                     playerManoeuvres(player, context);
+
+                    context.startOfTurn = false;
 
                     context.phase = TurnPhase.DrawFoe;
                     // /////////////////////////////////
@@ -526,6 +527,7 @@ public class Game {
     private void playerManoeuvres(Player player, MoveContext context) {
         SelectCardOptions sco = new SelectCardOptions().isActionPhase().isManoeuvre().setPassable()
             .setPickType(SelectCardOptions.PickType.MINT);
+        if (context.startOfTurn) sco.except = Cards.sneak;
         Card card;
         do {
             card = player.getCardFromHand(context, sco);
@@ -1544,21 +1546,22 @@ public class Game {
         switch (cardPlayed.getKind()) {
             case ArcaneMessiah:
                 Card topCard = takeFromPile(Cards.virtualEnemy);
+                player.reveal(topCard, cardPlayed, context);
                 addToPile(topCard, false);
                 if (topCard.is("Elemental")) {
                     drawFoe(player,context,true);
                 }
                 break;
-            case HeraldOfPressureWaterElemental:
+            case PressureHeraldWaterElemental:
                 context.game.preventDefense = true;
                 revealForWounds(player, context, cardPlayed);
                 break;
-            case HeraldOfScorchingFireElemental:
+            case ScorchingHeraldFireElemental:
                 context.game.woundsInHand = true;
                 revealForWounds(player, context, cardPlayed);
                 break;
-            case HeraldOfStarsAirElemental:
-            case HeraldOfGraniteEarthElemental:
+            case StarsHeraldAirElemental:
+            case GraniteHeraldEarthElemental:
                 revealForWounds(player, context, cardPlayed);
                 break;
             case RabbleBrainwashed:
