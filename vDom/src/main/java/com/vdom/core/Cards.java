@@ -136,7 +136,7 @@ public class Cards {
         TheLeftHandGoblin, TheRightHandHuman, TheCatacombite, HorrorOfFlesh, KangaxxTheLich,
         
         //Messianic Uprising
-        RabbleBrainwashed, TroopBrainwashed, ArcherFootbow, EnsorcelledZealots, RogueHumanMage,
+        RabbleBrainwashed, TroopBrainwashed, ArcherFootbow, EnsorcelledZealot, RogueHumanMage,
         TuskedDeathcharger, GraniteHeraldEarthElemental, StarsHeraldAirElemental, ScorchingHeraldFireElemental, PressureHeraldWaterElemental,
         ArcaneMessiah,
         
@@ -406,7 +406,7 @@ public class Cards {
     public static final Card brainwashedRabble;
     public static final Card brainwashedTroop;
     public static final Card footbowArcher;
-    public static final Card ensorcelledZealots;
+    public static final Card ensorcelledZealot;
     public static final Card rogueHumanMage;
     public static final Card tuskedDeathcharger;
     public static final Card heraldGranite;
@@ -926,7 +926,7 @@ public class Cards {
         cardsMessianic.add(brainwashedTroop = new CardImpl.Builder(Kind.TroopBrainwashed, 1, CardType.Enemy, CardType.Activate).description("If another Brainwashed Foe is within 2 spaces on the Foe line, take a Wound.").build());
         cardsMessianic.add(footbowArcher= new CardImpl.Builder(Kind.ArcherFootbow, 1, CardType.Enemy, CardType.Activate, CardType.Range).description("Take any Wounds underneath this car. If there aren't any, put one underneath it from the Wound deck. When Killed or Banished: Banish any Wounds underneath this.").build());
         cardsMessianic.add(rogueHumanMage = new CardImpl.Builder(Kind.RogueHumanMage, 2, CardType.Enemy, CardType.Activate, CardType.Range).description("If there are 3 Wounds underneath this, every player takes a Wound. Otherwise put a Wound underneath this from the Wound deck. When Killed: Banish any Wounds underneath this. When Banished: Take any Wounds underneath this.").build());
-        cardsMessianic.add(ensorcelledZealots = new CardImpl.Builder(Kind.EnsorcelledZealots, 2, CardType.Enemy, CardType.Activate, CardType.Magical).description("If an adjacent Foe has a Wound underneath it, take a Wound. While In Play: +1 Armour for each adjacent Range Foe.").build());
+        cardsMessianic.add(ensorcelledZealot = new CardImpl.Builder(Kind.EnsorcelledZealot, 2, CardType.Enemy, CardType.Activate, CardType.Magical).description("If an adjacent Foe has a Wound underneath it, take a Wound. While In Play: +1 Armour for each adjacent Range Foe.").build());
         cardsMessianic.add(tuskedDeathcharger = new CardImpl.Builder(Kind.TuskedDeathcharger, 2, CardType.Enemy, CardType.Activate, CardType.WhenDrawn, CardType.Siege, CardType.Horseman).description("When Drawn: Draw a Foe.  Activate: If there is a Foe on both sides of this, take a Wound.  While In Play: Invincible against attacks by Location cards.").build());
         cardsMessianic.add(heraldGranite= new CardImpl.Builder(Kind.GraniteHeraldEarthElemental, 2, CardType.Enemy, CardType.Crown, CardType.Magical, CardType.WhenDrawn).description("When Drawn: Reveal the top card of the Foe deck. If it is an Elemental, take 2 Wounds. Either way, replace the card.  While In Play: All other Foes without Range get +2 Armour.  When Killed: Draw a Foe.").build());
         cardsMessianic.add(heraldStars= new CardImpl.Builder(Kind.StarsHeraldAirElemental, 2, CardType.Enemy, CardType.Crown, CardType.Magical, CardType.WhenDrawn, CardType.Range).description("When Drawn: Reveal the top card of the Foe deck. If it is an Elemental, take 2 Wounds. Either way, replace the card.  While In Play: All other Foes with Range get +2 Armour.  When Killed: Draw a Foe.").build());

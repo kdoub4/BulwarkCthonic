@@ -767,7 +767,7 @@ public class Game {
                         enemyCard.setDebtCost(enemyCard.getDebtCost(context)+1);
                     }
                     break;
-                case EnsorcelledZealots:
+                case EnsorcelledZealot:
                     for (int j=i-1; j<i+1;j++) {
                         try {
                             if (j != i) {
@@ -3756,7 +3756,7 @@ public class Game {
                 case Winter:
                     addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new winterPileCreator()).expansion(Expansion.Base).build());
                 case Messianic:
-                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new messianicPileCreator()).expansion(Expansion.Base).build());
+                    addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new messianicPileCreator()).expansion(Expansion.Arcane).build());
             }
             Cards.cardNameToCard.put(Cards.virtualEnemy.getName(),Cards.virtualEnemy);
 
@@ -4819,9 +4819,7 @@ public class Game {
 
     protected CardPile addPile(Card card, int count, boolean isSupply, boolean isBlackMarket) {
         CardPile pile = card.getPileCreator().create(card, count);
-
-
-
+        
         if (!isSupply) {
             pile.notInSupply();
         }
@@ -4845,7 +4843,6 @@ public class Game {
                 playerSupplyTokens.put(templateCard.getName(), tokenMap);
             }
         }
-        
 
         return pile;
     }

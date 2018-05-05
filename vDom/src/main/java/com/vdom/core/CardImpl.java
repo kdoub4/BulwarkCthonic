@@ -704,7 +704,7 @@ public class CardImpl implements Card, Comparable<Card>{
             if (is("rabble", "corpse") && neighbour.getKind() == Cards.Kind.EnshroudingMist) {
                 armourValue += 2;
             }
-            if (neighbour.is(CardType.Range) && this.getKind() == Cards.Kind.EnsorcelledZealots) {
+            if (neighbour.is(CardType.Range) && this.getKind() == Cards.Kind.EnsorcelledZealot) {
                 armourValue++;
             }
 
@@ -724,7 +724,7 @@ public class CardImpl implements Card, Comparable<Card>{
             if (is("rabble", "corpse") && neighbour.getKind() == Cards.Kind.EnshroudingMist) {
                 armourValue += 2;
             }
-            if (neighbour.is(CardType.Range) && this.getKind() == Cards.Kind.EnsorcelledZealots) {
+            if (neighbour.is(CardType.Range) && this.getKind() == Cards.Kind.EnsorcelledZealot) {
                 armourValue++;
             }
 

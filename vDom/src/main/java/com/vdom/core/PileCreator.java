@@ -140,7 +140,7 @@ class messianicPileCreator extends PileCreator {
         cards.add(new CardPile.CardMultiplicity(Cards.brainwashedRabble,    5));
         cards.add(new CardPile.CardMultiplicity(Cards.brainwashedTroop,    5));
         cards.add(new CardPile.CardMultiplicity(Cards.footbowArcher,    5));
-        cards.add(new CardPile.CardMultiplicity(Cards.ensorcelledZealots,    5));
+        cards.add(new CardPile.CardMultiplicity(Cards.ensorcelledZealot,    5));
         cards.add(new CardPile.CardMultiplicity(Cards.rogueHumanMage, 3));
         cards.add(new CardPile.CardMultiplicity(Cards.tuskedDeathcharger,    2));
         cards.add(new CardPile.CardMultiplicity(Cards.heraldGranite,    1));
