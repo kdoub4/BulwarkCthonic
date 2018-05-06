@@ -427,7 +427,7 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
         int[] tavernArray = new int[tavern.size()];
         for (int i = 0; i < tavern.size(); i++) {
             Card c = tavern.get(i);
-            playedArray[i] = (cardToInt(c) * (c.is(CardType.Wound) ? 1 : -1));
+            tavernArray[i] = (cardToInt(c) * (c.is(CardType.Wound) ? 1 : -1));
         }
 
         gs.setTurnStatus(new int[] {context.getActionsLeft(),

@@ -3755,8 +3755,10 @@ public class Game {
                     break;
                 case Winter:
                     addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new winterPileCreator()).expansion(Expansion.Base).build());
+                    break;
                 case Messianic:
                     addPile(Cards.virtualEnemy = new CardImpl.Builder(Cards.Kind.VirtualEnemy, 3, mEnemy.getName(), CardType.Enemy).pileCreator(new messianicPileCreator()).expansion(Expansion.Arcane).build());
+                    break;
             }
             Cards.cardNameToCard.put(Cards.virtualEnemy.getName(),Cards.virtualEnemy);
 
@@ -4819,7 +4821,7 @@ public class Game {
 
     protected CardPile addPile(Card card, int count, boolean isSupply, boolean isBlackMarket) {
         CardPile pile = card.getPileCreator().create(card, count);
-        
+
         if (!isSupply) {
             pile.notInSupply();
         }
