@@ -1607,6 +1607,8 @@ public class Game {
                 }
                 break;
             case RabbleGoblin:
+                context.rabblePlayed = true;
+
                 sco = new SelectCardOptions().isNonCrown().setCardResponsible(cardPlayed)
                         .setCount(2).fromBlackMarket()
                         .setPickType(SelectCardOptions.PickType.SELECT_IN_ORDER);
@@ -1616,13 +1618,9 @@ public class Game {
                     player.banish(context.game.blackMarketPile.get(b), cardPlayed, context);
                 }
                 Arrays.sort(toBanish);
-                for (int b= toBanish.length-1;i>=0;i--){
-
+                for (int b= toBanish.length-1;b>=0;b--){
                     context.game.blackMarketPile.remove(toBanish[b]);
                 }
-
-                context.rabblePlayed = true;
-
                 drawFoe(player, context, true);
                 drawFoe(player, context, true);
                 context.rabblePlayed = false;
