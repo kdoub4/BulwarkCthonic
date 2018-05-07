@@ -192,6 +192,10 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
                 if (        !card.isInvincible(enemyLine, context ) &&
                         sco.checkValid(card, card.getCost(context), false, context)) {
                     sco.addValidCard(cardToInt(card));
+                    sco.allowedEnemy.add(true);
+                }
+                else {
+                    sco.allowedEnemy.add(false);
                 }
             }
             catch (IndexOutOfBoundsException e) {

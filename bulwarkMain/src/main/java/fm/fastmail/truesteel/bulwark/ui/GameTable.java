@@ -526,9 +526,10 @@ public class GameTable extends LinearLayout implements OnItemClickListener, OnIt
      * Is the given card an acceptable choice given the constrains saved in sco?
      * @param c chosen card
      * @param parent which pile the card was selected from
+     * @param position
      * @return
      */
-    boolean isAcceptable(CardState cs, CardGroup parent) {
+    boolean isAcceptable(CardState cs, CardGroup parent, int position) {
     	MyCard c = cs.c;
     	if (cs.shade) return false;
         if (sco.fromHand && (parent != hand)) return false;
@@ -552,8 +553,19 @@ public class GameTable extends LinearLayout implements OnItemClickListener, OnIt
             }
         } else if (sco.fromPrizes) {
             if (parent != prizePile) return false;
-        }
+        } else if (sco.fromBlackMarket) {
+            if (parent != blackMarket) {
+                return false;
+            }
+            if (sco.isAttackPhase) {
+                if (sco.allowedEnemy == null) {
+                    return false;
+                } else {
+                    return sco.allowedEnemy.get(position);
+                }
 
+            }
+        }
         return sco.checkValid(c, cs.getCost());
     }
 
@@ -627,7 +639,7 @@ public class GameTable extends LinearLayout implements OnItemClickListener, OnIt
                 int[] cards = new int[openedCards.size()];
                 for (int i = 0; i < openedCards.size(); i++) {
                     CardInfo ci = openedCards.get(i);
-                    if (!isAcceptable(ci.cs, ci.parent))
+                    if (!isAcceptable(ci.cs, ci.parent,ci.pos))
                         return;
                     if (this.eventType == EventType.AttackingFoe || this.eventType == EventType.SelectFoe)
                         cards[i] = ci.pos;
@@ -1349,7 +1361,7 @@ public class GameTable extends LinearLayout implements OnItemClickListener, OnIt
                 }
             }
         } else {
-            if (isAcceptable(clickedCard.getState(), clickedCard.parent)) {
+            if (isAcceptable(clickedCard.getState(), clickedCard.parent, position)) {
                 HapticFeedback.vibrate(getContext(), AlertType.CLICK);
                 if (sco.isDifferent() && hasDuplicate(openedCards, clickedCard.getState().c)) {
                 	int duplicateIndex = getFirstIndex(openedCards, clickedCard.getState().c);

@@ -114,6 +114,7 @@ public class SelectCardOptions implements Serializable {
     
     public String header = null;
     public ArrayList<Integer> allowedCards = new ArrayList<Integer>();
+    public ArrayList<Boolean> allowedEnemy = null;
 
     //public SelectCardOptions setType(SelectType s) {selectType = s; return this;}
     public SelectCardOptions setHeader(String s) {header = s; return this;}
@@ -133,7 +134,9 @@ public class SelectCardOptions implements Serializable {
     public SelectCardOptions exactCount() {exactCount = true; return this;}
 
     public SelectCardOptions isAttackFoe() {
-        fromBlackMarket = true; isAttackPhase = true; this.pickType = PickType.ATTACK; return this;}
+        fromBlackMarket = true; isAttackPhase = true; this.pickType = PickType.ATTACK;
+        allowedEnemy = new ArrayList<>();
+        return this;}
     public SelectCardOptions fromTable() {fromTable = true;isNonShelter=true;count=1;exactCount=true; return this;}
     public SelectCardOptions isBuy() {isBuyPhase= true; this.pickType = PickType.BUY; return this;}
     public SelectCardOptions isActionPhase() {isActionPhase=true; return this;}
