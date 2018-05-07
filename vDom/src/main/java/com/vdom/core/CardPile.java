@@ -90,6 +90,7 @@ public class CardPile  {
 						return;
 					}
 				}
+				cards.add(0,card);
 			}
 			else {
 				cards.add(0, card);

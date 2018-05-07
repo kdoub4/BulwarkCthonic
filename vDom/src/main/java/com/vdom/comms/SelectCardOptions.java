@@ -216,7 +216,7 @@ public class SelectCardOptions implements Serializable {
     }
 
     public boolean checkValid(MyCard c, int cost) {
-        if (!cardInList(c.id) && cost <= maxCost && cost >= minCost) return false;
+        if (!cardInList(c.id) || cost > maxCost || cost < minCost) return false;
 
         return true;
     }
