@@ -34,6 +34,8 @@ public class Cards {
     public static ArrayList<Card> locationCardsHoltvarosMilitia = new ArrayList<>();
     public static ArrayList<Card> locationCardsSylvanHeights = new ArrayList<>();
     public static ArrayList<Card> locationCardsSylvanChorus = new ArrayList<>();
+    public static ArrayList<Card> locationCardsSecretLoreSpellwrought = new ArrayList<>();
+    public static ArrayList<Card> locationCardsSecretLore = new ArrayList<>();
 
     public static ArrayList<Card> cardsElf = new ArrayList<Card>();
     public static ArrayList<Card> cardsWinter = new ArrayList<>();
@@ -157,6 +159,10 @@ public class Cards {
         // Sylvan Heights
         SamuGarden, ElvenChorus, CelestialChorus, VirtualChorus, SilkenSnare, TreetopSpire,
         RadiantPool, GalleryOfLeaves,
+
+        // Tower of Secret Lore
+        StarChamber, SpiralLibrary, RejuvenationCircle, MagistersCouncil, SpellwroughtArrow,
+        SpellwroughtHammer, VirtualSpellwrought, WallOfLightning, MagistersGallery,
 
         // Non-Kingdom Cards
         Platinum, Gold, Silver, Copper, Potion, Colony, Province, Duchy, Estate, Curse,
@@ -402,6 +408,16 @@ public class Cards {
     public static final Card virtualTome;
     public static final Card virtualSpell;
     public static final Card virtualStaffJakab;
+
+    public static final Card starChamber;
+    public static final Card spiralLibrary;
+    public static final Card rejuvenationCircle;
+    public static final Card magistersCouncil;
+    public static final Card magistersGallery;
+    public static final Card spellwroughtArrow;
+    public static final Card spellwroughtHammer;
+    public static final Card virtualSpellwrought;
+    public static final Card wallOfLightning;
 
     public static final Card brainwashedRabble;
     public static final Card brainwashedTroop;
@@ -982,6 +998,16 @@ public class Cards {
         locationCardsSylvanHeights.add(radiantPool = new CardImpl.Builder(Kind.RadiantPool,4, CardType.Location, CardType.Action).setPileSize(4).description("Reveal the top 2 cards of your deck - either Trash 1 of them and put the other back on your deck, or Discard both.").expansion(Expansion.Base).build());
         locationCardsSylvanHeights.add(galleryOfLeaves = new CardImpl.Builder(Kind.GalleryOfLeaves,5, CardType.Location, CardType.Action).addActions(2).addCards(1).setPileSize(4).description("Look at the top card of every deck. Banish or replace the top card of the Foe and Wound decks, Discard or replace the top card of each player deck.").expansion(Expansion.Base).build());
 
+        locationCardsSecretLore.add(starChamber = new CardImpl.Builder(Kind.StarChamber, 2, CardType.Location, CardType.Action, CardType.Remains, CardType.RemainsManoeuvre).setPileSize(8).description("Remains, put a card from Hand underneath this.").expansion(Expansion.Arcane).build());
+        locationCardsSecretLore.add(spiralLibrary = new CardImpl.Builder(Kind.SpiralLibrary, 3, CardType.Location, CardType.Action, CardType.InHandReaction).addActions(2).addBuys(1).setPileSize(4).description("Hunt for a Spell.  Reaction: At the start of your turn, Discard your entire hand for +5 Cards.").expansion(Expansion.Arcane).build());
+        locationCardsSecretLoreSpellwrought.add(spellwroughtArrow = new CardImpl.Builder(Kind.SpellwroughtArrow, 5, CardType.Location, CardType.Action, CardType.InHandReaction, CardType.Spell).description("Discard 1. Attack with Might 1 Melee or Range.  Reaction: When you make an attack, Banish this for +1 Might.").expansion(Expansion.Arcane).build());
+        locationCardsSecretLoreSpellwrought.add(spellwroughtHammer = new CardImpl.Builder(Kind.SpellwroughtHammer, 2, CardType.Location, CardType.Action, CardType.InHandReaction, CardType.Spell).upgradeCard(Kind.SpellwroughtArrow).description("Discard 1. Attack with Might 2 Melee.  Reaction: When you make an attack, Discard this for +1 Might.").expansion(Expansion.Arcane).build());
+        locationCardsSecretLore.add(virtualSpellwrought= new CardImpl.Builder(Kind.VirtualSpellwrought, 5, CardType.Location, CardType.Action, CardType.Spell).pileCreator(new SpellwroughtPileCreator()).expansion(Expansion.Arcane).build());
+        locationCardsSecretLore.add(rejuvenationCircle   = new CardImpl.Builder(Kind.RejuvenationCircle, 3, CardType.Location, CardType.Action).setPileSize(4).addActions(1).description("Every player may Summon a Wound, every player may Banish a Wound.").expansion(Expansion.Arcane).build());
+        locationCardsSecretLore.add(magistersCouncil= new CardImpl.Builder(Kind.MagistersCouncil, 4, CardType.Location, CardType.Action).setPileSize(4).addCards(2).description("Every other player +1 Card.").expansion(Expansion.Arcane).build());
+        locationCardsSecretLore.add(wallOfLightning = new CardImpl.Builder(Kind.WallOfLightning, 5, CardType.Location, CardType.Action, CardType.Remains, CardType.RemainsReaction).setPileSize(4).addActions(2).addCards(1).description("Reaction : When any player takes a Wound, you may Discard this and then Discard 1 to Defend them.").expansion(Expansion.Arcane).build());
+        locationCardsSecretLore.add(magistersGallery = new CardImpl.Builder(Kind.MagistersGallery, 4, CardType.Location, CardType.Action).setPileSize(4).description("Reveal the top card of your deck, Discard it or replace it. +2 Cards. Reveal the top Foe, Banish it or replace it.").expansion(Expansion.Arcane).build());
+
         actionCardsBaseGame.add(bureaucrat = new CardImpl.Builder(Cards.Kind.Bureaucrat, 4, CardType.Action, CardType.Attack).description("Gain a Silver onto your deck. Each other player reveals a Victory card from their hand and puts it onto their deck (or reveals a hand with no Victory cards).").expansion(Expansion.Base).build());
         actionCardsBaseGame.add(cellar = new CardImpl.Builder(Cards.Kind.Cellar, 2, CardType.Action).addActions(1).description("Discard any number of cards, then draw that many.").expansion(Expansion.Base).build());
         actionCardsBaseGame.add(chapel = new CardImpl.Builder(Cards.Kind.Chapel, 2, CardType.Action).description("Trash up to 4 cards from your hand.").expansion(Expansion.Base).build());
@@ -1407,6 +1433,8 @@ public class Cards {
         for (Card card : locationCardsHoltvarosMilitia) {locationCards.add(card);}
         for (Card card : locationCardsSylvanHeights) {locationCards.add(card);}
         for (Card card : locationCardsSylvanChorus) {locationCards.add(card);}
+        for (Card card : locationCardsSecretLore) {locationCards.add(card);}
+        for (Card card : locationCardsSecretLoreSpellwrought) {locationCards.add(card);}
 
         for (Card card : actionCards)       { cardNameToCard.put(card.getName(), card); }
         for (Card card : prizeCards)        { cardNameToCard.put(card.getName(), card); }

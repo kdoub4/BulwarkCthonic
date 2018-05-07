@@ -62,6 +62,20 @@ class MilitiaPileCreator extends PileCreator {
     }
 }
 
+
+class SpellwroughtPileCreator extends PileCreator {
+    public CardPile create(Card template, int count) {
+        List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
+
+        for (Card c : Cards.locationCardsSecretLoreSpellwrought) {
+            cards.add(new CardPile.CardMultiplicity(c, 4));
+        }
+
+        return (new CardPile(template, cards, true, true));
+    }
+}
+
+
 class ChorusPileCreator extends PileCreator {
     public CardPile create(Card template, int count) {
         List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
