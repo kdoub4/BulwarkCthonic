@@ -602,6 +602,16 @@ public class Game {
                                 true, IndirectPlayer.OPTION_DEFEND);
                         if (defendCard != null) {
                             switch (defendCard.getKind()) {
+                                case WallOfLightning:
+                                    SelectCardOptions sco = new SelectCardOptions().fromHand()
+                                            .setActionType(SelectCardOptions.ActionType.DISCARD).setCardResponsible(defendCard);
+                                    Card toDiscard = p.getCardFromHand(context, sco);
+                                    if (toDiscard != null) {
+                                        currentPlayer.discard(p.hand.removeCard(toDiscard), defendCard, context);
+                                        currentPlayer.discard(p.getTavern().removeCard(defendCard), defendCard, context);
+                                        defended = true;
+                                    }
+                                    break;
                                 case Sneak:
                                     currentPlayer.banish(defendCard, defendCard, context);
                                     p.hand.remove(defendCard);
@@ -657,6 +667,16 @@ public class Game {
                         currentPlayer.trash(walls,walls,context);
                     }
 
+                }
+                while (currentPlayer.getTavern().contains(Cards.starChamber)) {
+                    Card starChamb = currentPlayer.getTavern().get(Cards.starChamber);
+                    for (Card c : starChamb.getCardsUnder()) {
+                        getCurrentPlayer().discard(c, attacker, context);
+                        currentPlayer.getTavern().remove(c);
+                    }
+                    starChamb.getCardsUnder().clear();
+                    currentPlayer.discard(starChamb, attacker, context);
+                    currentPlayer.getTavern().remove(starChamb);
                 }
                 context.woundsTaken++;
                 woundsTakenHere++;
@@ -3734,6 +3754,12 @@ public class Game {
                     break;
                 case Sylvan:
                     for (Card c: Cards.locationCardsSylvanHeights) {
+                        addPile(c);
+                        added++;
+                    }
+                    break;
+                case SecretLore:
+                    for (Card c: Cards.locationCardsSecretLore) {
                         addPile(c);
                         added++;
                     }

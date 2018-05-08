@@ -18,7 +18,8 @@ public enum LocationType {
     Briggs("Fort Briggs", Expansion.Base),
     Citadel("Citadel of Xorjith", Expansion.Base),
     Holtvaros("Holtvaros", Expansion.Base),
-    Sylvan("Sylvan Heights", Expansion.Base);
+    Sylvan("Sylvan Heights", Expansion.Base),
+    SecretLore("Tower of Secret Lore", Expansion.Arcane);
 
     private final String name;
     private final List<Expansion> expansions;

@@ -19,7 +19,28 @@ public class CardImplArcane extends CardImpl {
 
     @Override
     protected void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {
+        SelectCardOptions sco;
         switch (this.getKind()) {
+            case StarChamber:
+                if (((IndirectPlayer)currentPlayer).selectBoolean(context, this)) {
+                    if (numberTimesAlreadyPlayed == 0) {
+                        numberTimesAlreadyPlayed++;
+                        sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
+                                .setActionType(SelectCardOptions.ActionType.UNDER).setCount(1).exactCount()
+                                .setCardResponsible(this);
+                        putCardUnderFromHand(game, context, currentPlayer, sco);
+                    }
+                }
+                else {
+                    for (Card c : cardsUnder) {
+                        currentPlayer.trash(c,this,context);
+                        currentPlayer.getTavern().remove(c);
+                    }
+                    this.getCardsUnder().clear();
+                    currentPlayer.trash(this,this,context);
+                    currentPlayer.getTavern().remove(this);
+                }
+                break;
             case Augury:
                 int spentActions = spendActions(context, currentPlayer, 3, false);
                 if (spentActions==0) return;
@@ -42,7 +63,45 @@ public class CardImplArcane extends CardImpl {
     }
     @Override
     protected void additionalCardActions(Game game, MoveContext context, Player currentPlayer) {
+        SelectCardOptions sco;
         switch (this.getKind()) {
+            case SpellwroughtHammer:
+                this.discardMultiple(context, currentPlayer, 1);
+                actionPhaseAttack(context, currentPlayer, true, false, 2);
+                break;
+            case SpellwroughtArrow:
+                this.discardMultiple(context, currentPlayer, 1);
+                actionPhaseAttack(context, currentPlayer, true, true, 1);
+                break;
+            case MagistersCouncil:
+                for (Player p : game.getPlayersInTurnOrder())
+                    if (p != currentPlayer) {
+                        game.drawToHand(new MoveContext(game, p), this, 1);
+                    }
+                break;
+            case RejuvenationCircle:
+                for (Player p : game.getPlayersInTurnOrder()) {
+                    //TODO make optional
+                    summon(game, context, p, CardType.Wound);
+                }
+                for (Player p : game.getPlayersInTurnOrder()) {
+                    Card[] toTrash = p.wound_cardsToTrash(context, this, 1);
+                    if (toTrash != null && toTrash.length > 0) {
+                        currentPlayer.hand.remove(toTrash[0]);
+                        currentPlayer.banish(toTrash[0],this,context);
+                    }
+                }
+                break;
+            case SpiralLibrary:
+                hunt(game, context, currentPlayer, CardType.Spell);
+                break;
+            case StarChamber: 
+                putOnTavern(game, context, currentPlayer);
+                sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
+                        .setActionType(SelectCardOptions.ActionType.UNDER).setCount(1).exactCount()
+                        .setCardResponsible(this);
+                putCardUnderFromHand(game, context, currentPlayer, sco);
+                break;
             case RunicStaff:
             case CedarStaff:
             case AshStaff:
@@ -53,7 +112,7 @@ public class CardImplArcane extends CardImpl {
                 game.drawToHand(context, this, 1);
                 break;
             case CelestialGrimoire:
-                SelectCardOptions sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
+                sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
                         .setActionType(SelectCardOptions.ActionType.UNDER).isSpell()
                         .setCardResponsible(this).setCount(1).setPassable().exactCount();
                 putCardUnderFromHand(game, context, currentPlayer, sco);
@@ -112,9 +171,34 @@ public class CardImplArcane extends CardImpl {
         }
     }
 
+    private void summon(Game game, MoveContext context, Player p, CardType... types) {
+        Card topCard;
+        if (p.deck.size()>0) {
+            topCard = game.draw(context, this, p.deck.size());
+            do {
+                if (topCard.is(types)) {
+                    p.hand.add(topCard, true);
+                    break;
+                }
+                else {
+                    p.discard.add(topCard);
+                    if (p.deck.size() > 0)
+                        topCard = game.draw(context, this, p.deck.size());
+                }
+            } while (p.deck.size() > 0);
+        }
+    }
+
     @Override
     protected void callAction(MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
+            case SpiralLibrary:
+                currentPlayer.discardRemainingCardsFromHand(context, null, this, 0);
+
+                for (int i = 5; i>0; i--) {
+                    context.game.drawToHand(context, this, i);
+                }
+                break;
             case WallOfForce:
                 currentPlayer.banish(currentPlayer.playedCards.removeCard(this), this, context);
                 break;

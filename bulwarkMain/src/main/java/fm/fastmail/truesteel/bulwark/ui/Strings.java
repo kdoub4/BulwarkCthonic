@@ -21,6 +21,7 @@ import com.vdom.comms.MyCard;
 import com.vdom.comms.SelectCardOptions;
 import com.vdom.comms.SelectCardOptions.ActionType;
 import com.vdom.comms.SelectCardOptions.PickType;
+import com.vdom.core.CardImpl;
 import com.vdom.core.CardSet;
 import com.vdom.core.CardSet.UseOptionalCards;
 import com.vdom.core.CardType;
@@ -1129,7 +1130,14 @@ public class Strings {
 
         String[] strings = new String[3];
         strings[0] = cardName;  // common enough to set this as a default; override if necessary.
-        if (cardName.equals(getCardName(Cards.astrologersRitual))) {
+        if (cardName.equals(getCardName(Cards.starChamber))) {
+            if (((CardImpl)cardResponsible).numberTimesAlreadyPlayed == 0)
+                strings[1] = "Place card from hand Under";
+            else
+                strings[1] = "Pass";
+            strings[2] = "Trash this and cards Under it";
+        }
+        else if (cardName.equals(getCardName(Cards.astrologersRitual))) {
             strings[1] = "+2 Might";
             strings[2] = "+1 Might";
         }

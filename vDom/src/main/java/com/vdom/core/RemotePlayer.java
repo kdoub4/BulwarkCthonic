@@ -1068,57 +1068,63 @@ public class RemotePlayer extends IndirectPlayer implements GameEventListener, E
 
                 //ask if play? yes break;
                 //if (vassal_shouldPlayCard(context, bolsterCard)) {
-                    switch (bolsterCard.getKind()) {
+                switch (bolsterCard.getKind()) {
+                    case SpellwroughtHammer:
+                        context.player.hand.remove(bolsterCard);
+                        discard(bolsterCard, bolsterCard, context);
+                        context.addMightModifier(1);
+                        break;
+                    case SpellwroughtArrow:
+                        context.player.hand.remove(bolsterCard);
+                        banish(bolsterCard, bolsterCard, context);
+                        context.addMightModifier(1);
+                        break;
                         //TODO Bulwark multiplayer Charge, VantagePoint
 //                                case Charge:
 //                                    player.discard(bolsterCard, bolsterCard, context);
 //                                    player.hand.removeCard(bolsterCard);
 //                                    context.setMight(2);
-                        case AstrologersRitual:
-                            if (Util.getCardCount(options, Cards.astrologersRitual) > 1 && (selectBoolean(context, bolsterCard))) {
-                                    discard(tavern.remove(Cards.Kind.AstrologersRitual), bolsterCard, context);
-                                    context.addMightModifier(2);
-                                }
-                            else {
-                                context.addMightModifier(1);
-                            }
-                            tavern.a.remove(bolsterCard);
-                            discard(bolsterCard, bolsterCard, context);
+                    case AstrologersRitual:
+                        if (Util.getCardCount(options, Cards.astrologersRitual) > 1 && (selectBoolean(context, bolsterCard))) {
                             discard(tavern.remove(Cards.Kind.AstrologersRitual), bolsterCard, context);
-                            break;
-                        case EnchantedStrike:
-                            tavern.a.remove(bolsterCard);
-                            banish(bolsterCard,bolsterCard,context);
+                            context.addMightModifier(2);
+                        } else {
                             context.addMightModifier(1);
-                            break;
-                        case TheDrop:
-                            tavern.a.remove(bolsterCard);
-                            trash(bolsterCard, bolsterCard, context);
-                            if (bolsterCard.selectAndTrashFromHand(context,context.getPlayer(),1)==1)
-                                context.addMightModifier(1);
-                            bolsterAttack(context);
-                            break;
-                        case StoneWalls:
-                            tavern.a.remove(bolsterCard);
-                            trash(bolsterCard, bolsterCard, context);
+                        }
+                        tavern.a.remove(bolsterCard);
+                        discard(bolsterCard, bolsterCard, context);
+                        discard(tavern.remove(Cards.Kind.AstrologersRitual), bolsterCard, context);
+                        break;
+                    case EnchantedStrike:
+                        tavern.a.remove(bolsterCard);
+                        banish(bolsterCard, bolsterCard, context);
+                        context.addMightModifier(1);
+                        break;
+                    case TheDrop:
+                        tavern.a.remove(bolsterCard);
+                        trash(bolsterCard, bolsterCard, context);
+                        if (bolsterCard.selectAndTrashFromHand(context, context.getPlayer(), 1) == 1)
                             context.addMightModifier(1);
-                            bolsterAttack(context);
-                            break;
-                        case PinpointShot:
-                            tavern.a.remove(bolsterCard);
-                            banish(bolsterCard,bolsterCard,context);
-                            context.addMightModifier(1);
-                            bolsterAttack(context);
-                            break;
-                        case ContempuousShot:
-                            tavern.a.remove(bolsterCard);
-                            discard(bolsterCard, bolsterCard, context);
-                            context.addMightModifier(1);
-                            bolsterAttack(context);
-                            break;
+                        break;
+                    case StoneWalls:
+                        tavern.a.remove(bolsterCard);
+                        trash(bolsterCard, bolsterCard, context);
+                        context.addMightModifier(1);
+                        break;
+                    case PinpointShot:
+                        tavern.a.remove(bolsterCard);
+                        banish(bolsterCard, bolsterCard, context);
+                        context.addMightModifier(1);
+                        break;
+                    case ContempuousShot:
+                        tavern.a.remove(bolsterCard);
+                        discard(bolsterCard, bolsterCard, context);
+                        context.addMightModifier(1);
+                        break;
 
-                    }
+                }
                 //}
+                bolsterAttack(context);
             }
             return bolsterCard != null;
         }

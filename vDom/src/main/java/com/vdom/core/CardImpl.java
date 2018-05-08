@@ -111,7 +111,7 @@ public class CardImpl implements Card, Comparable<Card>{
     private Integer id;
     boolean movedToNextTurnPile = false;
     boolean trashAfterPlay = false;
-    int numberTimesAlreadyPlayed = 0;
+    public int numberTimesAlreadyPlayed = 0;
     int cloneCount = 1;
     protected CardImpl impersonatingCard = null;
     CardImpl inheritingAbilitiesCard = null;
