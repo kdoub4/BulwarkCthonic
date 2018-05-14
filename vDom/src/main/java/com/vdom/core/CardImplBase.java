@@ -20,7 +20,7 @@ public class CardImplBase extends CardImpl {
     }
 
     @Override
-    protected void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {
+    public void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {
         switch (this.getKind()) {
             case SanctusCharm:
                 game.SanctusCharmManoeuvre(context, currentPlayer, this);
@@ -1098,7 +1098,7 @@ public class CardImplBase extends CardImpl {
 
 
     @Override
-    protected void callAction(MoveContext context, Player currentPlayer) {
+    protected void callAction(MoveContext context, Player currentPlayer, boolean keep) {
         switch (this.getKind()) {
             case SilkenSnare:
                 if (Util.getCardCount(currentPlayer.getTavern(), "snare")>0 &&

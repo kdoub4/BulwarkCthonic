@@ -18,27 +18,14 @@ public class CardImplArcane extends CardImpl {
     }
 
     @Override
-    protected void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {
+    public void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {
         SelectCardOptions sco;
         switch (this.getKind()) {
-            case StarChamber:
-                if (((IndirectPlayer)currentPlayer).selectBoolean(context, this)) {
-                    if (numberTimesAlreadyPlayed == 0) {
-                        numberTimesAlreadyPlayed++;
-                        sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
-                                .setActionType(SelectCardOptions.ActionType.UNDER).setCount(1).exactCount()
-                                .setCardResponsible(this);
-                        putCardUnderFromHand(game, context, currentPlayer, sco);
-                    }
-                }
-                else {
-                    for (Card c : cardsUnder) {
-                        currentPlayer.trash(c,this,context);
-                        currentPlayer.getTavern().remove(c);
-                    }
-                    this.getCardsUnder().clear();
-                    currentPlayer.trash(this,this,context);
-                    currentPlayer.getTavern().remove(this);
+            case SpiralLibrary:
+                currentPlayer.discardRemainingCardsFromHand(context, new Card[0], this, 0);
+
+                for (int i = 5; i>0; i--) {
+                    context.game.drawToHand(context, this, i);
                 }
                 break;
             case Augury:
@@ -65,6 +52,12 @@ public class CardImplArcane extends CardImpl {
     protected void additionalCardActions(Game game, MoveContext context, Player currentPlayer) {
         SelectCardOptions sco;
         switch (this.getKind()) {
+            case MagistersGallery:
+                spyAndScryingPool(game, context, currentPlayer);
+                game.drawToHand(context, this, 1);
+                game.drawToHand(context, this, 1);
+                banishOrReplace(context, currentPlayer, Cards.virtualEnemy );
+                break;
             case SpellwroughtHammer:
                 this.discardMultiple(context, currentPlayer, 1);
                 actionPhaseAttack(context, currentPlayer, true, false, 2);
@@ -136,6 +129,7 @@ public class CardImplArcane extends CardImpl {
                 if (spendActions(context, currentPlayer, 2, true) == 2)
                     context.invincible = true;
             case AstrologersRitual:
+            case WallOfLightning:
             case CelestialTome:
             case EnchantedStrike:
                 putOnTavern(game, context, currentPlayer);
@@ -190,13 +184,26 @@ public class CardImplArcane extends CardImpl {
     }
 
     @Override
-    protected void callAction(MoveContext context, Player currentPlayer) {
+    protected void callAction(MoveContext context, Player currentPlayer, boolean keep) {
         switch (this.getKind()) {
-            case SpiralLibrary:
-                currentPlayer.discardRemainingCardsFromHand(context, null, this, 0);
-
-                for (int i = 5; i>0; i--) {
-                    context.game.drawToHand(context, this, i);
+            case StarChamber:
+                if (keep) {
+                    //if (numberTimesAlreadyPlayed == 0) {
+                        numberTimesAlreadyPlayed++;
+                        SelectCardOptions sco = new SelectCardOptions().setPickType(SelectCardOptions.PickType.SELECT)
+                                .setActionType(SelectCardOptions.ActionType.UNDER).setCount(1).exactCount()
+                                .setCardResponsible(this);
+                        putCardUnderFromHand(context.game, context, currentPlayer, sco);
+                   /// }
+                }
+                else {
+                    for (Card c : cardsUnder) {
+                        currentPlayer.trash(c,this,context);
+                        currentPlayer.getTavern().remove(c);
+                    }
+                    this.getCardsUnder().clear();
+                    currentPlayer.trash(this,this,context);
+                    currentPlayer.playedCards.remove(this);
                 }
                 break;
             case WallOfForce:

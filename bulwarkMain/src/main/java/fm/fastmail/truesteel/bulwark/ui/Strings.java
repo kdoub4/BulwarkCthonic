@@ -1151,7 +1151,7 @@ public class Strings {
             strings[1] = getString(R.string.baron_option_one);
             strings[2] = getString(R.string.baron_option_two);
         } else if (cardName.equals(getCardName(Cards.guardTower)) ||
-                (cardName.equals(getCardName(Cards.galleryOfLeaves)) && extras!=null && extras[0] instanceof Card)) {
+                ((cardName.equals(getCardName(Cards.galleryOfLeaves)) || cardName.equals(getCardName(Cards.magistersGallery))) && extras!=null && extras[0] instanceof Card)) {
             if (extras == null) {
                 // This is asking if you want to _gain_ a duchess (upon purchase of a duchy).
                 strings[0] = getString(R.string.duchess_query);
@@ -1218,7 +1218,9 @@ public class Strings {
                 cardName.equals(getCardName(Cards.stalk)) ||
                 cardName.equals(getCardName(Cards.patientHunter)) ||
                 cardName.equals(getCardName(Cards.samuGarden)) ||
+                cardName.equals(getCardName(Cards.magistersGallery)) ||
                 cardName.equals(getCardName(Cards.galleryOfLeaves)) ||
+                cardName.equals(getCardName(Cards.spiralLibrary)) ||
                 cardName.equals(getCardName(Cards.crystalOrb))) {
             strings[0] = getPlayerRevealedCardHeader(extras);
             strings[1] = getString(R.string.discard);
@@ -1584,6 +1586,13 @@ public class Strings {
             getCardName(Cards.summon)
             
         ));
+        for (Card c :Cards.locationCardsSecretLoreSpellwrought) {
+            simpleActionStrings.add(getCardName(c));
+        }
+
+        for (Card c :Cards.locationCardsSecretLore) {
+            simpleActionStrings.add(getCardName(c));
+        }
         for (Card c :Cards.spellCardsJakab) {
             simpleActionStrings.add(getCardName(c));
         }

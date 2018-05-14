@@ -563,10 +563,10 @@ public class CardImpl implements Card, Comparable<Card>{
     }
     
 	protected void additionalCardActions(Game game, MoveContext context, Player currentPlayer) {}
+    @Override
+    public void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {}
 
-    protected void manoeuvreCardActions(Game game, MoveContext context, Player currentPlayer) {}
-
-    protected void callAction(MoveContext context, Player currentPlayer) {};
+    protected void callAction(MoveContext context, Player currentPlayer, boolean keep) {};
 
     public Cards.Kind getKind() {
         return kind;
@@ -1701,7 +1701,7 @@ public class CardImpl implements Card, Comparable<Card>{
 
                     boolean discard = false;
 
-                    if(equals(Cards.spy)  || equals(Cards.stalk) || equals(Cards.galleryOfLeaves)|| equals(Cards.crystalOrb)) {
+                    if(equals(Cards.magistersGallery) || equals(Cards.spy)  || equals(Cards.stalk) || equals(Cards.galleryOfLeaves)|| equals(Cards.crystalOrb)) {
                         discard = currentPlayer.controlPlayer.reveal_shouldDiscard(context, player, card, this);
                     } else if (equals(Cards.scryingPool)) {
                         discard = currentPlayer.controlPlayer.scryingPool_shouldDiscard(context, player, card);
@@ -1735,12 +1735,18 @@ public class CardImpl implements Card, Comparable<Card>{
         }
     }
 
-    private boolean call(MoveContext context) {
+    private boolean call(MoveContext context, boolean keep) {
         Player currentPlayer = context.getPlayer();
-        if (currentPlayer.tavern.removeCard(this.getControlCard())==null) {
-            return false;
+        if (keep){
+
         }
-        currentPlayer.playedCards.add(this.getControlCard());
+        else {
+            if (currentPlayer.tavern.removeCard(this.getControlCard()) == null) {
+                return false;
+            }
+
+            currentPlayer.playedCards.add(this.getControlCard());
+        }
         GameEvent event = new GameEvent(GameEvent.EventType.CallingCard, (MoveContext) context);
         event.card = this.getControlCard();
         event.newCard = true;
@@ -1751,18 +1757,29 @@ public class CardImpl implements Card, Comparable<Card>{
     @Override
     public void callAtStartOfTurn(MoveContext context) {
         if (!callableWhenTurnStarts) return;
-        if (!call(context)) return;
+        if (!call(context, false)) return;
         Player currentPlayer = context.getPlayer();
-        callAction(context, currentPlayer);
+        callAction(context, currentPlayer, false);
         finishCall(context);
+    }
+
+    boolean callAndKeep(MoveContext context, Player currentPlayer) {
+        switch (getKind()) {
+            case StarChamber:
+                return (((IndirectPlayer) currentPlayer).selectBoolean(context, this));
+        }
+        return false;
     }
 
     @Override
     public void callWhenActionResolved(MoveContext context, Card resolvedAction) {
         if (!callableWhenActionResolved) return;
-        if (!call(context)) return;
         Player currentPlayer = context.getPlayer();
-        callAction(context, currentPlayer);
+        boolean keep = callAndKeep(context, currentPlayer);
+        if (!call(context, keep)) return;
+        {
+            callAction(context, currentPlayer, keep);
+        }
         finishCall(context);
     }
 
@@ -1926,19 +1943,14 @@ public class CardImpl implements Card, Comparable<Card>{
     protected void putCardUnderFromHand(Game game, MoveContext context, Player currentPlayer, SelectCardOptions sco) {
         Card underCard = currentPlayer.getCardFromHand(context, sco);
         if (underCard != null) {
-            // Move to tavern mat
-            if (underCard.getControlCard().numberTimesAlreadyPlayed == 0) {
-                currentPlayer.hand.remove(underCard.getControlCard());
-                currentPlayer.tavern.add(underCard);
+        currentPlayer.hand.remove(underCard);
+                currentPlayer.tavern.add(underCard.getControlCard());
                 underCard.getControlCard().stopImpersonatingCard();
 
-                GameEvent event = new GameEvent(GameEvent.EventType.CardSetAsideOnTavernMat, context);
+                GameEvent event = new GameEvent(GameEvent.EventType.CardSetAsideOnTavernMat, (MoveContext) context);
                 event.card = underCard.getControlCard();
                 game.broadcastEvent(event);
-            } else {
-                // reset clone count
-                this.getControlCard().cloneCount = 1;
-            }
+
             this.cardsUnder.add(underCard);
         }
     }

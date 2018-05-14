@@ -351,7 +351,7 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
         //SelectCardOptions sco = new SelectCardOptions().isNonCrown().isNonRabble();
 
         for (Card c : context.game.blackMarketPile)
-            if (sco.checkValid(c,false,context))
+        if (sco.checkValid(c,false,context))
                 sco.addValidCard(cardToInt(c));
         if (sco.allowedCards.size()==0)
             return null;

@@ -299,7 +299,7 @@ public class Game {
             gameCounter++;
             playersTurn = 0;
             turnCount = 1;
-            Util.debug("Turn " + turnCount);
+            Util.log("Turn " + turnCount);
             
             Queue<ExtraTurnInfo> extraTurnsInfo = new LinkedList<ExtraTurnInfo>();
 
@@ -468,6 +468,7 @@ public class Game {
                 //End of turn
                 for (Card c : player.tavern) {
                     c.setPlayedThisTurn(false);
+                    ((CardImpl)c).numberTimesAlreadyPlayed=0;
                 }
 
             }
@@ -534,6 +535,7 @@ public class Game {
             if (card == null) break;
             switch (card.getKind()) {
                 //TODO treetopSire multi player
+                //TODO refactor out
                 case RalliedMilitia:
                     ((CardImpl)card).manoeuvreCardActions(context.game,context,player);
                     break;
@@ -1142,6 +1144,7 @@ public class Game {
             if (++playersTurn >= numPlayers) {
                 playersTurn = 0;
                 Util.debug("Turn " + ++turnCount, true);
+                Util.log("Turn " + ++turnCount);
             }
         }
     }
@@ -2234,9 +2237,15 @@ public class Game {
         callableCards = new ArrayList<Card>();
         Card toCall = null;
         for (Card c : player.tavern) {
-        	if (c.behaveAsCard().isCallableWhenTurnStarts() && (c.getKind() != Cards.Kind.TownSquare || !callableCards.contains(Cards.townSquare))) {
+        	if (c.behaveAsCard().isCallableWhenTurnStarts() &&
+                    (c.getKind() != Cards.Kind.TownSquare || !callableCards.contains(Cards.townSquare))) {
         		callableCards.add(c);
         	}
+        }
+        for (Card c : player.hand) {
+            if (c.is(CardType.TurnStart)) {
+                callableCards.add(c);
+            }
         }
         if (!callableCards.isEmpty()) {
         	Collections.sort(callableCards, new Util.CardCostComparator());
@@ -2248,7 +2257,14 @@ public class Game {
 	        	toCall = player.controlPlayer.call_whenTurnStartCardToCall(context, cardsAsArray);
 	        	if (toCall != null && callableCards.contains(toCall)) {
 	        		toCall = callableCards.remove(callableCards.indexOf(toCall));
-	        		toCall.behaveAsCard().callAtStartOfTurn(context);
+	        		if (toCall.is(CardType.TurnStart)) {
+	        		    toCall.manoeuvreCardActions(context.game, context, player);
+	        		    if (toCall.getKind()== Cards.Kind.SpiralLibrary)
+	        		        toCall=null;
+                    }
+                    else {
+                        toCall.behaveAsCard().callAtStartOfTurn(context);
+                    }
 	        	}
 		        // loop while we still have cards to call
 	        } while (toCall != null && !callableCards.isEmpty());

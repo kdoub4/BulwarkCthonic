@@ -3,7 +3,7 @@ package com.vdom.core;
 public enum CardType {
 	Action, Treasure, Victory, Curse, Spell,
 	Attack, InHandReaction, Technique, Defend, OnAttack, InHandManoeuvre, AttackStepEnd, OnActivation,
-	OnTrash,
+	OnTrash, TurnStart,
 	Heroism, Wound, Hero, Magical, Siege,
 	Location, Equipment, Fortification, RemainsManoeuvre, RemainsReaction, Defenders,
 	Enemy, WhenDrawn, Activate, Horseman, Undead, Necromancer,
