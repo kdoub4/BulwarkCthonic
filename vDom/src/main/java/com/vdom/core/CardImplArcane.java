@@ -221,4 +221,12 @@ public class CardImplArcane extends CardImpl {
                 break;
         }
     }
+
+    private void trashCardsUnder(MoveContext context, Player currentPlayer) {
+        for (Card c : cardsUnder) {
+            currentPlayer.trash(c,this,context);
+            currentPlayer.getTavern().removeCard(c);
+        }
+        this.getCardsUnder().clear();
+    }
 }

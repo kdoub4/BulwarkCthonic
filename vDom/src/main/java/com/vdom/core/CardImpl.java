@@ -11,6 +11,8 @@ import com.vdom.api.GameEvent;
 import com.vdom.comms.SelectCardOptions;
 import com.vdom.core.MoveContext.TurnPhase;
 
+import sun.awt.geom.AreaOp;
+
 public class CardImpl implements Card, Comparable<Card>{
 	private static final long serialVersionUID = 1L;
     // Template (immutable)
@@ -38,6 +40,38 @@ public class CardImpl implements Card, Comparable<Card>{
     @Override
     public ArrayList<Card> getCardsUnder() { return cardsUnder;}
 
+    enum CardsUnderAction {
+        DISCARD, BANISH, TRASH, INHAND
+    }
+    private class cardsunderarraylist {
+        public cardsunderarraylist () {
+        }
+
+        public ArrayList<Card> a= new ArrayList<>();
+        public void clear(CardsUnderAction action, Player currentPlayer, MoveContext context) {
+            for (Card c : a) {
+                remove(c, action, currentPlayer, context);
+            }
+            a.clear();
+        }
+
+        public void remove(Card c, CardsUnderAction action, Player currentPlayer, MoveContext context) {
+            switch (action) {
+                case DISCARD:
+                    currentPlayer.discard(c, CardImpl.this, context);
+                    break;
+                case TRASH:
+                    currentPlayer.trash(c, CardImpl.this, context);
+                    break;
+                case BANISH:
+                    currentPlayer.banish(c, CardImpl.this, context);
+                    break;
+                case INHAND:
+                    break;
+            }
+            currentPlayer.getTavern().removeCard(c);
+        }
+    }
     public ArrayList<Card> cardsUnder = new ArrayList<>();
 
     @Override
