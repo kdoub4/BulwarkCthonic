@@ -286,6 +286,11 @@ public class Util {
                     }
                 }
             }
+            else  {
+                if (t.getKind() == Kind.AstrologersRitual) {
+                    AstrologerCount++;
+                }
+            }
             underCards.remove(t);
         }
         return toReturn;
