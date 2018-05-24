@@ -596,7 +596,7 @@ public class CardImplBase extends CardImpl {
     }
 
 	private void cellar(Game game, MoveContext context, Player currentPlayer) {
-        Card[] cards = currentPlayer.controlPlayer.cellar_cardsToDiscard(context);
+        Card[] cards = currentPlayer.controlPlayer.cellar_cardsToDiscard(context, this);
         if (cards != null) {
             int numberOfCards = 0;
             for (Card card : cards) {

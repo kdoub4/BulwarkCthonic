@@ -597,13 +597,13 @@ public abstract class IndirectPlayer extends QuickPlayPlayer {
     }
 
     @Override
-    public Card[] cellar_cardsToDiscard(MoveContext context) {
+    public Card[] cellar_cardsToDiscard(MoveContext context, Card rsponsible) {
         if(context.isQuickPlay() && shouldAutoPlay_cellar_cardsToDiscard(context)) {
-            return super.cellar_cardsToDiscard(context);
+            return super.cellar_cardsToDiscard(context, rsponsible);
         }
         SelectCardOptions sco = new SelectCardOptions().setPassable()
                 .setPickType(PickType.DISCARD).setActionType(ActionType.DISCARD)
-                .setCardResponsible(Cards.cellar);
+                .setCardResponsible(rsponsible);
         return getFromHand(context, sco);
     }
 

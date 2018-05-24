@@ -1771,7 +1771,7 @@ public abstract class Player {
 
     public abstract Card[] chapel_cardsToTrash(MoveContext context);
 
-    public abstract Card[] cellar_cardsToDiscard(MoveContext context);
+    public abstract Card[] cellar_cardsToDiscard(MoveContext context, Card rsponsible);
 
     public abstract boolean library_shouldKeepAction(MoveContext context, Card action);
 

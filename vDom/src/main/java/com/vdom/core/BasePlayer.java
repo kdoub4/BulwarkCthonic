@@ -628,7 +628,7 @@ public abstract class BasePlayer extends Player implements GameEventListener {
     }
 
     @Override
-    public Card[] cellar_cardsToDiscard(MoveContext context) {
+    public Card[] cellar_cardsToDiscard(MoveContext context, Card rsponsible) {
         ArrayList<Card> cards = new ArrayList<Card>();
         for (Card card : context.getPlayer().getHand()) {
             if (context.getActionsLeft() == 0 && card.is(CardType.Action, context.player)) {
