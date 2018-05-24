@@ -397,7 +397,7 @@ public class CardImplBase extends CardImpl {
     }
 
     private int gateIncrease(MoveContext context, Player currentPlayer, int amount, boolean exact) {
-
+        int increase = 0;
         if (currentPlayer.getHand().size() == 0 ||
                 (currentPlayer.getHand().size()<amount && exact))
         {
@@ -417,12 +417,13 @@ public class CardImplBase extends CardImpl {
         }
 
         for (Card card : cardsToDiscard) {
-
             currentPlayer.discard(card, this.getControlCard(), context);
             currentPlayer.hand.remove(card);
+            increase++;
         }
-        if (cardsToDiscard.length == amount || !exact)        {
-            return amount;
+
+        if (cardsToDiscard.length == amount || !exact) {
+            return increase;
         }
         return 0;
     }
