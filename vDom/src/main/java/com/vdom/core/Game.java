@@ -662,7 +662,7 @@ public class Game {
                         currentPlayer.tavern.remove(walls);
                         for (Card c : walls.cardsUnder)
                         {
-                            currentPlayer.tavern.remove(c);
+                            currentPlayer.tavern.removeCard(c);
                             currentPlayer.banish(c, walls, context);
                         }
                         walls.cardsUnder.clear();
