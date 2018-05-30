@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import com.vdom.api.Card;
@@ -1283,8 +1284,8 @@ public class CardImpl implements Card, Comparable<Card>{
                 }
                 break;
             case KangaxxTheLich:
-                for (i = context.game.blackMarketPile.size()-1; i>=0; i--) {
-                    Card enemy = context.game.blackMarketPile.get(i);
+                for (Iterator<Card> it = context.game.blackMarketPile.iterator(); it.hasNext();) {
+                    Card enemy = it.next();
                     if (enemy.is(CardType.Undead) && !enemy.equals(this)) {
                         context.game.killFoe(context, enemy);
                     }
