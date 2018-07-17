@@ -287,8 +287,10 @@ public class Util {
                 }
             }
             else  {
-                if (t.getKind() == Kind.AstrologersRitual) {
+                if (t.getKind() == Kind.AstrologersRitual && AstrologerCount >=1) {
+// these are processed in order so if the count isnt already 1 then there are no previous cards and no reaction available
                     AstrologerCount++;
+                    toReturn.add(t);
                 }
             }
             underCards.remove(t);
