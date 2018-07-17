@@ -109,6 +109,7 @@ public class CardImplArcane extends CardImpl {
                         .setActionType(SelectCardOptions.ActionType.UNDER).isSpell()
                         .setCardResponsible(this).setCount(1).setPassable().exactCount();
                 putCardUnderFromHand(game, context, currentPlayer, sco);
+                putOnTavern(game, context, currentPlayer);
                 break;
             case Petrify:
                 putOnTavern(game, context, currentPlayer);
@@ -215,6 +216,9 @@ public class CardImplArcane extends CardImpl {
                     currentPlayer.tavern.removeCard(c);
                 }
                 this.cardsUnder.clear();
+                context.actions++;
+                currentPlayer.discard(currentPlayer.playedCards.removeCard(this), this, context);
+                break;
             case CelestialTome:
                 context.actions++;
                 currentPlayer.banish(currentPlayer.playedCards.removeCard(this), this, context);
