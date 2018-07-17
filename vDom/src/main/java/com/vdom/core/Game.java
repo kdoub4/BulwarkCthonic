@@ -411,7 +411,7 @@ public class Game {
                     playerAttackFoe(player, context);
                     if (!context.attackMade) {
                         Card c = player.cardToPlay(context, Util.canReact(context, player, CardType.AttackStepEnd), Cards.weakeningWound, true, ""); //TODO
-                        if (c != null) {
+                        while (c != null) {
                             //ask if play? yes break;
                             //if (player.controlPlayer.vassal_shouldPlayCard(context, c)) {
                                 switch (c.getKind()) {
@@ -420,6 +420,7 @@ public class Game {
                                         player.banish(c, c, context);
                                 }
                             //}
+                            c = player.cardToPlay(context, Util.canReact(context, player, CardType.AttackStepEnd), Cards.weakeningWound, true, ""); //TODO
                         }
                     }
                 } while (context.returnToActionPhase);
@@ -790,7 +791,7 @@ public class Game {
                     }
                     break;
                 case EnsorcelledZealot:
-                    for (int j=i-1; j<i+1;j++) {
+                    for (int j=i-1; j<=i+1;j++) {
                         try {
                             if (j != i) {
                                 for (Card c : blackMarketPile.get(j).getCardsUnder()) {
@@ -1144,7 +1145,7 @@ public class Game {
             if (++playersTurn >= numPlayers) {
                 playersTurn = 0;
                 Util.debug("Turn " + ++turnCount, true);
-                Util.log("Turn " + ++turnCount);
+                Util.log("Turn " + turnCount);
             }
         }
     }
@@ -1810,7 +1811,7 @@ public class Game {
         	buy = null;
             try {
             	playerPayOffDebt(player, context);
-            	if (player.getDebtTokenCount() == 0) {
+            	if (player.getDebtTokenCount() == 0 && !player.getTavern().contains(Cards.celerity)) {
             		buy = player.controlPlayer.doBuy(context);
                     if (buy != null) {
                         buy = getPile(buy).topCard(); //Swap in the actual top card of the pile
