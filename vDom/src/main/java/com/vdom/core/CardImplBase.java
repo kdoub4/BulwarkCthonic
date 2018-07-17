@@ -138,7 +138,7 @@ public class CardImplBase extends CardImpl {
             case Crypt:
                 selectAndTrashFromHand(context, currentPlayer, 1);
                 Card[] toDiscards = currentPlayer.controlPlayer.cardsToDiscard(context,this,1,true,false);
-                if (toDiscards.length>0) {
+                if (toDiscards!=null && toDiscards.length>0) {
                     currentPlayer.discard(currentPlayer.hand.removeCard(toDiscards[0]),this,context);
                 }
                 game.drawToHand(context,this,1,true);
