@@ -1521,6 +1521,7 @@ public class Strings {
 
             getCardName(Cards.patientHunter),
             getCardName(Cards.stalk),
+            getCardName(Cards.enchantedBow),
 
             getCardName(Cards.greatWestGate),
             getCardName(Cards.greatSouthGate),

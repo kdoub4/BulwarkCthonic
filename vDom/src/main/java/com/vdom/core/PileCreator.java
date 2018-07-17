@@ -232,12 +232,12 @@ class JakabSpellPileCreator extends PileCreator {
     public CardPile create(Card template, int count) {
         List<CardPile.CardMultiplicity> cards = new ArrayList<CardPile.CardMultiplicity>();
 
-        cards.add(new CardPile.CardMultiplicity(Cards.fireball,    3));
-        cards.add(new CardPile.CardMultiplicity(Cards.wallOfForce, 3));
-        cards.add(new CardPile.CardMultiplicity(Cards.celerity, 3));
-        cards.add(new CardPile.CardMultiplicity(Cards.petrify,    3));
-        cards.add(new CardPile.CardMultiplicity(Cards.augury, 3));
-        cards.add(new CardPile.CardMultiplicity(Cards.enchantedStrike, 3));
+        cards.add(new CardPile.CardMultiplicity(Cards.fireball,    1));
+        cards.add(new CardPile.CardMultiplicity(Cards.wallOfForce, 1));
+        cards.add(new CardPile.CardMultiplicity(Cards.celerity, 1));
+        cards.add(new CardPile.CardMultiplicity(Cards.petrify,    1));
+        cards.add(new CardPile.CardMultiplicity(Cards.augury, 1));
+        cards.add(new CardPile.CardMultiplicity(Cards.enchantedStrike, 1));
 
         return new CardPile(template, cards, false, true);
     }

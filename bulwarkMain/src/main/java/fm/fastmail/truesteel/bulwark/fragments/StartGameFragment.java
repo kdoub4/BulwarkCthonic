@@ -314,6 +314,7 @@ public class StartGameFragment extends SherlockFragment implements OnClickListen
 		});
         mPresetSpinner.setAdapter(gameTypeAdapter);
         String defaultGameType = getBaseEdition().equals(Expansion.Base) ? "FirstGame" : "FirstGame2";
+        defaultGameType = "Bulwark";
         GameType gameType;
         try {
         	gameType = GameType.valueOf(mPrefs.getString("presetPref", defaultGameType));
