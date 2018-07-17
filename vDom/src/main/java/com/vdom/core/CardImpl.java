@@ -1285,7 +1285,7 @@ public class CardImpl implements Card, Comparable<Card>{
                 this.getCardsUnder().clear();
                 this.setDebtCost(0);
 
-                for (Card c : context.game.blackMarketPile) {
+                for (Card c : new ArrayList<>(context.game.blackMarketPile)) {
                     if (c.is("elemental")) {
                         context.game.killFoe(context, c);
                     }
@@ -1318,10 +1318,10 @@ public class CardImpl implements Card, Comparable<Card>{
                 }
                 break;
             case KangaxxTheLich:
-                for (Iterator<Card> it = context.game.blackMarketPile.iterator(); it.hasNext();) {
-                    Card enemy = it.next();
+                for (Card enemy : new ArrayList<>(context.game.blackMarketPile)) {
                     if (enemy.is(CardType.Undead) && !enemy.equals(this)) {
-                        context.game.killFoe(context, enemy);
+                        if (Util.indexOfCardId(enemy.getId(), context.game.blackMarketPile) > -1)
+                            context.game.killFoe(context, enemy);
                     }
                 }
                 break;
@@ -1952,13 +1952,13 @@ public class CardImpl implements Card, Comparable<Card>{
         boolean neighborRuiha = false;
         if (this.is("elf", "demon")) {
             try {
-                neighborRuiha = (enemyLine.get(Util.indexOfCardId(this.getId() - 1, enemyLine)).getKind() == Cards.Kind.RuihaElf);
+                neighborRuiha = (enemyLine.get(Util.indexOfCardId(this.getId(), enemyLine)-1).getKind() == Cards.Kind.RuihaElf);
             } catch (IndexOutOfBoundsException e) {
 
             }
             if (!neighborRuiha) {
                 try {
-                    neighborRuiha = (enemyLine.get(Util.indexOfCardId(this.getId() + 1, enemyLine)).getKind() == Cards.Kind.RuihaElf);
+                    neighborRuiha = (enemyLine.get(Util.indexOfCardId(this.getId(), enemyLine)+1).getKind() == Cards.Kind.RuihaElf);
                 } catch (IndexOutOfBoundsException e) {
 
                 }
